@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OX>
+    <OXMENU id="eightselect_admin_title">
+        <MAINMENU id="eightselect_admin_common">
+            <SUBMENU id="eightselect_admin_attribute" cl="eightselect_admin_attribute">
+                <TAB id="tbcl_eightselect_admin_attribute_main" cl="eightselect_admin_attribute_main" />
+            </SUBMENU>
+        </MAINMENU>
+    </OXMENU>
+</OX>
