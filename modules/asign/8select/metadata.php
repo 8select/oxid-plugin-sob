@@ -24,5 +24,22 @@ $aModule = array(
     'events'      => array(),
     'templates'   => array(),
     'blocks'      => array(),
-    'settings'    => array(),
+    'settings'    => array(
+        array(
+            'group' => 'asign_8select_main',
+            'name' => 'blASign8selectActive',
+            'type' => 'bool',
+            'value' => 'false',
+        ),
+        array('group' => 'asign_8select_main',
+              'name' => 'blASign8selectApiId',
+              'type' => 'str',
+              'value' => '',
+        ),
+        array('group' => 'asign_8select_main',
+              'name' => 'blASign8selectFeedId',
+              'type' => 'str',
+              'value' => '',
+        ),
+    ),
 );
