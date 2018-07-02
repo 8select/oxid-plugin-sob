@@ -8,9 +8,13 @@ $sLangName = 'Deutsch';
 $aLang = array(
     'charset' => 'UTF-8',
 
-    'EIGHTSELECT_ADMIN_ATTRIBUTE_TITLE'      => '8select Attributverwaltung',
+    'EIGHTSELECT_ADMIN_ATTRIBUTE_TITLE' => '8select Attributverwaltung',
 
     'EIGHTSELECT_ADMIN_ATTRIBUTE_TABLE_NAME' => '8select Attribut',
     'EIGHTSELECT_ADMIN_ATTRIBUTE_TABLE_DESC' => 'Beschreibung',
     'EIGHTSELECT_ADMIN_ATTRIBUTE_TABLE_OXID' => 'OXID Attribut',
+
+    'EIGHTSELECT_ADMIN_ATTRIBUTE_OPTGROUP_ARTICLE'   => 'Artikel',
+    'EIGHTSELECT_ADMIN_ATTRIBUTE_OPTGROUP_ATTRIBUTE' => 'Attribute',
+    'EIGHTSELECT_ADMIN_ATTRIBUTE_OPTGROUP_VARSELECT' => 'Variante',
 );

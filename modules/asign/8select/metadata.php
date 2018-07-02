@@ -30,6 +30,7 @@ $aModule = array(
 
         // Models
         'eightselect_attribute'            => 'asign/8select/models/eightselect_attribute.php',
+        'eightselect_attribute2oxid'       => 'asign/8select/models/eightselect_attribute2oxid.php',
     ),
     'events'      => array(
         'onActivate'   => 'eightselect_events::onActivate',

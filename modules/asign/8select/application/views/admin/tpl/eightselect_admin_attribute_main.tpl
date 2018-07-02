@@ -39,25 +39,38 @@
     <input type="hidden" name="fnc" value="save">
 
     <table cellspacing="0" cellpadding="0" border="0" width="98%">
+        <colgroup>
+            <col width="20%">
+            <col width="60%">
+            <col width="20%">
+        </colgroup>
         <thead>
             <tr>
-                <th width="30%">[{ oxmultilang ident="EIGHTSELECT_ADMIN_ATTRIBUTE_TABLE_NAME" }]</th>
-                <th width="40%">[{ oxmultilang ident="EIGHTSELECT_ADMIN_ATTRIBUTE_TABLE_DESC" }]</th>
-                <th width="30%">[{ oxmultilang ident="EIGHTSELECT_ADMIN_ATTRIBUTE_TABLE_OXID" }]</th>
+                <th>[{ oxmultilang ident="EIGHTSELECT_ADMIN_ATTRIBUTE_TABLE_NAME" }]</th>
+                <th>[{ oxmultilang ident="EIGHTSELECT_ADMIN_ATTRIBUTE_TABLE_DESC" }]</th>
+                <th>[{ oxmultilang ident="EIGHTSELECT_ADMIN_ATTRIBUTE_TABLE_OXID" }]</th>
             </tr>
         </thead>
         <tbody>
-            [{foreach from=$aAttributes item=oAttribute}]
+            [{foreach from=$aAttributesEightselect item="oAttribute"}]
                 <tr>
-                    <td valign="top" class="edittext" align="left">
-                        [{ $oAttribute->eightselect_attributes__oxname->value }]
-                        [{* ToDo change name to title *}]
+                    <td class="edittext" valign="top" align="left">
+                        [{ $oAttribute->eightselect_attributes__oxtitle->value }]
                     </td>
-                    <td class="edittext">
+                    <td>
                         [{ $oAttribute->eightselect_attributes__oxdescription->value }]
                     </td>
                     <td class="edittext">
-                        [{* ToDo join merge table information *}]
+                        <select name="oxid2eightselect" id="oxid2eightselect" class="editinput" [{$readonly}]>
+                            <option value=""[{if $sValue == ''}] SELECTED[{/if}]>---</option>
+                            [{foreach from=$aAttributesOxid key="sOptGroup" item="aAttribute"}]
+                                <optgroup label="[{$sOptGroup}]">
+                                [{foreach from=$aAttribute key="sValue" item="sTitle"}]
+                                    <option value="[{ $sValue }]"[{if $sValue == ''}] SELECTED[{/if}]>[{ $sTitle }]</option>
+                                [{/foreach}]
+                                </optgroup>
+                            [{/foreach}]
+                        </select>
                     </td>
                 </tr>
             [{/foreach}]
