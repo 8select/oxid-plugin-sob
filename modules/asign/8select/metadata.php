@@ -7,20 +7,20 @@ $sMetadataVersion = '1.1';
 /**
  * Module information
  */
-$aModule = array(
+$aModule = [
     'id'          => 'asign_8select',
     'title'       => '8select CSE by A-SIGN GmbH',
-    'description' => array(
+    'description' => [
         'de' => 'Modul für die 8select Curated Shopping Engine (CSE)',
         'en' => 'Module for 8select Curated Shopping Engine (CSE)',
-    ),
+    ],
     'thumbnail'   => 'asign_logo.png',
     'version'     => '1.0.0',
     'author'      => 'A-SIGN GmbH',
     'url'         => 'https://www.a-sign.ch',
     'email'       => 'info@a-sign.ch',
-    'extend'      => array(),
-    'files'       => array(
+    'extend'      => [],
+    'files'       => [
         // Core
         'eightselect_events'               => 'asign/8select/core/eightselect_events.php',
 
@@ -31,32 +31,34 @@ $aModule = array(
         // Models
         'eightselect_attribute'            => 'asign/8select/models/eightselect_attribute.php',
         'eightselect_attribute2oxid'       => 'asign/8select/models/eightselect_attribute2oxid.php',
-    ),
-    'events'      => array(
+    ],
+    'events'      => [
         'onActivate'   => 'eightselect_events::onActivate',
         'onDeactivate' => 'eightselect_events::onDeactivate',
-    ),
-    'templates'   => array(
+    ],
+    'templates'   => [
         'eightselect_admin_attribute.tpl'      => 'asign/8select/application/views/admin/tpl/eightselect_admin_attribute.tpl',
         'eightselect_admin_attribute_main.tpl' => 'asign/8select/application/views/admin/tpl/eightselect_admin_attribute_main.tpl',
-    ),
-    'blocks'      => array(),
-    'settings'    => array(
-        array(
+    ],
+    'blocks'      => [],
+    'settings'    => [
+        [
             'group' => 'eightselect_main',
             'name'  => 'blEightSelectActive',
             'type'  => 'bool',
             'value' => 'false',
-        ),
-        array('group' => 'eightselect_main',
-              'name'  => 'blEightSelectApiId',
-              'type'  => 'str',
-              'value' => '',
-        ),
-        array('group' => 'eightselect_main',
-              'name'  => 'blEightSelectFeedId',
-              'type'  => 'str',
-              'value' => '',
-        ),
-    ),
-);
+        ],
+        [
+            'group' => 'eightselect_main',
+            'name'  => 'blEightSelectApiId',
+            'type'  => 'str',
+            'value' => '',
+        ],
+        [
+            'group' => 'eightselect_main',
+            'name'  => 'blEightSelectFeedId',
+            'type'  => 'str',
+            'value' => '',
+        ],
+    ],
+];

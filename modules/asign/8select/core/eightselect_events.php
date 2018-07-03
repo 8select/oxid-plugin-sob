@@ -18,6 +18,7 @@ class eightselect_events
         self::_addAttributeTable();
         self::_addAttributes();
         self::_addAttribute2OxidTable();
+        self::_addAttributes2Oxid();
     }
 
     /**
@@ -79,19 +80,9 @@ class eightselect_events
                 'eightselectAttributeLabelDescr' => 'Standardisierte eindeutige Materialnummer nach EAN (European Article Number) oder UPC (Unified Product Code).',
             ],
             [
-                'eightselectAttribute'           => 'name1',
-                'eightselectAttributeLabel'      => 'Artikelbezeichnung',
-                'eightselectAttributeLabelDescr' => 'Standardbezeichnung für den Artikel so wie er normalerweise in der Artikeldetailansicht genutzt wird (z.B. Sportliches Herren-Hemd "Arie")',
-            ],
-            [
                 'eightselectAttribute'           => 'name2',
                 'eightselectAttributeLabel'      => 'Alternative Artikelbezeichnung',
                 'eightselectAttributeLabelDescr' => 'Oft als Kurzbezeichnung in Listenansichten verwendet (z.B. "Freizeit-Hemd") oder für Google mit mehr Infos zur besseren Suche',
-            ],
-            [
-                'eightselectAttribute'           => 'beschreibung',
-                'eightselectAttributeLabel'      => 'Beschreibungstext HTML',
-                'eightselectAttributeLabelDescr' => 'Der Beschreibungstext zum Artikel, auch "description long" genannt, im HTML-Format z.B. "<p>Federleichte Regenhose! <br/> ...</p>"',
             ],
             [
                 'eightselectAttribute'           => 'rubrik',
@@ -231,12 +222,12 @@ class eightselect_events
         ];
 
         $oUtils = oxNew('oxUtilsObject');
-        $sSqlInsert = 'INSERT INTO `' . self::$sAttributeTable . '` (`OXID`, `OXNAME`, `OXTITLE`, `OXDESCRIPTION`) VALUES (?, ?, ?, ?)';
         $sSqlCheck = 'SELECT 1 FROM `' . self::$sAttributeTable . '` WHERE `OXNAME` = ?';
+        $sSqlInsert = 'INSERT INTO `' . self::$sAttributeTable . '` (`OXID`, `OXNAME`, `OXTITLE`, `OXDESCRIPTION`) VALUES (?, ?, ?, ?)';
 
         foreach ($attributeList as $attributeEntry) {
-            if (!oxDb::getDb()->getOne($sSqlCheck, array($attributeEntry['eightselectAttribute']))) {
-                oxDb::getDb()->execute($sSqlInsert, array($oUtils->generateUId(), $attributeEntry['eightselectAttribute'], $attributeEntry['eightselectAttributeLabel'], $attributeEntry['eightselectAttributeLabelDescr']));
+            if (!oxDb::getDb()->getOne($sSqlCheck, [$attributeEntry['eightselectAttribute']])) {
+                oxDb::getDb()->execute($sSqlInsert, [$oUtils->generateUId(), $attributeEntry['eightselectAttribute'], $attributeEntry['eightselectAttributeLabel'], $attributeEntry['eightselectAttributeLabelDescr']]);
             }
         }
     }
@@ -251,14 +242,40 @@ class eightselect_events
         if (!self::$oMetaDataHandler->tableExists($sTableName)) {
             $sSql = "CREATE TABLE `{$sTableName}` (
                         `OXID` VARCHAR(32) NOT NULL,
+                        `OXSHOPID` INT(11) NOT NULL,
                         `ESATTRIBUTE` VARCHAR(32) NOT NULL,
                         `OXOBJECT` VARCHAR(32) NOT NULL,
                         `OXTYPE` VARCHAR(32) NOT NULL,
-                        `OXMAPID` VARCHAR(32) NOT NULL,
                         `OXTIMESTAMP` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                         PRIMARY KEY (`OXID`)
                       ) CHARSET=utf8";
             oxDb::getDb()->execute($sSql);
+        }
+    }
+
+    private static function _addAttributes2Oxid()
+    {
+        $aAttributes2Oxid = [
+            [
+                'eightselectAttribute' => 'ean',
+                'oxidObject'           => 'OXEAN',
+                'type'                 => 'oxarticlesfield',
+            ],
+            [
+                'eightselectAttribute' => 'name2',
+                'oxidObject'           => 'OXSHORTDESC',
+                'type'                 => 'oxarticlesfield',
+            ],
+        ];
+
+        $oUtils = oxNew('oxUtilsObject');
+        $sSqlCheck = 'SELECT 1 FROM `' . self::$sAttribute2OxidTable . '` WHERE `ESATTRIBUTE` = ? AND OXSHOPID = ?';
+        $sSqlInsert = 'INSERT INTO `' . self::$sAttribute2OxidTable . '` (`OXID`, `OXSHOPID`, `ESATTRIBUTE`, `OXOBJECT`,  `OXTYPE`) VALUES (?, ?, ?, ?, ?)';
+
+        foreach ($aAttributes2Oxid as $aAttribute2Oxid) {
+            if (!oxDb::getDb()->getOne($sSqlCheck, [$aAttribute2Oxid['eightselectAttribute'], $oUtils->getShopId()])) {
+                oxDb::getDb()->execute($sSqlInsert, [$oUtils->generateUId(), $oUtils->getShopId(), $aAttribute2Oxid['eightselectAttribute'], $aAttribute2Oxid['oxidObject'], $aAttribute2Oxid['type']]);
+            }
         }
     }
 }

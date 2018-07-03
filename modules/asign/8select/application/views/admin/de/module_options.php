@@ -4,7 +4,7 @@ $sLangName = "Deutsch";
 // -------------------------------
 // RESOURCE IDENTIFIER = STRING
 // -------------------------------
-$aLang = array(
+$aLang = [
     'charset' => 'UTF-8',
 
     'SHOP_MODULE_GROUP_eightselect_main' => 'Allgemeine Konfiguration',
@@ -15,4 +15,4 @@ $aLang = array(
 
     'eightselect_admin_common'    => '8select CSE',
     'eightselect_admin_attribute' => 'Attribute verwalten',
-);
+];

@@ -61,12 +61,12 @@
                         [{ $oAttribute->eightselect_attributes__oxdescription->value }]
                     </td>
                     <td class="edittext">
-                        <select name="oxid2eightselect" id="oxid2eightselect" class="editinput" [{$readonly}]>
-                            <option value=""[{if $sValue == ''}] SELECTED[{/if}]>---</option>
+                        <select name="oxid2eightselect[[{$oAttribute->eightselect_attributes__oxname->value}]]" id="oxid2eightselect_[{$oAttribute->eightselect_attributes__oxname->value}]" class="editinput" [{$readonly}]>
+                            <option value="-">---</option>
                             [{foreach from=$aAttributesOxid key="sOptGroup" item="aAttribute"}]
                                 <optgroup label="[{$sOptGroup}]">
                                 [{foreach from=$aAttribute key="sValue" item="sTitle"}]
-                                    <option value="[{ $sValue }]"[{if $sValue == ''}] SELECTED[{/if}]>[{ $sTitle }]</option>
+                                    <option value="[{ $sValue }]"[{if $oView->isAttributeSelected($oAttribute->eightselect_attributes__oxname->value, $sValue) }] SELECTED[{/if}]>[{ $sTitle }]</option>
                                 [{/foreach}]
                                 </optgroup>
                             [{/foreach}]
