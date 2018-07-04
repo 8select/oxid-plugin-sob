@@ -71,14 +71,14 @@ class eightselect_admin_export_do extends DynExportBase
     {
         $iExportedItems = $iCnt;
         $blContinue = false;
+
         if ($oArticle = $this->getOneArticle($iCnt, $blContinue)) {
-            $myConfig = oxRegistry::getConfig();
+            $oEightSelectExport = oxNew('eightselect_export');
+            $oEightSelectExport->setArticle($oArticle);
+
             $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
-            $oSmarty->assign("sCustomHeader", oxRegistry::getSession()->getVariable("sExportCustomHeader"));
-            $oSmarty->assign_by_ref("linenr", $iCnt);
-            $oSmarty->assign_by_ref("article", $oArticle);
-            $oSmarty->assign("spr", $myConfig->getConfigParam('sCSVSign'));
-            $oSmarty->assign("encl", $myConfig->getConfigParam('sGiCsvFieldEncloser'));
+            $oSmarty->assign_by_ref("iLineNr", $iCnt);
+            $oSmarty->assign_by_ref("oEightSelectExport", $oEightSelectExport);
             $this->write($oSmarty->fetch("eightselect_admin_export_gen.tpl", $this->getViewId()));
 
             return ++$iExportedItems;
@@ -99,6 +99,6 @@ class eightselect_admin_export_do extends DynExportBase
         $sLine = str_replace(array("\r\n", "\n"), "", $sLine);
         $sLine = str_replace("<br>", "\n", $sLine);
 
-        fwrite($this->fpFile, $sLine . "\r\n");
+        fwrite($this->fpFile, $sLine);
     }
 }

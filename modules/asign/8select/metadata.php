@@ -34,6 +34,7 @@ $aModule = [
         // Models
         'eightselect_attribute'            => 'asign/8select/models/eightselect_attribute.php',
         'eightselect_attribute2oxid'       => 'asign/8select/models/eightselect_attribute2oxid.php',
+        'eightselect_export'               => 'asign/8select/models/eightselect_export.php',
     ],
     'events'      => [
         'onActivate'   => 'eightselect_events::onActivate',
@@ -57,15 +58,33 @@ $aModule = [
         ],
         [
             'group' => 'eightselect_main',
-            'name'  => 'blEightSelectApiId',
+            'name'  => 'sEightSelectApiId',
             'type'  => 'str',
             'value' => '',
         ],
         [
             'group' => 'eightselect_main',
-            'name'  => 'blEightSelectFeedId',
+            'name'  => 'sEightSelectFeedId',
             'type'  => 'str',
             'value' => '',
+        ],
+        [
+            'group' => 'eightselect_csv',
+            'name'  => 'sEightSelectCsvDelimiter',
+            'type'  => 'str',
+            'value' => ';',
+        ],
+        [
+            'group' => 'eightselect_csv',
+            'name'  => 'sEightSelectCsvQualifier',
+            'type'  => 'str',
+            'value' => '"',
+        ],
+        [
+            'group' => 'eightselect_csv',
+            'name'  => 'sEightSelectCsvMultiDelimiter',
+            'type'  => 'str',
+            'value' => '|',
         ],
     ],
 ];
