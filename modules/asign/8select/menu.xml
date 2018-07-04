@@ -5,6 +5,9 @@
             <SUBMENU id="eightselect_admin_attribute" cl="eightselect_admin_attribute">
                 <TAB id="tbcl_eightselect_admin_attribute_main" cl="eightselect_admin_attribute_main" />
             </SUBMENU>
+            <SUBMENU id="eightselect_admin_export" cl="eightselect_admin_export" list="eightselect_admin_export_do">
+                <TAB id="tbcl_eightselect_admin_export_main" cl="eightselect_admin_export_main" />
+            </SUBMENU>
         </MAINMENU>
     </OXMENU>
 </OX>

@@ -1,6 +1,7 @@
 <?php
 
 $sLangName = "Deutsch";
+
 // -------------------------------
 // RESOURCE IDENTIFIER = STRING
 // -------------------------------
@@ -15,4 +16,5 @@ $aLang = [
 
     'eightselect_admin_common'    => '8select CSE',
     'eightselect_admin_attribute' => 'Attribute verwalten',
+    'eightselect_admin_export'    => 'Manueller Export',
 ];

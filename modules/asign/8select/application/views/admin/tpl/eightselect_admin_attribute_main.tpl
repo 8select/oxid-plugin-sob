@@ -1,12 +1,12 @@
 [{include file="headitem.tpl" title="GENERAL_ADMIN_TITLE"|oxmultilangassign skip_onload="true"}]
 
 <div class="export">
-    [{ oxmultilang ident="EIGHTSELECT_ADMIN_ATTRIBUTE_TITLE" }]
+    [{ oxmultilang ident="eightselect_admin_common" }] - [{ oxmultilang ident="eightselect_admin_attribute" }]
 </div>
 
 <p>&nbsp;</p>
 
-[{ if $readonly }]
+[{if $readonly }]
     [{assign var="readonly" value="readonly disabled"}]
 [{else}]
     [{assign var="readonly" value=""}]

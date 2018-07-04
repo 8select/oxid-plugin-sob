@@ -27,6 +27,9 @@ $aModule = [
         // Controllers
         'eightselect_admin_attribute'      => 'asign/8select/application/controllers/admin/eightselect_admin_attribute.php',
         'eightselect_admin_attribute_main' => 'asign/8select/application/controllers/admin/eightselect_admin_attribute_main.php',
+        'eightselect_admin_export'         => 'asign/8select/application/controllers/admin/eightselect_admin_export.php',
+        'eightselect_admin_export_do'      => 'asign/8select/application/controllers/admin/eightselect_admin_export_do.php',
+        'eightselect_admin_export_main'    => 'asign/8select/application/controllers/admin/eightselect_admin_export_main.php',
 
         // Models
         'eightselect_attribute'            => 'asign/8select/models/eightselect_attribute.php',
@@ -39,6 +42,10 @@ $aModule = [
     'templates'   => [
         'eightselect_admin_attribute.tpl'      => 'asign/8select/application/views/admin/tpl/eightselect_admin_attribute.tpl',
         'eightselect_admin_attribute_main.tpl' => 'asign/8select/application/views/admin/tpl/eightselect_admin_attribute_main.tpl',
+        'eightselect_admin_export.tpl'         => 'asign/8select/application/views/admin/tpl/eightselect_admin_export.tpl',
+        'eightselect_admin_export_do.tpl'      => 'asign/8select/application/views/admin/tpl/eightselect_admin_export_do.tpl',
+        'eightselect_admin_export_gen.tpl'     => 'asign/8select/application/views/admin/tpl/eightselect_admin_export_gen.tpl',
+        'eightselect_admin_export_main.tpl'    => 'asign/8select/application/views/admin/tpl/eightselect_admin_export_main.tpl',
     ],
     'blocks'      => [],
     'settings'    => [
