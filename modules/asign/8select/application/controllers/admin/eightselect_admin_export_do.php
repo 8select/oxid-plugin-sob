@@ -26,6 +26,13 @@ class eightselect_admin_export_do extends DynExportBase
     public $sExportFileName = "8selectexport";
 
     /**
+     * Export file extension
+     *
+     * @var string
+     */
+    public $sExportFileType = "csv";
+
+    /**
      * Current class template name.
      *
      * @var string
@@ -72,14 +79,29 @@ class eightselect_admin_export_do extends DynExportBase
         $iExportedItems = $iCnt;
         $blContinue = false;
 
-        if ($oArticle = $this->getOneArticle($iCnt, $blContinue)) {
-            $oEightSelectExport = oxNew('eightselect_export');
-            $oEightSelectExport->setArticle($oArticle);
+        static $oEightSelectTmpExport = null;
+        if ($oEightSelectTmpExport === null) {
+            $oEightSelectTmpExport = oxNew('eightselect_export');
+        }
 
-            $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
-            $oSmarty->assign_by_ref("iLineNr", $iCnt);
-            $oSmarty->assign_by_ref("oEightSelectExport", $oEightSelectExport);
-            $this->write($oSmarty->fetch("eightselect_admin_export_gen.tpl", $this->getViewId()));
+        /** @var oxArticle $oArticle */
+        if ($oArticle = $this->getOneArticle($iCnt, $blContinue)) {
+            if ($oArticle->isVariant()) {
+                $oParent = $oArticle->getParentArticle();
+            } else {
+                $oParent = $oArticle;
+            }
+
+            /** @var eightselect_export $oEightSelectExport */
+            $oEightSelectExport = clone $oEightSelectTmpExport;
+
+            if ((int)$iCnt === 0) {
+                fwrite($this->fpFile, $oEightSelectExport->getCsvHeader());
+            }
+
+            $oEightSelectExport->setArticle($oArticle, $oParent);
+            $oEightSelectExport->setCategory($this->getCategoryString($oParent, ' / '));
+            fwrite($this->fpFile, $oEightSelectExport->getCsvLine());
 
             return ++$iExportedItems;
         }
@@ -88,17 +110,49 @@ class eightselect_admin_export_do extends DynExportBase
     }
 
     /**
-     * Writes one line into open export file
+     * inserts articles into heaptable
      *
-     * @param string $sLine exported line
+     * @param string $sHeapTable heap table name
+     * @param string $sCatAdd    category id filter (part of sql)
+     *
+     * @return bool
      */
-    public function write($sLine)
+    protected function _insertArticles($sHeapTable, $sCatAdd)
     {
-        $sLine = $this->removeSID($sLine);
+        $oDB = oxDb::getDb();
 
-        $sLine = str_replace(array("\r\n", "\n"), "", $sLine);
-        $sLine = str_replace("<br>", "\n", $sLine);
+        $iExpLang = oxRegistry::getConfig()->getRequestParameter("iExportLanguage");
+        if (!isset($iExpLang)) {
+            $iExpLang = oxRegistry::getSession()->getVariable("iExportLanguage");
+        }
 
-        fwrite($this->fpFile, $sLine);
+        $oArticle = oxNew('oxarticle');
+        $oArticle->setLanguage($iExpLang);
+
+        $sArticleTable = getViewName("oxarticles", $iExpLang);
+        $sO2CView = getViewName('oxobject2category', $iExpLang);
+
+        $sSelect = "INSERT INTO {$sHeapTable} SELECT oxarticles.OXID FROM {$sArticleTable} as oxarticles, {$sO2CView} AS oxobject2category WHERE 1";
+        // $sSelect .= ' '.$oArticle->getSqlActiveSnippet();
+
+        if (!oxRegistry::getConfig()->getRequestParameter("blExportVars")) {
+            $sSelect .= " AND oxarticles.OXID = oxobject2category.OXOBJECTID AND oxarticles.OXPARENTID = '' ";
+        } else {
+            $sSelect .= " AND ( oxarticles.OXID = oxobject2category.OXOBJECTID OR oxarticles.OXPARENTID = oxobject2category.OXOBJECTID ) ";
+        }
+
+        if ($sCatAdd) {
+            $sSelect .= $sCatAdd;
+        }
+
+        // add minimum stock value
+        if ($this->getConfig()->getConfigParam('blUseStock') && ($dMinStock = oxRegistry::getConfig()->getRequestParameter("sExportMinStock"))) {
+            $dMinStock = str_replace(array(";", " ", "/", "'"), "", $dMinStock);
+            $sSelect .= " AND oxarticles.OXSTOCK >= " . $oDB->quote($dMinStock);
+        }
+
+        $sSelect .= " GROUP BY oxarticles.OXID ORDER BY OXARTNUM ASC";
+
+        return $oDB->execute($sSelect) ? true : false;
     }
 }

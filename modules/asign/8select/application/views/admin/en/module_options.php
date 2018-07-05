@@ -9,11 +9,17 @@ $aLang = [
     'charset' => 'UTF-8',
 
     'SHOP_MODULE_GROUP_eightselect_main' => 'General configuration',
+    'SHOP_MODULE_GROUP_eightselect_feed' => 'Feed settings',
     'SHOP_MODULE_GROUP_eightselect_csv'  => 'CSV settings',
 
     'SHOP_MODULE_blEightSelectActive'           => 'Active',
     'SHOP_MODULE_sEightSelectApiId'             => 'API ID',
     'SHOP_MODULE_sEightSelectFeedId'            => 'Feed ID',
+    'SHOP_MODULE_blEightSelectExportVars'       => 'Export variants',
+    'SHOP_MODULE_blEightSelectExportMainVars'   => 'Export variant of base product',
+    'SHOP_MODULE_sEightSelectExportMinStock'    => 'Export min stock quantity',
+    'SHOP_MODULE_sEightSelectVarSelectSize'     => 'Name of selection for "Size"',
+    'SHOP_MODULE_sEightSelectVarSelectColor'    => 'Name of selection for "Color"',
     'SHOP_MODULE_sEightSelectCsvDelimiter'      => 'Delimiter',
     'SHOP_MODULE_sEightSelectCsvQualifier'      => 'Text-Qualifier',
     'SHOP_MODULE_sEightSelectCsvMultiDelimiter' => 'Delimiter for multi data in field',

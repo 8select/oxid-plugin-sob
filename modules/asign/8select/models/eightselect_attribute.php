@@ -224,7 +224,12 @@ class eightselect_attribute extends oxI18n
             'required'     => false,
             'configurable' => true,
         ],
-        'baukasten'      => '',
+        'baukasten'      => [
+            'labelName'    => 'Baukasten',
+            'labelDescr'   => 'SKU für eine direkte Verbindung zu 1:1  zusammengehörigen Artikeln',
+            'required'     => false,
+            'configurable' => true,
+        ],
         'eigenschaft'    => [
             'labelName'    => 'Eigenschaft / Einsatzbereich',
             'labelDescr'   => 'speziell für Sport und Outdoor. Hinweise zum Einsatzbereich (Bsp. Schlafsack geeignet für Temparaturbereich 1 °C bis -16 °C, kratzfest, wasserdicht)',

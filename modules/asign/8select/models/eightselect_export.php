@@ -14,19 +14,19 @@ class eightselect_export extends oxBase
     protected $_sClassName = 'eightselect_export';
 
     /**
+     * @var array
+     */
+    protected $_aCsvAttributes = null;
+
+    /**
      * @var oxArticle
      */
     protected $_oArticle = null;
 
     /**
-     * @var eightselect_attribute
+     * @var oxArticle
      */
-    protected $_oEightSelectAttribute = null;
-
-    /**
-     * @var array
-     */
-    protected $_aCsvAttributes = null;
+    protected $_oParent = null;
 
     /**
      * eightselect_export constructor
@@ -34,52 +34,64 @@ class eightselect_export extends oxBase
      */
     public function __construct()
     {
-        $this->_oEightSelectAttribute = oxNew('eightselect_attribute');
-        $this->_aCsvAttributes = array_fill_keys(array_keys($this->_oEightSelectAttribute->getFields()), '');
-        $this->_sCsvHeader = implode(oxRegistry::getConfig()->getConfigParam('sEightSelectCsvDelimiter'), array_keys($this->_aCsvAttributes));
+        $oEightSelectAttribute = oxNew('eightselect_attribute');
+        $this->_aCsvAttributes = array_fill_keys(array_keys($oEightSelectAttribute->getFields()), '');
+    }
+
+    /**
+     * @param string $sCategory
+     */
+    public function setCategory($sCategory)
+    {
+        $this->_aCsvAttributes['kategorie1'] = $sCategory;
+        $this->_setAdditionalCategories();
     }
 
     /**
      * @param oxArticle $oArticle
+     * @param oxArticle $oParent
      */
-    public function setArticle(oxArticle $oArticle)
+    public function setArticle(oxArticle &$oArticle, oxArticle &$oParent)
     {
         $this->_oArticle = $oArticle;
-    }
-
-    public function getCsvHeader()
-    {
-        return $this->_sCsvHeader;
+        $this->_oParent = $oParent;
     }
 
     /**
+     * Returns single line CSV header as string
+     *
+     * @return string
+     */
+    public function getCsvHeader()
+    {
+        $aCsvHeaderFields = array_keys($this->_aCsvAttributes);
+        $sCsvHeader = implode(oxRegistry::getConfig()->getConfigParam('sEightSelectCsvDelimiter'), $aCsvHeaderFields);
+        return $sCsvHeader . PHP_EOL;
+    }
+
+    /**
+     * Returns single line CSV article as string
+     *
      * @return string
      */
     public function getCsvLine()
     {
-        $this->_setStaticFields();
-        $this->_setConfigurableFields();
+        /** @var eightselect_export_static $oEightSelectExportStatic */
+        $oEightSelectExportStatic = oxNew('eightselect_export_static');
+        $oEightSelectExportStatic->setAttributes($this->_aCsvAttributes);
+        $oEightSelectExportStatic->setArticle($this->_oArticle, $this->_oParent);
+        $oEightSelectExportStatic->run();
+
+        /** @var eightselect_export_dynamic $oEightSelectExportDynamic */
+        $oEightSelectExportDynamic = oxNew('eightselect_export_dynamic');
+        $oEightSelectExportDynamic->setAttributes($this->_aCsvAttributes);
+        $oEightSelectExportDynamic->setArticle($this->_oArticle, $this->_oParent);
+        $oEightSelectExportDynamic->run();
+
         $this->_checkRequiredFields();
 
-        $sLine = implode(oxRegistry::getConfig()->getConfigParam('sEightSelectCsvDelimiter'), $this->_aCsvAttributes);
-
-        return $sLine;
-    }
-
-    /**
-     * Set static fields (not configurable ones)
-     */
-    private function _setStaticFields()
-    {
-        // ToDo
-    }
-
-    /**
-     * Set configurable fields (dynamic data)
-     */
-    private function _setConfigurableFields()
-    {
-        // ToDo
+        $sLine = $this->_getAttributesAsString();
+        return $sLine . PHP_EOL;
     }
 
     /**
@@ -88,5 +100,53 @@ class eightselect_export extends oxBase
     private function _checkRequiredFields()
     {
         // ToDo
+    }
+
+    /**
+     * @throws oxConnectionException
+     */
+    private function _setAdditionalCategories()
+    {
+        $sCategoryTable = getViewName('oxcategories');
+        $sO2CTable = getViewName('oxobject2category');
+        $sSql = "SELECT oxcategories.OXTITLE FROM {$sO2CTable} as oxobject2category JOIN $sCategoryTable AS oxcategories ON oxobject2category.OXOBJECTID = oxcategories.OXID WHERE oxobject2category.OXOBJECTID = ? ORDER BY OXTIME ASC";
+        $aCategories = oxDb::getDb()->getCol($sSql, [$this->_oArticle->getId()]);
+
+        // remove first category, it's already in kategorie1
+        if (count($aCategories) > 1) {
+            array_shift($aCategories);
+            $i = 2;
+            foreach ($aCategories as $sCategoryTitle) {
+                if (isset($this->_aCsvAttributes['kategorie' . $i])) {
+                    $this->_aCsvAttributes['kategorie' . $i] = $sCategoryTitle;
+                }
+                $i++;
+            }
+        }
+    }
+
+    /**
+     * @return string
+     */
+    private function _getAttributesAsString()
+    {
+        $sDelimiter = oxRegistry::getConfig()->getConfigParam('sEightSelectCsvDelimiter');
+        $sQualifier = oxRegistry::getConfig()->getConfigParam('sEightSelectCsvQualifier');
+
+        $sLine = '';
+        foreach ($this->_aCsvAttributes as $sFieldValue) {
+
+            $sFieldValue = addcslashes($sFieldValue, $sDelimiter.$sQualifier);
+
+            if ($sFieldValue != '' && !is_integer($sFieldValue) && is_string($sFieldValue)) {
+                $sLine .= $sQualifier.$sFieldValue.$sQualifier;
+            } else {
+                $sLine .= $sFieldValue;
+            }
+
+            $sLine .= $sDelimiter;
+        }
+
+        return rtrim($sLine, $sDelimiter);
     }
 }

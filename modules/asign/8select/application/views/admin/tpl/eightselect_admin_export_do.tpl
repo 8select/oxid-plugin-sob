@@ -1,7 +1,7 @@
 [{include file="headitem.tpl" box="export "
     title="GENERAL_ADMIN_TITLE"|oxmultilangassign
     meta_refresh_sec=$refresh
-    meta_refresh_url=$oViewConf->getSelfLink()|cat:"&cl=`$sClassDo`&iStart=`$iStart`&fnc=run&foo=bar&`$sType`=true"
+    meta_refresh_url=$oViewConf->getSelfLink()|cat:"&cl=`$sClassDo`&iStart=`$iStart`&fnc=run&`$sType`=true"
 }]
 
 [{ oxmultilang ident="eightselect_admin_common" }] - [{ oxmultilang ident="eightselect_admin_export" }] -
