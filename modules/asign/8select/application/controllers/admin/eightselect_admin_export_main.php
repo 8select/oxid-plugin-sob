@@ -13,6 +13,13 @@ class eightselect_admin_export_main extends DynExportBase
     public $sClassDo = "eightselect_admin_export_do";
 
     /**
+     * Upload class name
+     *
+     * @var string
+     */
+    public $sClassUpload = "eightselect_admin_export_upload";
+
+    /**
      * Export ui class name
      *
      * @var string

@@ -13,8 +13,7 @@
         [{if $iError}]
             [{if $iError == -2}]
                 [{ oxmultilang ident="EIGHTSELECT_ADMIN_EXPORT_DO_EXPORTEND" }]
-            <b>[{ assign var='oxDownloadFile' value=$sDownloadFile }][{ oxmultilang ident="EIGHTSELECT_ADMIN_EXPORT_DO_SUCCESS" args=$oxDownloadFile }]</b><br>
-                [{ oxmultilang ident="EIGHTSELECT_ADMIN_EXPORT_DO_LINK" }]<em>[{$sDownloadFile}]</em>
+                <b>[{ oxmultilang ident="EIGHTSELECT_ADMIN_EXPORT_DO_SUCCESS" }]</b>
             [{/if}]
 
             [{if $iError == -1}][{ oxmultilang ident="EIGHTSELECT_ADMIN_EXPORT_DO_UNKNOWNERROR" }][{/if}]
@@ -22,7 +21,7 @@
         [{/if}]
     [{/if}]
 [{else}]
-  [{ oxmultilang ident="EIGHTSELECT_ADMIN_EXPORT_EXPRUNNING" }] [{ oxmultilang ident="EIGHTSELECT_ADMIN_EXPORT_EXPORTEDITEMS" }] [{$iExpItems|default:0}]
+  [{ oxmultilang ident="EIGHTSELECT_ADMIN_EXPORT_DO_EXPRUNNING" }] [{ oxmultilang ident="EIGHTSELECT_ADMIN_EXPORT_DO_EXPORTEDITEMS" }] [{$iExpItems|default:0}]
 [{/if}]
 
 [{include file="bottomitem.tpl"}]

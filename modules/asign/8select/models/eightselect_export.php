@@ -29,6 +29,16 @@ class eightselect_export extends oxBase
     protected $_oParent = null;
 
     /**
+     * @var string
+     */
+    static protected $_sExportLocalPath = 'export/';
+
+    /**
+     * @var string
+     */
+    static protected $_sExportFileName = '#FEEDID#_#FEEDTYPE#_#TIMESTAMP#.csv';
+
+    /**
      * eightselect_export constructor
      * @throws oxSystemComponentException
      */
@@ -138,11 +148,11 @@ class eightselect_export extends oxBase
             }
 
             // add slashes to " and ; in the data
-            $sFieldValue = addcslashes($sFieldValue, $sDelimiter.$sQualifier);
+            $sFieldValue = addcslashes($sFieldValue, $sDelimiter . $sQualifier);
 
             // add delimiter and qualifier
             if ($sFieldValue != '' && !is_integer($sFieldValue) && is_string($sFieldValue)) {
-                $sLine .= $sQualifier.$sFieldValue.$sQualifier;
+                $sLine .= $sQualifier . $sFieldValue . $sQualifier;
             } else {
                 $sLine .= $sFieldValue;
             }
@@ -151,5 +161,81 @@ class eightselect_export extends oxBase
         }
 
         return rtrim($sLine, $sDelimiter);
+    }
+
+    /**
+     * @param bool $blFull
+     * @return string
+     */
+    public function getExportFileName($blFull = false)
+    {
+        $aParams = [
+            '#FEEDID#'    => $this->getConfig()->getConfigParam('sEightSelectFeedId'),
+            '#FEEDTYPE#'  => $blFull ? 'product_feed' : 'property_feed',
+            '#TIMESTAMP#' => time(),
+        ];
+
+        $sFilename = str_replace(array_keys($aParams), $aParams, self::$_sExportFileName);
+        return $sFilename;
+    }
+
+    /**
+     * Return all matching export feeds (with full server path)
+     *
+     * @param bool $blFull
+     */
+    private static function _getExportFiles($blFull)
+    {
+        $myConfig = oxRegistry::getConfig();
+        $sExportLocalPath = $myConfig->getConfigParam('sShopDir') . self::$_sExportLocalPath;
+
+        $aParams = [
+            '#FEEDID#'    => $myConfig->getConfigParam('sEightSelectFeedId'),
+            '#FEEDTYPE#'  => $blFull ? 'product_feed' : 'property_feed',
+            '#TIMESTAMP#' => '*',
+        ];
+        $sFilename = str_replace(array_keys($aParams), $aParams, self::$_sExportFileName);
+
+        return glob($sExportLocalPath . $sFilename);
+    }
+
+    /**
+     * Return the latest (newest) export feed
+     *
+     * @param bool $blFull
+     * @return string
+     */
+    public static function getExportLatestFile($blFull = false)
+    {
+        $aFiles = self::_getExportFiles($blFull);
+
+        if (is_array($aFiles) && count($aFiles)) {
+            return array_pop($aFiles);
+        }
+
+        return '';
+    }
+
+    /**
+     * Remove unused export feeds. You can set the number of keeping files in module settings
+     *
+     * @param bool $blFull
+     */
+    public static function clearExportLocalFolder($blFull = false)
+    {
+        $aFiles = self::_getExportFiles($blFull);
+
+        if (is_array($aFiles) && count($aFiles)) {
+            $iKeepFiles = oxRegistry::getConfig()->getConfigParam('sEightSelectExportNrOfFeeds');
+            $aFiles = array_reverse($aFiles);
+
+            $i = 0;
+            foreach ($aFiles as $sFile) {
+                if ($iKeepFiles > $i++) {
+                    continue;
+                }
+                unlink($sFile);
+            }
+        }
     }
 }

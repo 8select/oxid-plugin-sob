@@ -30,10 +30,12 @@ $aModule = [
         'eightselect_admin_export'         => 'asign/8select/application/controllers/admin/eightselect_admin_export.php',
         'eightselect_admin_export_do'      => 'asign/8select/application/controllers/admin/eightselect_admin_export_do.php',
         'eightselect_admin_export_main'    => 'asign/8select/application/controllers/admin/eightselect_admin_export_main.php',
+        'eightselect_admin_export_upload'  => 'asign/8select/application/controllers/admin/eightselect_admin_export_upload.php',
 
         // Models
         'eightselect_attribute'            => 'asign/8select/models/eightselect_attribute.php',
         'eightselect_attribute2oxid'       => 'asign/8select/models/eightselect_attribute2oxid.php',
+        'eightselect_aws'                  => 'asign/8select/models/eightselect_aws.php',
         'eightselect_export'               => 'asign/8select/models/eightselect_export.php',
         'eightselect_export_abstract'      => 'asign/8select/models/export/eightselect_export_abstract.php',
         'eightselect_export_dynamic'       => 'asign/8select/models/export/eightselect_export_dynamic.php',
@@ -49,6 +51,7 @@ $aModule = [
         'eightselect_admin_export.tpl'         => 'asign/8select/application/views/admin/tpl/eightselect_admin_export.tpl',
         'eightselect_admin_export_do.tpl'      => 'asign/8select/application/views/admin/tpl/eightselect_admin_export_do.tpl',
         'eightselect_admin_export_main.tpl'    => 'asign/8select/application/views/admin/tpl/eightselect_admin_export_main.tpl',
+        'eightselect_admin_export_upload.tpl'  => 'asign/8select/application/views/admin/tpl/eightselect_admin_export_upload.tpl',
     ],
     'blocks'      => [],
     'settings'    => [
@@ -81,6 +84,12 @@ $aModule = [
             'name'  => 'blEightSelectExportMainVars',
             'type'  => 'bool',
             'value' => 'true',
+        ],
+        [
+            'group' => 'eightselect_feed',
+            'name'  => 'sEightSelectExportNrOfFeeds',
+            'type'  => 'str',
+            'value' => '3',
         ],
         [
             'group' => 'eightselect_feed',

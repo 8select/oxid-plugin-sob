@@ -1,4 +1,5 @@
 <?php
+
 /**
  * 8select export class.
  */
@@ -19,20 +20,6 @@ class eightselect_admin_export_do extends DynExportBase
     public $sClassMain = "eightselect_admin_export_main";
 
     /**
-     * Export file name
-     *
-     * @var string
-     */
-    public $sExportFileName = "8selectexport";
-
-    /**
-     * Export file extension
-     *
-     * @var string
-     */
-    public $sExportFileType = "csv";
-
-    /**
      * Current class template name.
      *
      * @var string
@@ -40,31 +27,37 @@ class eightselect_admin_export_do extends DynExportBase
     protected $_sThisTemplate = "eightselect_admin_export_do.tpl";
 
     /**
-     * Calls parent costructor and initializes $this->_sFilePath parameter
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-        if (oxRegistry::getConfig()->getRequestParameter('do_full')) {
-            $this->sExportFileName .= '_full';
-        } else {
-            $this->sExportFileName .= '_update';
-        }
-
-        // set generic frame template
-        $this->_sFilePath = $this->getConfig()->getConfigParam('sShopDir') . "/" . $this->sExportPath . $this->sExportFileName . "." . $this->sExportFileType;
-    }
-
-    /**
-     * Prepares Export
+     * Prepares export
      */
     public function start()
     {
+        $this->_aViewData['refresh'] = 0;
+        $this->_aViewData['iStart'] = 0;
+
+        // prepare it
+        $iEnd = $this->prepareExport();
+        oxRegistry::getSession()->setVariable("iEnd", $iEnd);
+        $this->_aViewData['iEnd'] = $iEnd;
+
         $sType = oxRegistry::getConfig()->getRequestParameter("do_full") ? 'do_full' : 'do_update';
         $this->_aViewData['sType'] = $sType;
+    }
 
-        parent::start();
+    /**
+     * Does export
+     */
+    public function run()
+    {
+        $blFull = (bool)oxRegistry::getConfig()->getRequestParameter('do_full');
+
+        /** @var eightselect_export $oEightSelectExport */
+        $oEightSelectExport = oxNew('eightselect_export');
+        $this->sExportFileName = $oEightSelectExport->getExportFileName($blFull);
+
+        // set generic frame template
+        $this->_sFilePath = $this->getConfig()->getConfigParam('sShopDir') . "/" . $this->sExportPath . $this->sExportFileName;
+
+        parent::run();
     }
 
     /**
@@ -113,7 +106,7 @@ class eightselect_admin_export_do extends DynExportBase
      * inserts articles into heaptable
      *
      * @param string $sHeapTable heap table name
-     * @param string $sCatAdd    category id filter (part of sql)
+     * @param string $sCatAdd category id filter (part of sql)
      *
      * @return bool
      */
