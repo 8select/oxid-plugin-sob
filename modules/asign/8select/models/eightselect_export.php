@@ -88,18 +88,8 @@ class eightselect_export extends oxBase
         $oEightSelectExportDynamic->setArticle($this->_oArticle, $this->_oParent);
         $oEightSelectExportDynamic->run();
 
-        $this->_checkRequiredFields();
-
         $sLine = $this->_getAttributesAsString();
         return $sLine . PHP_EOL;
-    }
-
-    /**
-     * Check if all required fields are set
-     */
-    private function _checkRequiredFields()
-    {
-        // ToDo
     }
 
     /**
@@ -109,7 +99,11 @@ class eightselect_export extends oxBase
     {
         $sCategoryTable = getViewName('oxcategories');
         $sO2CTable = getViewName('oxobject2category');
-        $sSql = "SELECT oxcategories.OXTITLE FROM {$sO2CTable} as oxobject2category JOIN $sCategoryTable AS oxcategories ON oxobject2category.OXOBJECTID = oxcategories.OXID WHERE oxobject2category.OXOBJECTID = ? ORDER BY OXTIME ASC";
+        $sSql = "SELECT oxcategories.OXTITLE
+                  FROM {$sO2CTable} AS oxobject2category
+                  JOIN {$sCategoryTable} AS oxcategories ON oxobject2category.OXOBJECTID = oxcategories.OXID
+                  WHERE oxobject2category.OXOBJECTID = ?
+                  ORDER BY OXTIME ASC";
         $aCategories = oxDb::getDb()->getCol($sSql, [$this->_oArticle->getId()]);
 
         // remove first category, it's already in kategorie1
@@ -134,10 +128,19 @@ class eightselect_export extends oxBase
         $sQualifier = oxRegistry::getConfig()->getConfigParam('sEightSelectCsvQualifier');
 
         $sLine = '';
-        foreach ($this->_aCsvAttributes as $sFieldValue) {
+        foreach ($this->_aCsvAttributes as $sFieldName => $sFieldValue) {
+            // remove newlines
+            $sFieldValue = preg_replace('/\s\s+/', ' ', $sFieldValue);
 
+            // remove html (except "beschreibung")
+            if ($sFieldName !== 'beschreibung') {
+                $sFieldValue = strip_tags($sFieldValue);
+            }
+
+            // add slashes to " and ; in the data
             $sFieldValue = addcslashes($sFieldValue, $sDelimiter.$sQualifier);
 
+            // add delimiter and qualifier
             if ($sFieldValue != '' && !is_integer($sFieldValue) && is_string($sFieldValue)) {
                 $sLine .= $sQualifier.$sFieldValue.$sQualifier;
             } else {

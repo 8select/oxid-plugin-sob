@@ -50,4 +50,30 @@ abstract class eightselect_export_abstract extends oxBase
      * Set data to fields
      */
     abstract public function run();
+
+    /**
+     * @param string $sSelection
+     * @return string
+     */
+    protected function _getVariantSelection($sSelection)
+    {
+        if (!$sSelection) {
+            return '';
+        }
+
+        if ($this->_oArticle->isVariant()) {
+            if (strpos($this->_oParent->oxarticles__oxvarname->value, $sSelection) !== false) {
+                $aSelectionNames = explode('|', $this->_oParent->oxarticles__oxvarname->value);
+                $aSelectionNames = array_map('trim', $aSelectionNames);
+                $aSelectionValues = explode('|', $this->_oArticle->oxarticles__oxvarselect->value);
+                $aSelectionValues = array_map('trim', $aSelectionValues);
+                $iSizePos = array_search($sSelection, $aSelectionNames);
+                if ($iSizePos !== false && isset($aSelectionValues[$iSizePos])) {
+                    return $aSelectionValues[$iSizePos];
+                }
+            }
+        }
+
+        return '';
+    }
 }

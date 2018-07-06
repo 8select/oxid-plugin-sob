@@ -57,7 +57,5 @@ class eightselect_attribute2oxid extends oxBase
         }
 
         $this->eightselect_attribute2oxid__esattribute = new oxField($s8selectAttributeName);
-
-        return $sOxidAttribute;
     }
 }

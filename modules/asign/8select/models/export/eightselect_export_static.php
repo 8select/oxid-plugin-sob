@@ -28,53 +28,30 @@ class eightselect_export_static extends eightselect_export_abstract
         $this->_aCsvAttributes['name1'] = $this->_oArticle->oxarticles__oxtitle->value ? $this->_oArticle->oxarticles__oxtitle->value : $this->_oParent->oxarticles__oxtitle->value;
         $this->_aCsvAttributes['produkt_url'] = $this->_oArticle->getLink();
         $this->_aCsvAttributes['bilder'] = $this->_getPictures();
-        $this->_aCsvAttributes['beschreibung'] = preg_replace('/\s\s+/', ' ', $this->_oArticle->getLongDescription());
+        $this->_aCsvAttributes['beschreibung'] = $this->_oArticle->getLongDescription();
         $this->_aCsvAttributes['beschreibung1'] = $this->_oArticle->oxarticles__oxshortdesc->value;
-        $this->_aCsvAttributes['groesse'] = $this->_getVariantSelection($myConfig->getConfigParam('sEightSelectVarSelectSize'), 'groesse');
-        $this->_aCsvAttributes['farbe'] = $this->_getVariantSelection($myConfig->getConfigParam('sEightSelectVarSelectColor'), 'farbe');
+        $this->_aCsvAttributes['groesse'] = $this->_getVariantSelection($myConfig->getConfigParam('sEightSelectVarSelectSize'));
+        $this->_aCsvAttributes['farbe'] = $this->_getVariantSelection($myConfig->getConfigParam('sEightSelectVarSelectColor'));
 
         if ($this->_oArticle->isVariant()) {
             $this->_aCsvAttributes['mastersku'] = $this->_oParent->oxarticles__oxartnum->value;;
         }
 
+        /** @var oxManufacturer $oManufacturer */
         $oManufacturer = $this->_oArticle->getManufacturer();
         if ($oManufacturer) {
             $this->_aCsvAttributes['marke'] = $oManufacturer->oxmanufacturers__oxtitle->value;
         }
 
+        /** @var oxPrice $oPrice */
         $oPrice = $this->_oArticle->getPrice();
         $this->_aCsvAttributes['angebots_preis'] = $oPrice->getPrice();
 
+        /** @var oxPrice $oTPrice */
         $oTPrice = $this->_oArticle->getTPrice();
         if ($oTPrice) {
             $this->_aCsvAttributes['streich_preis'] = $oTPrice->getPrice();
         }
-    }
-
-    /**
-     * @param string $sSelection
-     * @return string $sFieldname
-     */
-    private function _getVariantSelection($sSelection, $sFieldname)
-    {
-        if (!$sSelection || !$sFieldname) {
-            return '';
-        }
-
-        if ($this->_oArticle->isVariant()) {
-            if (strpos($this->_oParent->oxarticles__oxvarname->value, $sSelection) !== false) {
-                $aSelectionNames = explode('|', $this->_oParent->oxarticles__oxvarname->value);
-                $aSelectionNames = array_map('trim', $aSelectionNames);
-                $aSelectionValues = explode('|', $this->_oArticle->oxarticles__oxvarselect->value);
-                $aSelectionValues = array_map('trim', $aSelectionValues);
-                $iSizePos = array_search($sSelection, $aSelectionNames);
-                if ($iSizePos !== false && isset($aSelectionValues[$iSizePos])) {
-                    return $aSelectionValues[$iSizePos];
-                }
-            }
-        }
-
-        return '';
     }
 
     private function _getPictures()
