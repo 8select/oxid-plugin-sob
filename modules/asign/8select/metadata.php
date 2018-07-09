@@ -62,6 +62,13 @@ $aModule = [
             'value' => 'false',
         ],
         [
+            'group'      => 'eightselect_main',
+            'name'       => 'sEightSelectModus',
+            'type'       => 'select',
+            'value'      => 'prod',
+            'constrains' => 'int|prod',
+        ],
+        [
             'group' => 'eightselect_main',
             'name'  => 'sEightSelectApiId',
             'type'  => 'str',

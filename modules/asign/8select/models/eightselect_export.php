@@ -238,4 +238,13 @@ class eightselect_export extends oxBase
             }
         }
     }
+
+    public static function isProduction()
+    {
+        if (oxRegistry::getConfig()->getConfigParam('sEightSelectModus') === 'prod') {
+            return true;
+        }
+
+        return false;
+    }
 }

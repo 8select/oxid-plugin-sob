@@ -12,7 +12,10 @@ $aLang = [
     'SHOP_MODULE_GROUP_eightselect_feed' => 'Feed Einstellungen',
     'SHOP_MODULE_GROUP_eightselect_csv'  => 'CSV Einstellungen',
 
-    'SHOP_MODULE_blEightSelectActive'           => 'Aktiv',
+    'SHOP_MODULE_blEightSelectActive'           => 'Im Frontend aktiv',
+    'SHOP_MODULE_sEightSelectModus'             => 'Modus',
+    'SHOP_MODULE_sEightSelectModus_int'         => 'Integration',
+    'SHOP_MODULE_sEightSelectModus_prod'        => 'Produktiv',
     'SHOP_MODULE_sEightSelectApiId'             => 'API ID',
     'SHOP_MODULE_sEightSelectFeedId'            => 'Feed ID',
     'SHOP_MODULE_sEightSelectExportNrOfFeeds'   => 'Behalte x Feeds im Export-Verzeichnis (0 = keine; nach Upload direkt löschen)',
