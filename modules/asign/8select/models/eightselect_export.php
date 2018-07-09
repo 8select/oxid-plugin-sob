@@ -6,6 +6,8 @@
  */
 class eightselect_export extends oxBase
 {
+    public static $err_nofeedid = -99;
+
     /**
      * Current class name
      *
@@ -166,11 +168,18 @@ class eightselect_export extends oxBase
     /**
      * @param bool $blFull
      * @return string
+     * @throws UnexpectedValueException
      */
     public function getExportFileName($blFull = false)
     {
+        $sFeedId = $this->getConfig()->getConfigParam('sEightSelectFeedId');
+
+        if (!$sFeedId) {
+            throw new UnexpectedValueException(oxRegistry::getLang()->translateString('EIGHTSELECT_ADMIN_EXPORT_NOFEEDID'));
+        }
+
         $aParams = [
-            '#FEEDID#'    => $this->getConfig()->getConfigParam('sEightSelectFeedId'),
+            '#FEEDID#'    => $sFeedId,
             '#FEEDTYPE#'  => $blFull ? 'product_feed' : 'property_feed',
             '#TIMESTAMP#' => time(),
         ];
@@ -183,11 +192,17 @@ class eightselect_export extends oxBase
      * Return all matching export feeds (with full server path)
      *
      * @param bool $blFull
+     * @throws UnexpectedValueException
      */
     private static function _getExportFiles($blFull)
     {
         $myConfig = oxRegistry::getConfig();
         $sExportLocalPath = $myConfig->getConfigParam('sShopDir') . self::$_sExportLocalPath;
+        $sFeedId = oxRegistry::getConfig()->getConfigParam('sEightSelectFeedId');
+
+        if (!$sFeedId) {
+            throw new UnexpectedValueException(oxRegistry::getLang()->translateString('EIGHTSELECT_ADMIN_EXPORT_NOFEEDID'));
+        }
 
         $aParams = [
             '#FEEDID#'    => $myConfig->getConfigParam('sEightSelectFeedId'),
@@ -204,6 +219,7 @@ class eightselect_export extends oxBase
      *
      * @param bool $blFull
      * @return string
+     * @throws UnexpectedValueException
      */
     public static function getExportLatestFile($blFull = false)
     {
@@ -220,6 +236,7 @@ class eightselect_export extends oxBase
      * Remove unused export feeds. You can set the number of keeping files in module settings
      *
      * @param bool $blFull
+     * @throws UnexpectedValueException
      */
     public static function clearExportLocalFolder($blFull = false)
     {

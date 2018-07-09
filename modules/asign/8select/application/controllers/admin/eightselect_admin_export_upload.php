@@ -42,6 +42,13 @@ class eightselect_admin_export_upload extends DynExportBase
      */
     public function run()
     {
+        $sFeedId = $this->getConfig()->getConfigParam('sEightSelectFeedId');
+
+        if (!$sFeedId) {
+            $this->stop(eightselect_export::$err_nofeedid);
+            return;
+        }
+
         $blFull = (bool)oxRegistry::getConfig()->getRequestParameter('upload_full');
         $sSourceFile = eightselect_export::getExportLatestFile($blFull);
 
@@ -54,7 +61,7 @@ class eightselect_admin_export_upload extends DynExportBase
             fclose($this->fpFile);
 
             try {
-                eightselect_aws::upload($sSourceFile, $this->getConfig()->getConfigParam('sEightSelectFeedId'), $blFull);
+                eightselect_aws::upload($sSourceFile, $sFeedId, $blFull);
                 $this->stop(ERR_SUCCESS);
             } catch (Exception $oEx) {
                 $this->stop(ERR_GENERAL);

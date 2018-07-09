@@ -14,6 +14,8 @@
             [{if $iError == -2}]
                 [{ oxmultilang ident="EIGHTSELECT_ADMIN_EXPORT_UPLOAD_END" }]
                 <b>[{ oxmultilang ident="EIGHTSELECT_ADMIN_EXPORT_UPLOAD_SUCCESS" }]</b>
+            [{elseif $iError == -99}]
+                [{ oxmultilang ident="EIGHTSELECT_ADMIN_EXPORT_NOFEEDID" }]
             [{elseif $iError == 1}]
                 [{ oxmultilang ident="EIGHTSELECT_ADMIN_EXPORT_UPLOAD_NOFILE" }]
             [{else}]

@@ -52,7 +52,13 @@ class eightselect_admin_export_do extends DynExportBase
 
         /** @var eightselect_export $oEightSelectExport */
         $oEightSelectExport = oxNew('eightselect_export');
-        $this->sExportFileName = $oEightSelectExport->getExportFileName($blFull);
+
+        try {
+            $this->sExportFileName = $oEightSelectExport->getExportFileName($blFull);
+        } catch (UnexpectedValueException $oEx) {
+            $this->stop(eightselect_export::$err_nofeedid);
+            return;
+        }
 
         // set generic frame template
         $this->_sFilePath = $this->getConfig()->getConfigParam('sShopDir') . "/" . $this->sExportPath . $this->sExportFileName;

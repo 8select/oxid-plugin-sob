@@ -14,10 +14,13 @@
             [{if $iError == -2}]
                 [{ oxmultilang ident="EIGHTSELECT_ADMIN_EXPORT_DO_EXPORTEND" }]
                 <b>[{ oxmultilang ident="EIGHTSELECT_ADMIN_EXPORT_DO_SUCCESS" }]</b>
+            [{elseif $iError == -99}]
+                [{ oxmultilang ident="EIGHTSELECT_ADMIN_EXPORT_NOFEEDID" }]
+            [{elseif $iError == -1}]
+                [{ oxmultilang ident="EIGHTSELECT_ADMIN_EXPORT_DO_UNKNOWNERROR" }]
+            [{elseif $iError == 1 }]
+                [{ assign var='oxOutputFile' value=$sOutputFile }][{ oxmultilang ident="EIGHTSELECT_ADMIN_EXPORT_DO_EXPORTFILE" args=$oxOutputFile}]
             [{/if}]
-
-            [{if $iError == -1}][{ oxmultilang ident="EIGHTSELECT_ADMIN_EXPORT_DO_UNKNOWNERROR" }][{/if}]
-            [{if $iError == 1 }][{ assign var='oxOutputFile' value=$sOutputFile }][{ oxmultilang ident="EIGHTSELECT_ADMIN_EXPORT_DO_EXPORTFILE" args=$oxOutputFile}][{/if}]
         [{/if}]
     [{/if}]
 [{else}]
