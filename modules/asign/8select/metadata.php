@@ -37,6 +37,7 @@ $aModule = [
         'eightselect_attribute2oxid'       => 'asign/8select/models/eightselect_attribute2oxid.php',
         'eightselect_aws'                  => 'asign/8select/models/eightselect_aws.php',
         'eightselect_export'               => 'asign/8select/models/eightselect_export.php',
+        'eightselect_log'                  => 'asign/8select/models/eightselect_log.php',
         'eightselect_export_abstract'      => 'asign/8select/models/export/eightselect_export_abstract.php',
         'eightselect_export_dynamic'       => 'asign/8select/models/export/eightselect_export_dynamic.php',
         'eightselect_export_static'        => 'asign/8select/models/export/eightselect_export_static.php',

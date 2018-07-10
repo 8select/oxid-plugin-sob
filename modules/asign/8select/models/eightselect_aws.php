@@ -47,8 +47,16 @@ class eightselect_aws extends oxBase
             ]);
 
             eightselect_export::clearExportLocalFolder($blFull);
-        } catch (S3Exception $e) {
-            // ToDo: logging
+        } catch (S3Exception $oEx) {
+            /** @var eightselect_log $oEightSelectLog */
+            $oEightSelectLog = oxNew('eightselect_log');
+            $oEightSelectLog->addLog('AWS S3Exception', "Upload error\n".$oEx->getMessage());
+            throw new UnexpectedValueException('Upload fails');
+        } catch (Exception $oEx) {
+            /** @var eightselect_log $oEightSelectLog */
+            $oEightSelectLog = oxNew('eightselect_log');
+            $oEightSelectLog->addLog('AWS Exception', "Upload error\n".$oEx->getMessage());
+            throw new UnexpectedValueException('Upload fails');
         }
     }
 
@@ -58,9 +66,9 @@ class eightselect_aws extends oxBase
     private static function _getBucketUrl()
     {
         if (eightselect_export::isProduction()) {
-            self::CREDENTIAL_PROD_BUCKET_URL;
+            return self::CREDENTIAL_PROD_BUCKET_URL;
         } else {
-            self::CREDENTIAL_INT_BUCKET_URL;
+            return self::CREDENTIAL_INT_BUCKET_URL;
         }
     }
 
@@ -70,9 +78,9 @@ class eightselect_aws extends oxBase
     private static function _getCredentialKey()
     {
         if (eightselect_export::isProduction()) {
-            self::CREDENTIAL_PROD_KEY;
+            return self::CREDENTIAL_PROD_KEY;
         } else {
-            self::CREDENTIAL_INT_KEY;
+            return self::CREDENTIAL_INT_KEY;
         }
     }
 
@@ -82,9 +90,9 @@ class eightselect_aws extends oxBase
     private static function _getCredentialSecret()
     {
         if (eightselect_export::isProduction()) {
-            self::CREDENTIAL_PROD_SEC;
+            return self::CREDENTIAL_PROD_SEC;
         } else {
-            self::CREDENTIAL_INT_SEC;
+            return self::CREDENTIAL_INT_SEC;
         }
     }
 

@@ -31,288 +31,336 @@ class eightselect_attribute extends oxI18n
             'labelDescr'   => 'Die Sku ist einzigartig, sie enthält Modell, Farbe und Größe',
             'required'     => true,
             'configurable' => false,
+            'forUpdate'    => true,
         ],
         'mastersku'      => [
             'labelName'    => '',
             'labelDescr'   => '',
             'required'     => true,
             'configurable' => false,
+            'forUpdate'    => false,
         ],
         'status'         => [
             'labelName'    => '',
             'labelDescr'   => '',
             'required'     => true,
             'configurable' => false,
+            'forUpdate'    => true,
         ],
         'ean'            => [
             'labelName'    => 'EAN-Code',
             'labelDescr'   => 'Standardisierte eindeutige Materialnummer nach EAN (European Article Number) oder UPC (Unified Product Code).',
             'required'     => false,
             'configurable' => true,
+            'forUpdate'    => false,
         ],
         'model'          => [
             'labelName'    => '',
             'labelDescr'   => '',
             'required'     => true,
             'configurable' => false,
+            'forUpdate'    => false,
         ],
         'name1'          => [
             'labelName'    => '',
             'labelDescr'   => '',
             'required'     => true,
             'configurable' => false,
+            'forUpdate'    => false,
         ],
         'name2'          => [
             'labelName'    => 'Alternative Artikelbezeichnung',
             'labelDescr'   => 'Oft als Kurzbezeichnung in Listenansichten verwendet (z.B. "Freizeit-Hemd") oder für Google mit mehr Infos zur besseren Suche',
             'required'     => false,
             'configurable' => true,
+            'forUpdate'    => false,
         ],
         'kategorie1'     => [
             'labelName'    => '',
             'labelDescr'   => '',
             'required'     => true,
             'configurable' => false,
+            'forUpdate'    => false,
         ],
         'kategorie2'     => [
             'labelName'    => '',
             'labelDescr'   => '',
             'required'     => true,
             'configurable' => false,
+            'forUpdate'    => false,
         ],
         'kategorie3'     => [
             'labelName'    => '',
             'labelDescr'   => '',
             'required'     => true,
             'configurable' => false,
+            'forUpdate'    => false,
         ],
         'streich_preis'  => [
             'labelName'    => '',
             'labelDescr'   => '',
             'required'     => true,
             'configurable' => false,
+            'forUpdate'    => true,
         ],
         'angebots_preis' => [
             'labelName'    => '',
             'labelDescr'   => '',
             'required'     => true,
             'configurable' => false,
+            'forUpdate'    => true,
         ],
         'groesse'        => [
             'labelName'    => '',
             'labelDescr'   => '',
             'required'     => true,
             'configurable' => false,
+            'forUpdate'    => false,
         ],
         'marke'          => [
             'labelName'    => '',
             'labelDescr'   => '',
             'required'     => true,
             'configurable' => false,
+            'forUpdate'    => false,
         ],
         'bereich'        => [
             'labelName'    => 'Bereich',
             'labelDescr'   => 'Damit können Teilsortimente bezeichnet sein (z.B. Outdoor, Kosmetik, Trachten, Lifestyle)',
             'required'     => false,
             'configurable' => true,
+            'forUpdate'    => false,
         ],
         'rubrik'         => [
             'labelName'    => 'Produktkategorie',
             'labelDescr'   => 'Bezeichnung der Artikelgruppen, die meist so in der Shopnavigation verwendet werden (z.B. Hosen, Jacken, Accessoires, Schuhe)',
             'required'     => false,
             'configurable' => true,
+            'forUpdate'    => false,
         ],
         'abteilung'      => [
             'labelName'    => 'Abteilung',
             'labelDescr'   => 'Einteilung der Sortimente nach Zielgruppen (z.B. Damen, Herren, Kinder)',
             'required'     => false,
             'configurable' => true,
+            'forUpdate'    => false,
         ],
         'kiko'           => [
             'labelName'    => 'KIKO',
             'labelDescr'   => 'Speziell für Kindersortimente: Einteilung nach Zielgruppen (z.B. Mädchen, Jungen, Baby)',
             'required'     => false,
             'configurable' => true,
+            'forUpdate'    => false,
         ],
         'typ'            => [
             'labelName'    => 'Produkttyp / Unterkategorie',
             'labelDescr'   => 'Verfeinerung der Ebene PRODUKTKATEGORIE (z.B. PRODUKTKATEGORIE = Jacken; PRODUKTTYP = Lederjacken, Parkas, Blousons)',
             'required'     => false,
             'configurable' => true,
+            'forUpdate'    => false,
         ],
         'farbe'          => [
             'labelName'    => 'Farbe',
             'labelDescr'   => 'Die exakte Farbbezeichnung des Artikels (z.B. Gelb; Himbeerrot; Rosenrot)',
             'required'     => false,
             'configurable' => true,
+            'forUpdate'    => false,
         ],
         'farbspektrum'   => [
             'labelName'    => 'Farbspektrum',
             'labelDescr'   => 'Farben sind einem Farbspektrum zugeordnet (z.B. Farbe: Himbeerrot > Farbspektrum: Rot)',
             'required'     => false,
             'configurable' => true,
+            'forUpdate'    => false,
         ],
         'absatzhoehe'    => [
             'labelName'    => 'Absatzhöhe',
             'labelDescr'   => 'speziell bei Schuhen: Höhe des Absatzes (Format mit oder ohne Maßeinheit z.B. 5,5 cm oder 5,5)',
             'required'     => false,
             'configurable' => true,
+            'forUpdate'    => false,
         ],
         'muster'         => [
             'labelName'    => 'Muster',
             'labelDescr'   => 'Farbmuster des Artikels (z.B. uni, einfarbig,  kariert, gestreift, Blumenmuster, einfarbig-strukturiert)',
             'required'     => false,
             'configurable' => true,
+            'forUpdate'    => false,
         ],
         'aermellaenge'   => [
             'labelName'    => 'Ärmellänge',
             'labelDescr'   => 'speziell bei Oberbekleidung: Länge der Ärmel (z.B. normal, extra-lange Ärmel, ärmellos, 3/4 Arm)',
             'required'     => false,
             'configurable' => true,
+            'forUpdate'    => false,
         ],
         'kragenform'     => [
             'labelName'    => 'Kragenform',
             'labelDescr'   => 'speziell bei Oberbekleidung: Beschreibung des Kragens oder Ausschnitts (z.B. Rollkragen, V-Ausschnitt, Blusenkragen, Haifischkragen)',
             'required'     => false,
             'configurable' => true,
+            'forUpdate'    => false,
         ],
         'obermaterial'   => [
             'labelName'    => 'Art Obermaterial',
             'labelDescr'   => 'wesentliches Material des Artikels (z.B. Wildleder, Denim,  Edelstahl, Gewebe, Strick, Jersey, Sweat, Crash)',
             'required'     => false,
             'configurable' => true,
+            'forUpdate'    => false,
         ],
         'passform'       => [
             'labelName'    => 'Passform',
             'labelDescr'   => 'in Bezug auf die Körperform, wird häufig für Hemden, Sakkos und Anzüge verwendet (z.B. schmal, bequeme Weite, slim-fit, regular-fit, comfort-fit, körpernah)',
             'required'     => false,
             'configurable' => true,
+            'forUpdate'    => false,
         ],
         'schnitt'        => [
             'labelName'    => 'Schnitt',
             'labelDescr'   => 'in Bezug auf die Form des Artikels (z.B. Bootcut, gerades Bein, Oversized, spitzer Schuh)',
             'required'     => false,
             'configurable' => true,
+            'forUpdate'    => false,
         ],
         'waschung'       => [
             'labelName'    => 'Waschung',
             'labelDescr'   => 'optische Wirkung des Materials (bei Jeans z.B.  used, destroyed, bleached, vintage)',
             'required'     => false,
             'configurable' => true,
+            'forUpdate'    => false,
         ],
         'stil'           => [
             'labelName'    => 'Stil',
             'labelDescr'   => 'Stilrichtung des Artikels (z.B.  Business, Casual,  Ethno, Retro)',
             'required'     => false,
             'configurable' => true,
+            'forUpdate'    => false,
         ],
         'sportart'       => [
             'labelName'    => 'Sportart',
             'labelDescr'   => 'speziell bei Sportartikeln (z.B. Handball, Bike, Bergsteigen)',
             'required'     => false,
             'configurable' => true,
+            'forUpdate'    => false,
         ],
         'detail'         => [
             'labelName'    => 'Detail',
             'labelDescr'   => 'erwähnenswerte Details an Artikeln (z.B. Reißverschluss seitlich am Saum, Brusttasche, Volants, Netzeinsatz, Kragen in Kontrastfarbe)',
             'required'     => false,
             'configurable' => true,
+            'forUpdate'    => false,
         ],
         'auspraegung'    => [
             'labelName'    => 'Ausführung & Maßangaben',
             'labelDescr'   => 'speziell für Sport und Outdoor. Wichtige Informationen, die helfen, den Artikel in das Sortiment einzuordnen (Beispiele: bei Rucksäcken: Volumen "30-55 Liter"; bei Skistöcken: Größenangaben in Maßeinheit "Körpergröße 160 bis 175cm")',
             'required'     => false,
             'configurable' => true,
+            'forUpdate'    => false,
         ],
         'baukasten'      => [
             'labelName'    => 'Baukasten',
             'labelDescr'   => 'SKU für eine direkte Verbindung zu 1:1  zusammengehörigen Artikeln',
             'required'     => false,
             'configurable' => true,
+            'forUpdate'    => false,
         ],
         'eigenschaft'    => [
             'labelName'    => 'Eigenschaft / Einsatzbereich',
             'labelDescr'   => 'speziell für Sport und Outdoor. Hinweise zum Einsatzbereich (Bsp. Schlafsack geeignet für Temparaturbereich 1 °C bis -16 °C, kratzfest, wasserdicht)',
             'required'     => false,
             'configurable' => true,
+            'forUpdate'    => false,
         ],
         'fuellmenge'     => [
             'labelName'    => 'Füllmenge',
             'labelDescr'   => 'bezieht sich auf die Menge des Inhalts des Artikels (z.B. 200ml; 0,5 Liter, 3kg, 150 Stück)',
             'required'     => false,
             'configurable' => true,
+            'forUpdate'    => false,
         ],
         'funktion'       => [
             'labelName'    => 'Funktion',
             'labelDescr'   => 'beschreibt Materialfunktionen und -eigenschaften (z.b. schnelltrocknend, atmungsaktiv, 100% UV-Schutz;  pflegeleicht, bügelleicht, körperformend)',
             'required'     => false,
             'configurable' => true,
+            'forUpdate'    => false,
         ],
         'gruppe'         => [
             'labelName'    => 'Gruppe / Baukausten',
             'labelDescr'   => 'bezeichnet direkt zusammengehörige Artikel (z.B. Bikini-Oberteil "Aloha" und Bikini-Unterteil "Aloha" = Gruppe 1002918; Baukasten-Sakko "Ernie" und Baukasten-Hose "Bert" = Gruppe "E&B"). Dabei können auch mehr als 2 Artikel eine Gruppe bilden (z.B. Mix & Match: Gruppe "Hawaii" = 3 Bikini-Oberteile können mit 2 Bikini-Unterteilen frei kombiniert werden). Der Wert für eine Gruppe kann eine Nummer oder ein Name sein.',
             'required'     => false,
             'configurable' => true,
+            'forUpdate'    => false,
         ],
         'material'       => [
             'labelName'    => 'Material',
             'labelDescr'   => 'bezeichnet die genaue Materialzusammensetzung (z.B. 98% Baumwolle, 2% Elasthan)',
             'required'     => false,
             'configurable' => true,
+            'forUpdate'    => false,
         ],
         'saison'         => [
             'labelName'    => 'Saison',
             'labelDescr'   => 'Beschreibt zu welcher Saison bzw. saisonalen Kollektion der Artikel gehört (z.B. HW18/19; Sommer 2018; Winter)',
             'required'     => false,
             'configurable' => true,
+            'forUpdate'    => false,
         ],
         'serie'          => [
             'labelName'    => 'Serie',
             'labelDescr'   => 'Hier können Bezeichnungen für Serien übergeben werden, um Artikelfamilien oder Sondereditionen zu kennzeichnen (z.B. Expert Line, Mountain Professional)',
             'required'     => false,
             'configurable' => true,
+            'forUpdate'    => false,
         ],
         'verschluss'     => [
             'labelName'    => 'Verschluss',
             'labelDescr'   => 'beschreibt Verschlussarten (z.B: Geknöpft, Reißverschluss,  Druckknöpfe, Klettverschluss; Haken & Öse)',
             'required'     => false,
             'configurable' => true,
+            'forUpdate'    => false,
         ],
         'produkt_url'    => [
             'labelName'    => '',
             'labelDescr'   => '',
             'required'     => true,
             'configurable' => false,
+            'forUpdate'    => false,
         ],
         'bilder'         => [
             'labelName'    => '',
             'labelDescr'   => '',
             'required'     => true,
             'configurable' => false,
+            'forUpdate'    => true,
         ],
         'beschreibung'   => [
             'labelName'    => '',
             'labelDescr'   => '',
             'required'     => true,
             'configurable' => false,
+            'forUpdate'    => false,
         ],
         'beschreibung1'  => [
             'labelName'    => '',
             'labelDescr'   => '',
             'required'     => true,
             'configurable' => false,
+            'forUpdate'    => false,
         ],
         'beschreibung2'  => [
             'labelName'    => '',
             'labelDescr'   => '',
             'required'     => true,
             'configurable' => false,
+            'forUpdate'    => false,
         ],
         'sonstiges'      => [
             'labelName'    => '',
             'labelDescr'   => '',
             'required'     => true,
             'configurable' => false,
+            'forUpdate'    => false,
         ],
     ];
 
@@ -321,8 +369,32 @@ class eightselect_attribute extends oxI18n
      *
      * @return array
      */
-    public function getFields()
+    public function getAllFields()
     {
         return $this->_aEightselectFields;
+    }
+
+    public function getUpdateFields()
+    {
+        static $aUpdateFields = null;
+
+        if ($aUpdateFields === null) {
+            $aUpdateFields = [];
+
+            foreach ($this->getAllFields() as $sName => $aFieldProps) {
+                if ($aFieldProps['forUpdate']) {
+                    $aUpdateFields[] = $sName;
+                }
+            }
+
+            $sSql = "SELECT ESATTRIBUTE FROM " . getViewName('eightselect_attribute2oxid');
+            $aDynamicFields = oxDb::getDb()->getCol($sSql);
+
+            if (count($aDynamicFields)) {
+                $aUpdateFields = array_merge($aUpdateFields, $aDynamicFields);
+            }
+        }
+
+        return array_intersect_key($this->getAllFields(), array_flip($aUpdateFields));
     }
 }

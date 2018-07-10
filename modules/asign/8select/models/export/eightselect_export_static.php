@@ -21,36 +21,40 @@ class eightselect_export_static extends eightselect_export_abstract
         $myConfig = $this->getConfig();
 
         // ToDo: how to get this information?!?
-        $this->_aCsvAttributes['model'] = '';
+        !isset($this->_aCsvAttributes['model']) ? null : $this->_aCsvAttributes['model'] = '';
 
-        $this->_aCsvAttributes['sku'] = $this->_oArticle->oxarticles__oxartnum->value;
-        $this->_aCsvAttributes['status'] = (int)$this->_oArticle->isBuyable();
-        $this->_aCsvAttributes['name1'] = $this->_oArticle->oxarticles__oxtitle->value ? $this->_oArticle->oxarticles__oxtitle->value : $this->_oParent->oxarticles__oxtitle->value;
-        $this->_aCsvAttributes['produkt_url'] = $this->_oArticle->getLink();
-        $this->_aCsvAttributes['bilder'] = $this->_getPictures();
-        $this->_aCsvAttributes['beschreibung'] = $this->_oArticle->getLongDescription();
-        $this->_aCsvAttributes['beschreibung1'] = $this->_oArticle->oxarticles__oxshortdesc->value;
-        $this->_aCsvAttributes['groesse'] = $this->_getVariantSelection($myConfig->getConfigParam('sEightSelectVarSelectSize'));
-        $this->_aCsvAttributes['farbe'] = $this->_getVariantSelection($myConfig->getConfigParam('sEightSelectVarSelectColor'));
+        !isset($this->_aCsvAttributes['sku']) ? null : $this->_aCsvAttributes['sku'] = $this->_oArticle->oxarticles__oxartnum->value;
+        !isset($this->_aCsvAttributes['status']) ? null : $this->_aCsvAttributes['status'] = (int)$this->_oArticle->isBuyable();
+        !isset($this->_aCsvAttributes['name1']) ? null : $this->_aCsvAttributes['name1'] = $this->_oArticle->oxarticles__oxtitle->value ? $this->_oArticle->oxarticles__oxtitle->value : $this->_oParent->oxarticles__oxtitle->value;
+        !isset($this->_aCsvAttributes['produkt_url']) ? null : $this->_aCsvAttributes['produkt_url'] = $this->_oArticle->getLink();
+        !isset($this->_aCsvAttributes['bilder']) ? null : $this->_aCsvAttributes['bilder'] = $this->_getPictures();
+        !isset($this->_aCsvAttributes['beschreibung']) ? null : $this->_aCsvAttributes['beschreibung'] = $this->_oArticle->getLongDescription();
+        !isset($this->_aCsvAttributes['beschreibung1']) ? null : $this->_aCsvAttributes['beschreibung1'] = $this->_oArticle->oxarticles__oxshortdesc->value;
+        !isset($this->_aCsvAttributes['groesse']) ? null : $this->_aCsvAttributes['groesse'] = $this->_getVariantSelection($myConfig->getConfigParam('sEightSelectVarSelectSize'));
+        !isset($this->_aCsvAttributes['farbe']) ? null : $this->_aCsvAttributes['farbe'] = $this->_getVariantSelection($myConfig->getConfigParam('sEightSelectVarSelectColor'));
 
         if ($this->_oArticle->isVariant()) {
-            $this->_aCsvAttributes['mastersku'] = $this->_oParent->oxarticles__oxartnum->value;;
+            !isset($this->_aCsvAttributes['mastersku']) ? null : $this->_aCsvAttributes['mastersku'] = $this->_oParent->oxarticles__oxartnum->value;;
         }
 
         /** @var oxManufacturer $oManufacturer */
         $oManufacturer = $this->_oArticle->getManufacturer();
         if ($oManufacturer) {
-            $this->_aCsvAttributes['marke'] = $oManufacturer->oxmanufacturers__oxtitle->value;
+            !isset($this->_aCsvAttributes['marke']) ? null : $this->_aCsvAttributes['marke'] = $oManufacturer->oxmanufacturers__oxtitle->value;
         }
 
-        /** @var oxPrice $oPrice */
-        $oPrice = $this->_oArticle->getPrice();
-        $this->_aCsvAttributes['angebots_preis'] = $oPrice->getPrice();
+        if (isset($this->_aCsvAttributes['angebots_preis'])) {
+            /** @var oxPrice $oPrice */
+            $oPrice = $this->_oArticle->getPrice();
+            $this->_aCsvAttributes['angebots_preis'] = $oPrice->getPrice();
+        }
 
-        /** @var oxPrice $oTPrice */
-        $oTPrice = $this->_oArticle->getTPrice();
-        if ($oTPrice) {
-            $this->_aCsvAttributes['streich_preis'] = $oTPrice->getPrice();
+        if (isset($this->_aCsvAttributes['angebots_preis'])) {
+            /** @var oxPrice $oTPrice */
+            $oTPrice = $this->_oArticle->getTPrice();
+            if ($oTPrice) {
+                $this->_aCsvAttributes['streich_preis'] = $oTPrice->getPrice();
+            }
         }
     }
 

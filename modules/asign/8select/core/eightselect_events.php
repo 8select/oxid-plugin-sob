@@ -6,6 +6,7 @@
 class eightselect_events
 {
     static private $oMetaDataHandler = null;
+    static private $sLogTable = null;
     static private $sAttributeTable = null;
     static private $sAttribute2OxidTable = null;
 
@@ -15,10 +16,23 @@ class eightselect_events
     public static function onActivate()
     {
         self::_init();
+        self::_addLogTable();
         self::_addAttributeTable();
         self::_addAttributes();
         self::_addAttribute2OxidTable();
         self::_addAttributes2Oxid();
+
+        try {
+            /** @var oxModule $oEightSelectModule */
+            $oEightSelectModule = oxNew('oxModule');
+            $oEightSelectModule->load('asign_8select');
+
+            /** @var eightselect_log $oEightSelectLog */
+            $oEightSelectLog = oxNew('eightselect_log');
+            $oEightSelectLog->addLog('Module onActivate', 'Version: ' . $oEightSelectModule->getInfo('version') . ' success');
+        } catch (Exception $oEx) {
+            // not needed
+        }
     }
 
     /**
@@ -28,18 +42,52 @@ class eightselect_events
      */
     public static function onDeactivate()
     {
-        // ToDo
+        try {
+            /** @var oxModule $oEightSelectModule */
+            $oEightSelectModule = oxNew('oxModule');
+            $oEightSelectModule->load('asign_8select');
+
+            /** @var eightselect_log $oEightSelectLog */
+            $oEightSelectLog = oxNew('eightselect_log');
+            $oEightSelectLog->addLog('Module onDeactivate', 'Version: ' . $oEightSelectModule->getInfo('version') . ' success');
+        } catch (Exception $oEx) {
+            // not needed
+        }
+
     }
 
     private static function _init()
     {
         self::$oMetaDataHandler = oxNew('oxDbMetaDataHandler');
 
+        $o8SelectLog = oxNew('eightselect_log');
+        self::$sLogTable = $o8SelectLog->getCoreTableName();
+
         $o8SelectAttributes = oxNew('eightselect_attribute');
         self::$sAttributeTable = $o8SelectAttributes->getCoreTableName();
 
         $o8SelectAttribute2Oxid = oxNew('eightselect_attribute2oxid');
         self::$sAttribute2OxidTable = $o8SelectAttribute2Oxid->getCoreTableName();
+    }
+
+    /**
+     * Add logging table
+     */
+    private static function _addLogTable()
+    {
+        $sTableName = self::$sLogTable;
+
+        if (!self::$oMetaDataHandler->tableExists($sTableName)) {
+            $sSql = "CREATE TABLE `{$sTableName}` (
+                        `OXID` VARCHAR(32) NOT NULL,
+                        `EIGHTSELECT_ACTION` VARCHAR(255),
+                        `EIGHTSELECT_MESSAGE` TEXT,
+                        `EIGHTSELECT_DATE` DATETIME not null,
+                        `OXTIMESTAMP` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                        PRIMARY KEY (`OXID`)
+                      ) CHARSET=utf8";
+            oxDb::getDb()->execute($sSql);
+        }
     }
 
     /**
@@ -79,7 +127,7 @@ class eightselect_events
         $sSqlCheck = 'SELECT 1 FROM `' . self::$sAttributeTable . '` WHERE `OXNAME` = ?';
         $sSqlInsert = 'INSERT INTO `' . self::$sAttributeTable . '` (`OXID`, `OXNAME`, `OXTITLE`, `OXDESCRIPTION`) VALUES (?, ?, ?, ?)';
 
-        foreach ($oEightselectAttribute->getFields() as $sAttributeName => $aAttributeParams) {
+        foreach ($oEightselectAttribute->getAllFields() as $sAttributeName => $aAttributeParams) {
             if ($aAttributeParams['configurable'] && !oxDb::getDb()->getOne($sSqlCheck, [$sAttributeName])) {
                 oxDb::getDb()->execute($sSqlInsert, [$oUtils->generateUId(), $sAttributeName, $aAttributeParams['labelName'], $aAttributeParams['labelDescr']]);
             }

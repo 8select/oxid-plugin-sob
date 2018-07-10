@@ -46,8 +46,17 @@ class eightselect_export extends oxBase
      */
     public function __construct()
     {
+        /** @var eightselect_attribute $oEightSelectAttribute */
         $oEightSelectAttribute = oxNew('eightselect_attribute');
-        $this->_aCsvAttributes = array_fill_keys(array_keys($oEightSelectAttribute->getFields()), '');
+
+        $sType = oxRegistry::getConfig()->getRequestParameter("do_full") ? 'do_full' : 'do_update';
+        if ($sType === 'do_full') {
+            $aCsvFields = $oEightSelectAttribute->getAllFields();
+        } else {
+            $aCsvFields = $oEightSelectAttribute->getUpdateFields();
+        }
+
+        $this->_aCsvAttributes = array_fill_keys(array_keys($aCsvFields), '');
     }
 
     /**

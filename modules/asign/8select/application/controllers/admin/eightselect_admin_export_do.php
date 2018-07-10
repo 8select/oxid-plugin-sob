@@ -53,17 +53,19 @@ class eightselect_admin_export_do extends DynExportBase
         /** @var eightselect_export $oEightSelectExport */
         $oEightSelectExport = oxNew('eightselect_export');
 
+        /** @var eightselect_log $oEightSelectLog */
+        $oEightSelectLog = oxNew('eightselect_log');
+        $oEightSelectLog->startExport($blFull);
+
         try {
             $this->sExportFileName = $oEightSelectExport->getExportFileName($blFull);
+            $this->_sFilePath = $this->getConfig()->getConfigParam('sShopDir') . "/" . $this->sExportPath . $this->sExportFileName;
+            parent::run();
+            $oEightSelectLog->successExport();
         } catch (UnexpectedValueException $oEx) {
             $this->stop(eightselect_export::$err_nofeedid);
-            return;
+            $oEightSelectLog->errorExport($oEx->getMessage());
         }
-
-        // set generic frame template
-        $this->_sFilePath = $this->getConfig()->getConfigParam('sShopDir') . "/" . $this->sExportPath . $this->sExportFileName;
-
-        parent::run();
     }
 
     /**
@@ -148,6 +150,18 @@ class eightselect_admin_export_do extends DynExportBase
         if ($this->getConfig()->getConfigParam('blUseStock') && ($dMinStock = oxRegistry::getConfig()->getRequestParameter("sExportMinStock"))) {
             $dMinStock = str_replace(array(";", " ", "/", "'"), "", $dMinStock);
             $sSelect .= " AND oxarticles.OXSTOCK >= " . $oDB->quote($dMinStock);
+        }
+
+        // get only last changed articles
+        $blFull = (bool)oxRegistry::getConfig()->getRequestParameter('do_full');
+        if (!$blFull) {
+            /** @var eightselect_log $oEightSelectLog */
+            $oEightSelectLog = oxNew('eightselect_log');
+            $blFound = $oEightSelectLog->loadLastSuccessExport($blFull);
+            if ($blFound) {
+                $sLastUpdate = $oEightSelectLog->eightselect_log__eightselect_date->value;
+                $sSelect .= " AND oxarticles.OXTIMESTAMP >= " . $oDB->quote($sLastUpdate);
+            }
         }
 
         $sSelect .= " GROUP BY oxarticles.OXID ORDER BY OXARTNUM ASC";
