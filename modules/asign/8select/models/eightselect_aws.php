@@ -1,6 +1,6 @@
 <?php
 
-require oxRegistry::getConfig()->getModulesDir() . 'asign/8select/ressources/aws.phar';
+require_once rtrim(oxRegistry::getConfig()->getConfigParam('sShopDir'), '/') . '/vendor/autoload.php';
 
 use Aws\S3\S3Client;
 use Aws\S3\Exception\S3Exception;
@@ -11,10 +11,10 @@ use Aws\S3\Exception\S3Exception;
  */
 class eightselect_aws extends oxBase
 {
-    CONST CREDENTIAL_PROD_BUCKET_URL = 's3://productfeed.8select.io/';
+    CONST CREDENTIAL_PROD_BUCKET_URL = 'productfeed.8select.io';
     CONST CREDENTIAL_PROD_KEY = '';
     CONST CREDENTIAL_PROD_SEC = '';
-    CONST CREDENTIAL_INT_BUCKET_URL = 's3://productfeed-prod.staging.8select.io';
+    CONST CREDENTIAL_INT_BUCKET_URL = 'productfeed-prod.staging.8select.io';
     CONST CREDENTIAL_INT_KEY = 'AKIAJ4UUWOTQYISENBIQ';
     CONST CREDENTIAL_INT_SEC = 'Z/H1pgky4/5b/6t8tUhTS12YpRZ5mKNPDPBH2IPa';
 
@@ -32,19 +32,19 @@ class eightselect_aws extends oxBase
     {
         /** @var eightselect_log $oEightSelectLog */
         $oEightSelectLog = oxNew('eightselect_log');
-        $sAction = 'Upload '.($blFull ? 'Full' : 'Update');
+        $sAction = 'Upload ' . ($blFull ? 'Full' : 'Update');
 
         try {
             $s3Client = new S3Client([
-                'profile'     => 'default',
                 'region'      => 'eu-central-1',
                 'version'     => '2006-03-01',
-                'credentials' => array(
+                'credentials' => [
                     'key'    => self::_getCredentialKey(),
                     'secret' => self::_getCredentialSecret(),
-                ),
+                ],
             ]);
             $s3Client->putObject([
+                'ACL'        => 'bucket-owner-full-control',
                 'Bucket'     => self::_getBucketUrl(),
                 'Key'        => self::_getRemotePath($sFeedId, $blFull) . basename($sSourceFile),
                 'SourceFile' => $sSourceFile,
@@ -52,10 +52,10 @@ class eightselect_aws extends oxBase
             eightselect_export::clearExportLocalFolder($blFull);
             $oEightSelectLog->addLog($sAction, "Upload successfully");
         } catch (S3Exception $oEx) {
-            $oEightSelectLog->addLog($sAction, "AWS S3Exception - Upload error\n".$oEx->getMessage());
+            $oEightSelectLog->addLog($sAction, "AWS S3Exception - Upload error\n" . $oEx->getMessage());
             throw new UnexpectedValueException('Upload fails');
         } catch (Exception $oEx) {
-            $oEightSelectLog->addLog($sAction, "AWS Exception - Upload error\n".$oEx->getMessage());
+            $oEightSelectLog->addLog($sAction, "AWS Exception - Upload error\n" . $oEx->getMessage());
             throw new UnexpectedValueException('Upload fails');
         }
     }

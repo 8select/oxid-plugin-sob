@@ -19,7 +19,9 @@ $aModule = [
     'author'      => 'A-SIGN GmbH',
     'url'         => 'https://www.a-sign.ch',
     'email'       => 'info@a-sign.ch',
-    'extend'      => [],
+    'extend'      => [
+        'oxviewconfig' => 'asign/8select/application/core/eightselect_oxviewconfig',
+    ],
     'files'       => [
         // Core
         'eightselect_dispatcher'           => 'asign/8select/core/eightselect_dispatcher.php',
@@ -56,7 +58,18 @@ $aModule = [
         'eightselect_admin_export_main.tpl'    => 'asign/8select/application/views/admin/tpl/eightselect_admin_export_main.tpl',
         'eightselect_admin_export_upload.tpl'  => 'asign/8select/application/views/admin/tpl/eightselect_admin_export_upload.tpl',
     ],
-    'blocks'      => [],
+    'blocks'      => [
+        [
+            'template' => 'layout/base.tpl',
+            'block'    => 'base_js',
+            'file'     => '/application/views/blocks/base_js.tpl',
+        ],
+        [
+            'template' => 'page/details/inc/related_products.tpl',
+            'block'    => 'details_relatedproducts_similarproducts',
+            'file'     => '/application/views/blocks/page/details/inc/eightselect_sys-psv.tpl',
+        ],
+    ],
     'settings'    => [
         [
             'group' => 'eightselect_main',
