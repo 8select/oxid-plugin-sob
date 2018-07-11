@@ -22,7 +22,9 @@ $aModule = [
     'extend'      => [],
     'files'       => [
         // Core
+        'eightselect_dispatcher'           => 'asign/8select/core/eightselect_dispatcher.php',
         'eightselect_events'               => 'asign/8select/core/eightselect_events.php',
+        'eightselect_request'              => 'asign/8select/core/eightselect_request.php',
 
         // Controllers
         'eightselect_admin_attribute'      => 'asign/8select/application/controllers/admin/eightselect_admin_attribute.php',

@@ -57,6 +57,9 @@ class eightselect_admin_export_do extends DynExportBase
         $oEightSelectLog = oxNew('eightselect_log');
         $oEightSelectLog->startExport($blFull);
 
+        $mDateTime = $oEightSelectLog->getLastSuccessExportDate($blFull);
+        $oEightSelectLog->setLastSuccessExportDate($blFull);
+
         try {
             $this->sExportFileName = $oEightSelectExport->getExportFileName($blFull);
             $this->_sFilePath = $this->getConfig()->getConfigParam('sShopDir') . "/" . $this->sExportPath . $this->sExportFileName;
@@ -65,6 +68,7 @@ class eightselect_admin_export_do extends DynExportBase
         } catch (UnexpectedValueException $oEx) {
             $this->stop(eightselect_export::$err_nofeedid);
             $oEightSelectLog->errorExport($oEx->getMessage());
+            $oEightSelectLog->setLastSuccessExportDate($blFull, $mDateTime);
         }
     }
 
@@ -157,10 +161,9 @@ class eightselect_admin_export_do extends DynExportBase
         if (!$blFull) {
             /** @var eightselect_log $oEightSelectLog */
             $oEightSelectLog = oxNew('eightselect_log');
-            $blFound = $oEightSelectLog->loadLastSuccessExport($blFull);
-            if ($blFound) {
-                $sLastUpdate = $oEightSelectLog->eightselect_log__eightselect_date->value;
-                $sSelect .= " AND oxarticles.OXTIMESTAMP >= " . $oDB->quote($sLastUpdate);
+            $mDateTime = $oEightSelectLog->getLastSuccessExportDate($blFull);
+            if ($mDateTime) {
+                $sSelect .= " AND oxarticles.OXTIMESTAMP >= " . $oDB->quote($mDateTime);
             }
         }
 

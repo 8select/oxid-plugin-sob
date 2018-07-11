@@ -30,6 +30,10 @@ class eightselect_aws extends oxBase
      */
     public static function upload($sSourceFile, $sFeedId, $blFull)
     {
+        /** @var eightselect_log $oEightSelectLog */
+        $oEightSelectLog = oxNew('eightselect_log');
+        $sAction = 'Upload '.($blFull ? 'Full' : 'Update');
+
         try {
             $s3Client = new S3Client([
                 'profile'     => 'default',
@@ -45,17 +49,13 @@ class eightselect_aws extends oxBase
                 'Key'        => self::_getRemotePath($sFeedId, $blFull) . basename($sSourceFile),
                 'SourceFile' => $sSourceFile,
             ]);
-
             eightselect_export::clearExportLocalFolder($blFull);
+            $oEightSelectLog->addLog($sAction, "Upload successfully");
         } catch (S3Exception $oEx) {
-            /** @var eightselect_log $oEightSelectLog */
-            $oEightSelectLog = oxNew('eightselect_log');
-            $oEightSelectLog->addLog('AWS S3Exception', "Upload error\n".$oEx->getMessage());
+            $oEightSelectLog->addLog($sAction, "AWS S3Exception - Upload error\n".$oEx->getMessage());
             throw new UnexpectedValueException('Upload fails');
         } catch (Exception $oEx) {
-            /** @var eightselect_log $oEightSelectLog */
-            $oEightSelectLog = oxNew('eightselect_log');
-            $oEightSelectLog->addLog('AWS Exception', "Upload error\n".$oEx->getMessage());
+            $oEightSelectLog->addLog($sAction, "AWS Exception - Upload error\n".$oEx->getMessage());
             throw new UnexpectedValueException('Upload fails');
         }
     }

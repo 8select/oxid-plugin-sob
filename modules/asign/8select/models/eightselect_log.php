@@ -78,22 +78,30 @@ class eightselect_log extends oxBase
 
     /**
      * @param bool $blFull
-     * @return bool
+     * @return mixed
      */
-    public function loadLastSuccessExport($blFull)
+    public function getLastSuccessExportDate($blFull)
     {
-        $blCoreTableUsage = $this->getForceCoreTableUsage();
+        $iShopId = $this->getConfig()->getShopId();
+        $sVarName = 'sExportDate' . ($blFull ? 'Full' : 'Update');
 
-        $this->_addField('oxid', 0);
-        $this->_addField('eightselect_date', 0);
-        $sSelect = $this->buildSelectString(array($this->getViewName() . '.EIGHTSELECT_ACTION' => $blFull ? self::$ACTION_EXPORT_FULL : self::$ACTION_EXPORT_UPD));
-        $sSelect .= ' AND '.$this->getViewName() . '.EIGHTSELECT_DATE != "0000-00-00 00:00:00"';
-        $sSelect .= ' ORDER BY EIGHTSELECT_DATE DESC';
-        $this->_isLoaded = $this->assignRecord($sSelect);
+        return $this->getConfig()->getShopConfVar($sVarName, $iShopId, 'module:asign_8select');
+    }
 
-        $this->setForceCoreTableUsage($blCoreTableUsage);
+    /**
+     * @param bool $blFull
+     * @param string $sDateTime
+     */
+    public function setLastSuccessExportDate($blFull, $sDateTime = null)
+    {
+        if ($sDateTime === null) {
+            $sDateTime = date('Y-m-d H:i:s');
+        }
 
-        return $this->_isLoaded;
+        $iShopId = $this->getConfig()->getShopId();
+        $sVarName = 'sExportDate' . ($blFull ? 'Full' : 'Update');
+
+        $this->getConfig()->saveShopConfVar('str', $sVarName, $sDateTime, $iShopId, 'module:asign_8select');
     }
 
     /**

@@ -273,4 +273,78 @@ class eightselect_export extends oxBase
 
         return false;
     }
+
+    /**
+     * @param integer $iShopId
+     * @throws oxConnectionException
+     * @throws oxSystemComponentException
+     */
+    private function _exportCron($iShopId)
+    {
+        $oConfig = oxRegistry::getConfig();
+        $oConfig->setShopId($iShopId);
+        $oConfig->init();
+        $this->setConfig($oConfig);
+
+        $_GET['iStart'] = 0;
+        $_GET['refresh'] = 0;
+        $_GET['blExportVars'] = $this->getConfig()->getConfigParam('blEightSelectExportVars');
+        $_GET['blExportMainVars'] = $this->getConfig()->getConfigParam('blEightSelectExportMainVars');
+        $_GET['sExportMinStock'] = $this->getConfig()->getConfigParam('sEightSelectExportMinStock');
+
+        /** @var eightselect_admin_export_do $oExportDo */
+        $oExportDo = oxNew('eightselect_admin_export_do');
+        $oExportDo->start();
+        $oExportDo->run();
+        $oExportDo->stop();
+    }
+
+    public function export_full($iShopId)
+    {
+        $_GET['do_full'] = true;
+        $this->_exportCron($iShopId);
+    }
+
+    public function export_update($iShopId)
+    {
+        $_GET['do_update'] = true;
+        $this->_exportCron($iShopId);
+    }
+
+
+    private function _uploadCron($iShopId)
+    {
+        $oConfig = oxRegistry::getConfig();
+        $oConfig->setShopId($iShopId);
+        $oConfig->init();
+        $this->setConfig($oConfig);
+
+        /** @var eightselect_admin_export_upload $oUpload */
+        $oUpload = oxNew('eightselect_admin_export_upload');
+        $oUpload->run();
+    }
+
+    public function upload_full($iShopId)
+    {
+        $_GET['upload_full'] = true;
+        $this->_uploadCron($iShopId);
+    }
+
+    public function upload_update($iShopId)
+    {
+        $_GET['upload_update'] = true;
+        $this->_uploadCron($iShopId);
+    }
+
+    public function export_upload_full($iShopId)
+    {
+        $this->export_full($iShopId);
+        $this->upload_full($iShopId);
+    }
+
+    public function export_upload_update($iShopId)
+    {
+        $this->export_update($iShopId);
+        $this->upload_update($iShopId);
+    }
 }
