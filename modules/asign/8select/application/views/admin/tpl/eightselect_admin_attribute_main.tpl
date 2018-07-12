@@ -1,7 +1,7 @@
 [{include file="headitem.tpl" title="GENERAL_ADMIN_TITLE"|oxmultilangassign skip_onload="true"}]
 
 <div class="export">
-    [{ oxmultilang ident="eightselect_admin_common" }] - [{ oxmultilang ident="eightselect_admin_attribute" }]
+    [{ oxmultilang ident="mx_eightselect_admin_common" }] - [{ oxmultilang ident="mx_eightselect_admin_attribute" }]
 </div>
 
 <p>&nbsp;</p>

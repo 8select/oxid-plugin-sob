@@ -38,7 +38,7 @@ class eightselect_attribute extends oxI18n
             'labelDescr'   => '',
             'required'     => true,
             'configurable' => false,
-            'forUpdate'    => false,
+            'forUpdate'    => true,
         ],
         'status'         => [
             'labelName'    => '',
@@ -52,21 +52,21 @@ class eightselect_attribute extends oxI18n
             'labelDescr'   => 'Standardisierte eindeutige Materialnummer nach EAN (European Article Number) oder UPC (Unified Product Code).',
             'required'     => false,
             'configurable' => true,
-            'forUpdate'    => false,
+            'forUpdate'    => true,
         ],
         'model'          => [
             'labelName'    => '',
             'labelDescr'   => '',
             'required'     => true,
             'configurable' => false,
-            'forUpdate'    => false,
+            'forUpdate'    => true,
         ],
         'name1'          => [
             'labelName'    => '',
             'labelDescr'   => '',
             'required'     => true,
             'configurable' => false,
-            'forUpdate'    => false,
+            'forUpdate'    => true,
         ],
         'name2'          => [
             'labelName'    => 'Alternative Artikelbezeichnung',
@@ -115,14 +115,14 @@ class eightselect_attribute extends oxI18n
             'labelDescr'   => '',
             'required'     => true,
             'configurable' => false,
-            'forUpdate'    => false,
+            'forUpdate'    => true,
         ],
         'marke'          => [
             'labelName'    => '',
             'labelDescr'   => '',
             'required'     => true,
             'configurable' => false,
-            'forUpdate'    => false,
+            'forUpdate'    => true,
         ],
         'bereich'        => [
             'labelName'    => 'Bereich',
@@ -164,7 +164,7 @@ class eightselect_attribute extends oxI18n
             'labelDescr'   => 'Die exakte Farbbezeichnung des Artikels (z.B. Gelb; Himbeerrot; Rosenrot)',
             'required'     => false,
             'configurable' => true,
-            'forUpdate'    => false,
+            'forUpdate'    => true,
         ],
         'farbspektrum'   => [
             'labelName'    => 'Farbspektrum',
@@ -325,7 +325,7 @@ class eightselect_attribute extends oxI18n
             'labelDescr'   => '',
             'required'     => true,
             'configurable' => false,
-            'forUpdate'    => false,
+            'forUpdate'    => true,
         ],
         'bilder'         => [
             'labelName'    => '',
@@ -339,7 +339,7 @@ class eightselect_attribute extends oxI18n
             'labelDescr'   => '',
             'required'     => true,
             'configurable' => false,
-            'forUpdate'    => false,
+            'forUpdate'    => true,
         ],
         'beschreibung1'  => [
             'labelName'    => '',
@@ -385,13 +385,6 @@ class eightselect_attribute extends oxI18n
                 if ($aFieldProps['forUpdate']) {
                     $aUpdateFields[] = $sName;
                 }
-            }
-
-            $sSql = "SELECT ESATTRIBUTE FROM " . getViewName('eightselect_attribute2oxid');
-            $aDynamicFields = oxDb::getDb()->getCol($sSql);
-
-            if (count($aDynamicFields)) {
-                $aUpdateFields = array_merge($aUpdateFields, $aDynamicFields);
             }
         }
 

@@ -3,8 +3,8 @@
 <script type="text/javascript">
     if(top)
     {
-        top.sMenuItem    = "[{ oxmultilang ident="eightselect_admin_common" }]";
-        top.sMenuSubItem = "[{ oxmultilang ident="eightselect_admin_export" }]";
+        top.sMenuItem    = "[{ oxmultilang ident="mx_eightselect_admin_common" }]";
+        top.sMenuSubItem = "[{ oxmultilang ident="mx_eightselect_admin_export" }]";
         top.sWorkArea    = "[{$_act}]";
         top.setTitle();
     }

@@ -4,7 +4,7 @@
     meta_refresh_url=$oViewConf->getSelfLink()|cat:"&cl=`$sClassUpload`&fnc=run&`$sType`=true"
 }]
 
-[{ oxmultilang ident="eightselect_admin_common" }] - [{ oxmultilang ident="eightselect_admin_export" }] -
+[{ oxmultilang ident="mx_eightselect_admin_common" }] - [{ oxmultilang ident="mx_eightselect_admin_export" }] -
 
 [{if !isset($refresh)}]
     [{if !isset($iError) }]
