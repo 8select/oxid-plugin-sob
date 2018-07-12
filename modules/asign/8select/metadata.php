@@ -60,13 +60,18 @@ $aModule = [
     'blocks'      => [
         [
             'template' => 'layout/base.tpl',
-            'block'    => 'base_js',
-            'file'     => '/application/views/blocks/base_js.tpl',
+            'block'    => 'base_style',
+            'file'     => '/application/views/blocks/base_style.tpl',
         ],
         [
             'template' => 'page/details/inc/related_products.tpl',
             'block'    => 'details_relatedproducts_similarproducts',
             'file'     => '/application/views/blocks/page/details/inc/eightselect_sys-psv.tpl',
+        ],
+        [
+            'template' => 'page/checkout/thankyou.tpl',
+            'block'    => 'checkout_thankyou_main',
+            'file'     => '/application/views/blocks/page/checkout/eightselect_performance-tracking.tpl',
         ],
     ],
     'settings'    => [

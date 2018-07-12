@@ -9,7 +9,7 @@
 
             window.eightlytics || function (w) {
                 w.eightlytics = function () {
-                    window.eightlytics.queue = window.eightlytics.queue || []
+                    window.eightlytics.queue = window.eightlytics.queue || [];
                     window.eightlytics.queue.push(arguments)
                 };
             }(w);
@@ -21,7 +21,7 @@
     </script>
 
     <script type="text/javascript">
-        window._eightselect_config = window._eightselect_config || []
+        window._eightselect_config = window._eightselect_config || [];
         window._eightselect_config['sys'] = {
             callback: function (error, sku, widgetUuid) {
                 if (error) {
