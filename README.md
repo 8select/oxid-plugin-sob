@@ -19,7 +19,7 @@ composer require aws/aws-sdk-php
 - Unter dem Reiter "Einstell." müssen nun noch die API-ID und Feed-ID eingegeben werden
 - Weitere Konfigurationsmöglichkeiten entnehmen Sie der Anleitung
 
-## Uninstall ##
+## Uninstall
 
 1. Das Modul im OXID eSHOP Admin-Bereich in der Modul-Verwaltung deaktivieren
 2. Das Verzechnis "modules/asign/8select" löschen
@@ -27,6 +27,30 @@ composer require aws/aws-sdk-php
     - eightselect_attribute2oxid
     - eightselect_attributes
     - eightselect_log
+    
+## Create Cronjobs
+
+Command line:
+```
+php bin/eightselect_cron.php [arguments]
+```
+
+* Arguments:  
+-e=[Command name]  
+-s=[Shop ID]  
+ 
+* Command names:  
+-e=export_full  
+-e=export_update  
+-e=export_upload_full  
+-e=export_upload_update  
+-e=upload_full  
+-e=upload_update  
+  
+Beispiel:
+```
+php bin/eightselect_cron.php -e=export_upload_full -s=1
+```
 
 ## Changelog
 
