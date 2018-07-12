@@ -8,9 +8,10 @@ $sLangName = "Deutsch";
 $aLang = [
     'charset' => 'UTF-8',
 
-    'SHOP_MODULE_GROUP_eightselect_main' => 'Allgemeine Konfiguration',
-    'SHOP_MODULE_GROUP_eightselect_feed' => 'Feed Einstellungen',
-    'SHOP_MODULE_GROUP_eightselect_csv'  => 'CSV Einstellungen',
+    'SHOP_MODULE_GROUP_eightselect_main'   => 'Allgemeine Konfiguration',
+    'SHOP_MODULE_GROUP_eightselect_widget' => 'Widget Einstellungen',
+    'SHOP_MODULE_GROUP_eightselect_feed'   => 'Feed Einstellungen',
+    'SHOP_MODULE_GROUP_eightselect_csv'    => 'CSV Einstellungen',
 
     'SHOP_MODULE_blEightSelectActive'           => 'Im Frontend aktiv',
     'SHOP_MODULE_sEightSelectModus'             => 'Modus',
@@ -18,6 +19,7 @@ $aLang = [
     'SHOP_MODULE_sEightSelectModus_prod'        => 'Produktiv',
     'SHOP_MODULE_sEightSelectApiId'             => 'API ID',
     'SHOP_MODULE_sEightSelectFeedId'            => 'Feed ID',
+    'SHOP_MODULE_blEightSelectWidgetSysPsv'     => 'SYS-PSV (Einbindung z.B. in eine Artikel-Detailseite)',
     'SHOP_MODULE_sEightSelectExportNrOfFeeds'   => 'Behalte x Feeds im Export-Verzeichnis (0 = keine; nach Upload direkt löschen)',
     'SHOP_MODULE_blEightSelectExportVars'       => 'Varianten exportieren',
     'SHOP_MODULE_blEightSelectExportMainVars'   => 'Vaterartikel von Varianten exportieren',
@@ -28,7 +30,8 @@ $aLang = [
     'SHOP_MODULE_sEightSelectCsvQualifier'      => 'Text-Qualifier',
     'SHOP_MODULE_sEightSelectCsvMultiDelimiter' => 'Mehrfachnennung im Feldinhalt',
 
-    'eightselect_admin_common'    => '8select CSE',
-    'eightselect_admin_attribute' => 'Attribute verwalten',
-    'eightselect_admin_export'    => 'Manueller Export',
+    'mx_eightselect_admin_common'    => '8select CSE',
+    'mx_eightselect_admin_attribute' => 'Attribute verwalten',
+    'mx_eightselect_admin_export'    => 'Manueller Export',
+    'mx_eightselect_console'         => '8select CSE - Management Console',
 ];

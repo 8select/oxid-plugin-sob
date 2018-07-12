@@ -10,10 +10,9 @@ $sMetadataVersion = '1.1';
 $aModule = [
     'id'          => 'asign_8select',
     'title'       => '8select CSE by A-SIGN GmbH',
-    'description' => [
-        'de' => 'Modul für die 8select Curated Shopping Engine (CSE)',
-        'en' => 'Module for 8select Curated Shopping Engine (CSE)',
-    ],
+    'description' => '<p>Hier finden Sie die <b>Installationsanleitung für das Plugin: <a href="https://www.8select.com/8select-cse-installationsanleitung-oxid" target="_blank">8select CSE Installationsanleitung</a></b></p>
+                      <p>Gerne begleiten wir Sie bei der Installation und stehen auch sonst für alle Fragen rund um die Installation zur Verfügung. Sie erreichen uns bei Fragen unter <b>+49 (0)941 20 609 6-10</b> und per E-Mail unter <b><a href="mailto:onboarding@8select.de">onboarding@8select.de</a></b></p>
+                      <p>Ihr 8select-Team</p>',
     'thumbnail'   => 'asign_logo.png',
     'version'     => '1.0.0',
     'author'      => 'A-SIGN GmbH',
@@ -95,6 +94,12 @@ $aModule = [
             'name'  => 'sEightSelectFeedId',
             'type'  => 'str',
             'value' => '',
+        ],
+        [
+            'group' => 'eightselect_widget',
+            'name'  => 'blEightSelectWidgetSysPsv',
+            'type'  => 'bool',
+            'value' => 'true',
         ],
         [
             'group' => 'eightselect_feed',

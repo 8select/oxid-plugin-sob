@@ -26,4 +26,15 @@ class eightselect_oxviewconfig extends eightselect_oxviewconfig_parent
     {
         return $this->getConfig()->getConfigParam('sEightSelectApiId');
     }
+
+    /**
+     * @param string $sWidgetType
+     * @return bool
+     */
+    public function showEightSelectWidget($sWidgetType)
+    {
+        $sWidgetType = ucwords($sWidgetType, "-");
+        $sWidgetType = str_replace('-', '', $sWidgetType);
+        return (bool) $this->getConfig()->getConfigParam('blEightSelectWidget'.$sWidgetType);
+    }
 }
