@@ -59,7 +59,6 @@ class eightselect_admin_attribute_main extends oxAdminDetails
             ['oxarticlesfield;OXSHORTDESC', $oLang->translateString('GENERAL_ARTICLE_OXSHORTDESC')],
             ['oxartextendsfield;OXLONGDESC', $oLang->translateString('GENERAL_ARTICLE_OXLONGDESC')],
             ['oxarticlesfield;OXEAN', $oLang->translateString('ARTICLE_MAIN_EAN')],
-            ['oxarticlesfield;OXKEYWORDS', $oLang->translateString('GENERAL_SEO_OXKEYWORDS')],
             ['oxarticlesfield;OXWIDTH', $oLang->translateString('GENERAL_ARTICLE_OXWIDTH')],
             ['oxarticlesfield;OXHEIGHT', $oLang->translateString('GENERAL_ARTICLE_OXHEIGHT')],
             ['oxarticlesfield;OXHLENGTH', $oLang->translateString('GENERAL_ARTICLE_OXLENGTH')],
@@ -103,7 +102,15 @@ class eightselect_admin_attribute_main extends oxAdminDetails
     {
         $oAttributeList = oxNew('oxList');
         $oAttributeList->init('eightselect_attribute');
-        return $oAttributeList->getList();
+        $oAttributeList->getList();
+
+        $aList = $oAttributeList->getArray();
+
+        usort($aList, function($oAttribut1, $oAttribut2){
+            return strcmp($oAttribut1->eightselect_attributes__oxtitle->value, $oAttribut2->eightselect_attributes__oxtitle->value);
+        });
+
+        return $aList;
     }
 
     /**

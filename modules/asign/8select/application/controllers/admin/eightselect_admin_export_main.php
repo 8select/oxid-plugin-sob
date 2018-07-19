@@ -39,14 +39,5 @@ class eightselect_admin_export_main extends DynExportBase
      *
      * @return string
      */
-    public function render()
-    {
-        $sRet = parent::render();
 
-        $this->_aViewData['blEightSelectExportVars'] = $this->getConfig()->getConfigParam('blEightSelectExportVars');
-        $this->_aViewData['blEightSelectExportMainVars'] = $this->getConfig()->getConfigParam('blEightSelectExportMainVars');
-        $this->_aViewData['sEightSelectExportMinStock'] = $this->getConfig()->getConfigParam('sEightSelectExportMinStock');
-
-        return $sRet;
-    }
 }

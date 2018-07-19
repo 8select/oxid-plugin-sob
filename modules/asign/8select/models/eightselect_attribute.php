@@ -163,7 +163,7 @@ class eightselect_attribute extends oxI18n
             'labelName'    => 'Farbe',
             'labelDescr'   => 'Die exakte Farbbezeichnung des Artikels (z.B. Gelb; Himbeerrot; Rosenrot)',
             'required'     => false,
-            'configurable' => true,
+            'configurable' => false,
             'forUpdate'    => true,
         ],
         'farbspektrum'   => [

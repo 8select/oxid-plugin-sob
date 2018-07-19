@@ -20,8 +20,7 @@ class eightselect_export_static extends eightselect_export_abstract
     {
         $myConfig = $this->getConfig();
 
-        // ToDo: how to get this information?!?
-        !isset($this->_aCsvAttributes['model']) ? null : $this->_aCsvAttributes['model'] = '';
+        !isset($this->_aCsvAttributes['model']) ? null : $this->_aCsvAttributes['model'] = $this->_oArticle->oxarticles__oxmapid->value;
 
         !isset($this->_aCsvAttributes['sku']) ? null : $this->_aCsvAttributes['sku'] = $this->_oArticle->oxarticles__oxartnum->value;
         !isset($this->_aCsvAttributes['status']) ? null : $this->_aCsvAttributes['status'] = (int)$this->_oArticle->isBuyable();
@@ -54,6 +53,8 @@ class eightselect_export_static extends eightselect_export_abstract
             $oTPrice = $this->_oArticle->getTPrice();
             if ($oTPrice) {
                 $this->_aCsvAttributes['streich_preis'] = $oTPrice->getPrice();
+            } else {
+                $this->_aCsvAttributes['streich_preis'] = $oPrice->getPrice();
             }
         }
     }

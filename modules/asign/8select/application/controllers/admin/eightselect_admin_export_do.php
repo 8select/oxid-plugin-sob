@@ -140,20 +140,10 @@ class eightselect_admin_export_do extends DynExportBase
         $sSelect = "INSERT INTO {$sHeapTable} SELECT oxarticles.OXID FROM {$sArticleTable} as oxarticles, {$sO2CView} AS oxobject2category WHERE 1";
         // $sSelect .= ' '.$oArticle->getSqlActiveSnippet();
 
-        if (!oxRegistry::getConfig()->getRequestParameter("blExportVars")) {
-            $sSelect .= " AND oxarticles.OXID = oxobject2category.OXOBJECTID AND oxarticles.OXPARENTID = '' ";
-        } else {
-            $sSelect .= " AND ( oxarticles.OXID = oxobject2category.OXOBJECTID OR oxarticles.OXPARENTID = oxobject2category.OXOBJECTID ) ";
-        }
+        $sSelect .= " AND ( oxarticles.OXID = oxobject2category.OXOBJECTID OR oxarticles.OXPARENTID = oxobject2category.OXOBJECTID ) ";
 
         if ($sCatAdd) {
             $sSelect .= $sCatAdd;
-        }
-
-        // add minimum stock value
-        if ($this->getConfig()->getConfigParam('blUseStock') && ($dMinStock = oxRegistry::getConfig()->getRequestParameter("sExportMinStock"))) {
-            $dMinStock = str_replace(array(";", " ", "/", "'"), "", $dMinStock);
-            $sSelect .= " AND oxarticles.OXSTOCK >= " . $oDB->quote($dMinStock);
         }
 
         // get only last changed articles

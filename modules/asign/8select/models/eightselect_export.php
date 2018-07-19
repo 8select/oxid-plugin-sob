@@ -265,15 +265,6 @@ class eightselect_export extends oxBase
         }
     }
 
-    public static function isProduction()
-    {
-        if (oxRegistry::getConfig()->getConfigParam('sEightSelectModus') === 'prod') {
-            return true;
-        }
-
-        return false;
-    }
-
     /**
      * @param integer $iShopId
      * @throws oxConnectionException
@@ -288,8 +279,6 @@ class eightselect_export extends oxBase
 
         $_GET['iStart'] = 0;
         $_GET['refresh'] = 0;
-        $_GET['blExportVars'] = $this->getConfig()->getConfigParam('blEightSelectExportVars');
-        $_GET['blExportMainVars'] = $this->getConfig()->getConfigParam('blEightSelectExportMainVars');
         $_GET['sExportMinStock'] = $this->getConfig()->getConfigParam('sEightSelectExportMinStock');
 
         /** @var eightselect_admin_export_do $oExportDo */

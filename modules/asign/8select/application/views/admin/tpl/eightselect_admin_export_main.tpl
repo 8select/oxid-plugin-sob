@@ -29,10 +29,6 @@
             <form name="myedit" id="myedit" action="[{ $oViewConf->getSelfLink() }]" target="eightselect_admin_export_do" method="post">
                 <input type="hidden" name="cl" value="[{$sClassDo}]">
                 <input type="hidden" name="fnc" value="start">
-                <input type="hidden" name="blExportVars" value="[{$blEightSelectExportVars}]">
-                <input type="hidden" name="blExportMainVars" value="[{$blEightSelectExportMainVars}]">
-                <input type="hidden" name="sExportMinStock" value="[{$sEightSelectExportMinStock}]">
-                [{ $oViewConf->getHiddenSid() }]
                 <input type="submit" class="edittext" name="do_full" value="[{ oxmultilang ident="EIGHTSELECT_ADMIN_EXPORT_DO_FULL" }]" [{ $readonly }]>
                 <input type="submit" class="edittext" name="do_update" value="[{ oxmultilang ident="EIGHTSELECT_ADMIN_EXPORT_DO_UPDATE" }]" [{ $readonly }]>
             </form>

@@ -14,9 +14,6 @@ class eightselect_aws extends oxBase
     CONST CREDENTIAL_PROD_BUCKET_URL = 'productfeed.8select.io';
     CONST CREDENTIAL_PROD_KEY = 'AKIAJT2DMZOXIT6PQB7A';
     CONST CREDENTIAL_PROD_SEC = 'Hk++KYdwWQLlRTuy0P05zsKdn+JDqrc849CSINHy';
-    CONST CREDENTIAL_INT_BUCKET_URL = 'productfeed-prod.staging.8select.io';
-    CONST CREDENTIAL_INT_KEY = 'AKIAJ4UUWOTQYISENBIQ';
-    CONST CREDENTIAL_INT_SEC = 'Z/H1pgky4/5b/6t8tUhTS12YpRZ5mKNPDPBH2IPa';
 
     /**
      * @var string
@@ -65,11 +62,7 @@ class eightselect_aws extends oxBase
      */
     private static function _getBucketUrl()
     {
-        if (eightselect_export::isProduction()) {
-            return self::CREDENTIAL_PROD_BUCKET_URL;
-        } else {
-            return self::CREDENTIAL_INT_BUCKET_URL;
-        }
+        return self::CREDENTIAL_PROD_BUCKET_URL;
     }
 
     /**
@@ -77,11 +70,7 @@ class eightselect_aws extends oxBase
      */
     private static function _getCredentialKey()
     {
-        if (eightselect_export::isProduction()) {
-            return self::CREDENTIAL_PROD_KEY;
-        } else {
-            return self::CREDENTIAL_INT_KEY;
-        }
+        return self::CREDENTIAL_PROD_KEY;
     }
 
     /**
@@ -89,11 +78,7 @@ class eightselect_aws extends oxBase
      */
     private static function _getCredentialSecret()
     {
-        if (eightselect_export::isProduction()) {
-            return self::CREDENTIAL_PROD_SEC;
-        } else {
-            return self::CREDENTIAL_INT_SEC;
-        }
+        return self::CREDENTIAL_PROD_SEC;
     }
 
     /**

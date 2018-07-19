@@ -9,11 +9,11 @@ $sMetadataVersion = '1.1';
  */
 $aModule = [
     'id'          => 'asign_8select',
-    'title'       => '8select CSE by A-SIGN GmbH',
+    'title'       => '8select CSE',
     'description' => '<p>Hier finden Sie die <b>Installationsanleitung für das Plugin: <a href="https://www.8select.com/8select-cse-installationsanleitung-oxid" target="_blank">8select CSE Installationsanleitung</a></b></p>
                       <p>Gerne begleiten wir Sie bei der Installation und stehen auch sonst für alle Fragen rund um die Installation zur Verfügung. Sie erreichen uns bei Fragen unter <b>+49 (0)941 20 609 6-10</b> und per E-Mail unter <b><a href="mailto:onboarding@8select.de">onboarding@8select.de</a></b></p>
                       <p>Ihr 8select-Team</p>',
-    'thumbnail'   => 'asign_logo.png',
+    'thumbnail'   => '8selectLogo.jpeg',
     'version'     => '1.0.0',
     'author'      => 'A-SIGN GmbH',
     'url'         => 'https://www.a-sign.ch',
@@ -82,11 +82,10 @@ $aModule = [
             'value' => 'false',
         ],
         [
-            'group'      => 'eightselect_main',
-            'name'       => 'sEightSelectModus',
-            'type'       => 'select',
-            'value'      => 'prod',
-            'constrains' => 'int|prod',
+            'group' => 'eightselect_main',
+            'name'  => 'blEightSelectPreview',
+            'type'  => 'bool',
+            'value' => 'false',
         ],
         [
             'group' => 'eightselect_main',
@@ -108,27 +107,9 @@ $aModule = [
         ],
         [
             'group' => 'eightselect_feed',
-            'name'  => 'blEightSelectExportVars',
-            'type'  => 'bool',
-            'value' => 'true',
-        ],
-        [
-            'group' => 'eightselect_feed',
-            'name'  => 'blEightSelectExportMainVars',
-            'type'  => 'bool',
-            'value' => 'true',
-        ],
-        [
-            'group' => 'eightselect_feed',
             'name'  => 'sEightSelectExportNrOfFeeds',
             'type'  => 'str',
             'value' => '3',
-        ],
-        [
-            'group' => 'eightselect_feed',
-            'name'  => 'sEightSelectExportMinStock',
-            'type'  => 'str',
-            'value' => '0',
         ],
         [
             'group' => 'eightselect_feed',
