@@ -15,6 +15,7 @@ $aLang = [
     'EIGHTSELECT_ADMIN_ATTRIBUTE_OPTGROUP_ARTICLE'   => 'Article',
     'EIGHTSELECT_ADMIN_ATTRIBUTE_OPTGROUP_ATTRIBUTE' => 'Attribute',
     'EIGHTSELECT_ADMIN_ATTRIBUTE_OPTGROUP_VARSELECT' => 'Variant',
+    'EIGHTSELECT_ADMIN_ATTRIBUTE_REQUIRED_INFO'      => '<b>Required fields *</b>',
 
     'EIGHTSELECT_ADMIN_EXPORT_NOFEEDID'            => 'FeedID is not set! Please check the module settings',
     'EIGHTSELECT_ADMIN_EXPORT_DO_TITLE'            => 'Generate feed',

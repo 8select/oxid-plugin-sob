@@ -1,4 +1,4 @@
-# A-SIGN GmbH 8select (CSA) Module
+# 8select (CSE) Module
 
 ## Requirements: AWS SDK ##
 

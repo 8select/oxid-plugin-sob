@@ -93,8 +93,6 @@ class eightselect_export_dynamic extends eightselect_export_abstract
     private function _processVarSelect(eightselect_attribute2oxid $oAttr2oxid)
     {
         $sEightSelectAttribute = $oAttr2oxid->eightselect_attribute2oxid__esattribute->value;
-        $sSelection = $oAttr2oxid->eightselect_attribute2oxid__oxobject->value;
-
-        $this->_aCsvAttributes[$sEightSelectAttribute] = $this->_getVariantSelection($sSelection);
+        $this->_aCsvAttributes[$sEightSelectAttribute] = $this->_getVariantSelection($sEightSelectAttribute);
     }
 }

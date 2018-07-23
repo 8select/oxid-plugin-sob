@@ -111,35 +111,5 @@ $aModule = [
             'type'  => 'str',
             'value' => '3',
         ],
-        [
-            'group' => 'eightselect_feed',
-            'name'  => 'sEightSelectVarSelectSize',
-            'type'  => 'str',
-            'value' => 'Größe',
-        ],
-        [
-            'group' => 'eightselect_feed',
-            'name'  => 'sEightSelectVarSelectColor',
-            'type'  => 'str',
-            'value' => 'Farbe',
-        ],
-        [
-            'group' => 'eightselect_csv',
-            'name'  => 'sEightSelectCsvDelimiter',
-            'type'  => 'str',
-            'value' => ';',
-        ],
-        [
-            'group' => 'eightselect_csv',
-            'name'  => 'sEightSelectCsvQualifier',
-            'type'  => 'str',
-            'value' => '"',
-        ],
-        [
-            'group' => 'eightselect_csv',
-            'name'  => 'sEightSelectCsvMultiDelimiter',
-            'type'  => 'str',
-            'value' => '|',
-        ],
     ],
 ];

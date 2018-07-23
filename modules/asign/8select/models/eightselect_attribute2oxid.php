@@ -20,24 +20,14 @@ class eightselect_attribute2oxid extends oxBase
      */
     protected $_sCoreTable = 'eightselect_attribute2oxid';
 
-    /**
-     * Loads object data from DB (object data name is passed to method). Returns true on success.
-     *
-     * @param string $s8selectAttributeName 8select attribute name
-     *
-     * @return bool
-     */
-    public function loadFromName($s8selectAttributeName)
+    public function deleteAttributes2Oxid($s8selectAttributeName)
     {
-        try {
-            $this->init();
-            $sSelect = $this->buildSelectString([$this->getViewName() . '.ESATTRIBUTE' => $s8selectAttributeName]);
-            $this->_isLoaded = $this->assignRecord($sSelect);
-        } catch (Exception $oEX) {
-            $this->_isLoaded = false;
-        }
+        $oDB = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+        $sCoreTable = $this->getCoreTableName();
+        $sDelete = "DELETE FROM {$sCoreTable} WHERE OXSHOPID = ? AND ESATTRIBUTE = ?";
+        $oDB->execute($sDelete, [$this->getShopId(), $s8selectAttributeName]);
 
-        return $this->_isLoaded;
+        return (bool) $oDB->affected_Rows();
     }
 
     /**

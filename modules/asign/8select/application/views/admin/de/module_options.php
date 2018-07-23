@@ -19,11 +19,6 @@ $aLang = [
     'SHOP_MODULE_sEightSelectFeedId'            => 'Feed ID',
     'SHOP_MODULE_blEightSelectWidgetSysPsv'     => 'SYS-PSV (Einbindung z.B. in eine Artikel-Detailseite)',
     'SHOP_MODULE_sEightSelectExportNrOfFeeds'   => 'Behalte x Feeds im Export-Verzeichnis (0 = keine; nach Upload direkt löschen)',
-    'SHOP_MODULE_sEightSelectVarSelectSize'     => 'Name der Varianten-Auswahl für "Größe"',
-    'SHOP_MODULE_sEightSelectVarSelectColor'    => 'Name der Varianten-Auswahl für "Farbe"',
-    'SHOP_MODULE_sEightSelectCsvDelimiter'      => 'Trennzeichen',
-    'SHOP_MODULE_sEightSelectCsvQualifier'      => 'Text-Qualifier',
-    'SHOP_MODULE_sEightSelectCsvMultiDelimiter' => 'Mehrfachnennung im Feldinhalt',
 
     'mx_eightselect_admin_common'    => '8select CSE',
     'mx_eightselect_admin_attribute' => 'Attribute verwalten',

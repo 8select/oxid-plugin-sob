@@ -111,10 +111,10 @@ class eightselect_attribute extends oxI18n
             'forUpdate'    => true,
         ],
         'groesse'        => [
-            'labelName'    => '',
-            'labelDescr'   => '',
+            'labelName'    => 'Größe',
+            'labelDescr'   => 'Name der Varianten-Auswahl für "Größe" (siehe "Artikel verwalten" -> "Artikel" -> "Varianten" -> "Name der Auswahl")<br />Mehrfachauswahl möglich',
             'required'     => true,
-            'configurable' => false,
+            'configurable' => true,
             'forUpdate'    => true,
         ],
         'marke'          => [
@@ -161,9 +161,9 @@ class eightselect_attribute extends oxI18n
         ],
         'farbe'          => [
             'labelName'    => 'Farbe',
-            'labelDescr'   => 'Die exakte Farbbezeichnung des Artikels (z.B. Gelb; Himbeerrot; Rosenrot)',
+            'labelDescr'   => 'Name der Varianten-Auswahl für "Farbe" (siehe "Artikel verwalten" -> "Artikel" -> "Varianten" -> "Name der Auswahl")<br />Mehrfachauswahl möglich',
             'required'     => false,
-            'configurable' => false,
+            'configurable' => true,
             'forUpdate'    => true,
         ],
         'farbspektrum'   => [
@@ -389,5 +389,10 @@ class eightselect_attribute extends oxI18n
         }
 
         return array_intersect_key($this->getAllFields(), array_flip($aUpdateFields));
+    }
+
+    public function isRequired()
+    {
+        return $this->_aEightselectFields[$this->eightselect_attributes__oxname->value]['required'];
     }
 }

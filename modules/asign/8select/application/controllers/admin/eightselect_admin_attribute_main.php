@@ -82,7 +82,7 @@ class eightselect_admin_attribute_main extends oxAdminDetails
         $aVarSelect = oxDb::getDb(oxDb::FETCH_MODE_NUM)->getCol("SELECT DISTINCT OXVARNAME FROM {$sTableName} WHERE OXVARNAME != ''");
         $sOptGroupVarSelect = $oLang->translateString('EIGHTSELECT_ADMIN_ATTRIBUTE_OPTGROUP_VARSELECT');
         foreach ($aVarSelect as $sVarSelect) {
-            $aDiffVarSelect = explode('|', $sVarSelect);
+            $aDiffVarSelect = explode(' | ', $sVarSelect);
             foreach ($aDiffVarSelect as $sDiffVarSelect) {
                 $sDiffVarSelect = trim($sDiffVarSelect);
                 $aSelectAttributes[$sOptGroupVarSelect]['oxvarselect;' . $sDiffVarSelect] = $sDiffVarSelect;
@@ -127,7 +127,7 @@ class eightselect_admin_attribute_main extends oxAdminDetails
         $oAttr2OxidList->init('eightselect_attribute2oxid');
 
         foreach ($oAttr2OxidList->getList() as $oAttr2Oxid) {
-            $aAttributes2Oxid[$oAttr2Oxid->eightselect_attribute2oxid__esattribute->value] = $oAttr2Oxid->eightselect_attribute2oxid__oxtype->value . ';' . $oAttr2Oxid->eightselect_attribute2oxid__oxobject->value;
+            $aAttributes2Oxid[$oAttr2Oxid->eightselect_attribute2oxid__esattribute->value][] = $oAttr2Oxid->eightselect_attribute2oxid__oxtype->value . ';' . $oAttr2Oxid->eightselect_attribute2oxid__oxobject->value;
         }
 
         return $aAttributes2Oxid;
@@ -142,19 +142,23 @@ class eightselect_admin_attribute_main extends oxAdminDetails
     {
         parent::save();
 
+        /** @var eightselect_attribute2oxid $oTmpAttribute2Oxid */
         $oTmpAttribute2Oxid = oxNew('eightselect_attribute2oxid');
+        $oTmpAttribute2Oxid->init();
+
         $oConfig = $this->getConfig();
         $aAttributes = $oConfig->getRequestParameter("oxid2eightselect");
 
-        foreach ($aAttributes as $s8selectAttributeName => $sOxidAttribute) {
-            $oAttribute2Oxid = clone $oTmpAttribute2Oxid;
-            $oAttribute2Oxid->loadFromName($s8selectAttributeName);
+        foreach ($aAttributes as $s8selectAttributeName => $aOxidAttribute) {
+            $oTmpAttribute2Oxid->deleteAttributes2Oxid($s8selectAttributeName);
 
-            if ($oAttribute2Oxid->isLoaded() && $sOxidAttribute === '-') {
-                $oAttribute2Oxid->delete();
-            } elseif ($sOxidAttribute !== '-') {
-                $oAttribute2Oxid->setAttributeData($s8selectAttributeName, $sOxidAttribute);
-                $oAttribute2Oxid->save();
+            foreach ($aOxidAttribute as $sOxidAttribute) {
+                $oAttribute2Oxid = clone $oTmpAttribute2Oxid;
+
+                if ($sOxidAttribute !== '-') {
+                    $oAttribute2Oxid->setAttributeData($s8selectAttributeName, $sOxidAttribute);
+                    $oAttribute2Oxid->save();
+                }
             }
         }
     }
@@ -168,7 +172,7 @@ class eightselect_admin_attribute_main extends oxAdminDetails
      */
     public function isAttributeSelected($sEightselectAttr, $sObject)
     {
-        if (isset($this->_aAttrEightselect2Oxid[$sEightselectAttr]) && $this->_aAttrEightselect2Oxid[$sEightselectAttr] == $sObject) {
+        if (isset($this->_aAttrEightselect2Oxid[$sEightselectAttr]) && in_array($sObject, $this->_aAttrEightselect2Oxid[$sEightselectAttr])) {
             return true;
         }
 

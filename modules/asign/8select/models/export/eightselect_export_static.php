@@ -18,9 +18,8 @@ class eightselect_export_static extends eightselect_export_abstract
      */
     public function run()
     {
-        $myConfig = $this->getConfig();
-
-        !isset($this->_aCsvAttributes['model']) ? null : $this->_aCsvAttributes['model'] = $this->_oArticle->oxarticles__oxmapid->value;
+        /* ToDo: 'model' is the virtual parent article */
+        !isset($this->_aCsvAttributes['model']) ? null : $this->_aCsvAttributes['model'] = '';
 
         !isset($this->_aCsvAttributes['sku']) ? null : $this->_aCsvAttributes['sku'] = $this->_oArticle->oxarticles__oxartnum->value;
         !isset($this->_aCsvAttributes['status']) ? null : $this->_aCsvAttributes['status'] = (int)$this->_oArticle->isBuyable();
@@ -29,12 +28,7 @@ class eightselect_export_static extends eightselect_export_abstract
         !isset($this->_aCsvAttributes['bilder']) ? null : $this->_aCsvAttributes['bilder'] = $this->_getPictures();
         !isset($this->_aCsvAttributes['beschreibung']) ? null : $this->_aCsvAttributes['beschreibung'] = $this->_oArticle->getLongDescription();
         !isset($this->_aCsvAttributes['beschreibung1']) ? null : $this->_aCsvAttributes['beschreibung1'] = $this->_oArticle->oxarticles__oxshortdesc->value;
-        !isset($this->_aCsvAttributes['groesse']) ? null : $this->_aCsvAttributes['groesse'] = $this->_getVariantSelection($myConfig->getConfigParam('sEightSelectVarSelectSize'));
-        !isset($this->_aCsvAttributes['farbe']) ? null : $this->_aCsvAttributes['farbe'] = $this->_getVariantSelection($myConfig->getConfigParam('sEightSelectVarSelectColor'));
-
-        if ($this->_oArticle->isVariant()) {
-            !isset($this->_aCsvAttributes['mastersku']) ? null : $this->_aCsvAttributes['mastersku'] = $this->_oParent->oxarticles__oxartnum->value;;
-        }
+        !isset($this->_aCsvAttributes['mastersku']) ? null : $this->_aCsvAttributes['mastersku'] = $this->_oParent->oxarticles__oxartnum->value;
 
         /** @var oxManufacturer $oManufacturer */
         $oManufacturer = $this->_oArticle->getManufacturer();
@@ -70,6 +64,6 @@ class eightselect_export_static extends eightselect_export_abstract
             }
         }
 
-        return implode('|', $aPictureUrls);
+        return implode(eightselect_export::EIGHTSELECT_CSV_MULTI_DELIMITER, $aPictureUrls);
     }
 }

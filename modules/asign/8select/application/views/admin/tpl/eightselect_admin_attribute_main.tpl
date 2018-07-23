@@ -12,6 +12,8 @@
     [{assign var="readonly" value=""}]
 [{/if}]
 
+[{assign var="sEightSelectOptGroupVarselect" value="EIGHTSELECT_ADMIN_ATTRIBUTE_OPTGROUP_VARSELECT"|oxmultilangassign}]
+
 <style type="text/css">
     #myedit th {
         color: #fff;
@@ -21,9 +23,14 @@
     #myedit td{
         padding: 10px;
         text-align: left;
+        vertical-align: top;
     }
     #myedit tr:nth-child(even) {
         background: #E9EFF5;
+    }
+    #myedit tr.required-info,
+    #myedit tr.submit {
+        background: none;
     }
 </style>
 
@@ -55,22 +62,36 @@
             [{foreach from=$aAttributesEightselect item="oAttribute"}]
                 <tr>
                     <td class="edittext" valign="top" align="left">
+                        [{if $oAttribute->isRequired()}]<b>[{/if}]
                         [{ $oAttribute->eightselect_attributes__oxtitle->value }]
+                        [{if $oAttribute->isRequired()}] *</b>[{/if}]
                     </td>
                     <td>
                         [{ $oAttribute->eightselect_attributes__oxdescription->value }]
                     </td>
                     <td class="edittext">
-                        <select name="oxid2eightselect[[{$oAttribute->eightselect_attributes__oxname->value}]]" id="oxid2eightselect_[{$oAttribute->eightselect_attributes__oxname->value}]" class="editinput" [{$readonly}]>
-                            <option value="-">---</option>
-                            [{foreach from=$aAttributesOxid key="sOptGroup" item="aAttribute"}]
-                                <optgroup label="[{$sOptGroup}]">
-                                [{foreach from=$aAttribute key="sValue" item="sTitle"}]
-                                    <option value="[{ $sValue }]"[{if $oView->isAttributeSelected($oAttribute->eightselect_attributes__oxname->value, $sValue) }] SELECTED[{/if}]>[{ $sTitle }]</option>
+                        [{if $oAttribute->eightselect_attributes__oxname->value == 'groesse' || $oAttribute->eightselect_attributes__oxname->value == 'farbe'}]
+                            <select multiple size="3" name="oxid2eightselect[[{$oAttribute->eightselect_attributes__oxname->value}]][]" id="oxid2eightselect_[{$oAttribute->eightselect_attributes__oxname->value}]" class="editinput" [{$readonly}]>
+                                [{foreach from=$aAttributesOxid key="sOptGroup" item="aAttribute"}]
+                                    [{if $sOptGroup == $sEightSelectOptGroupVarselect}]
+                                        [{foreach from=$aAttribute key="sValue" item="sTitle"}]
+                                            <option value="[{ $sValue }]"[{if $oView->isAttributeSelected($oAttribute->eightselect_attributes__oxname->value, $sValue) }] SELECTED[{/if}]>[{ $sTitle }]</option>
+                                        [{/foreach}]
+                                    [{/if}]
                                 [{/foreach}]
-                                </optgroup>
-                            [{/foreach}]
-                        </select>
+                            </select>
+                        [{else}]
+                            <select name="oxid2eightselect[[{$oAttribute->eightselect_attributes__oxname->value}]][]" id="oxid2eightselect_[{$oAttribute->eightselect_attributes__oxname->value}]" class="editinput" [{$readonly}]>
+                                <option value="-">---</option>
+                                [{foreach from=$aAttributesOxid key="sOptGroup" item="aAttribute"}]
+                                    <optgroup label="[{$sOptGroup}]">
+                                        [{foreach from=$aAttribute key="sValue" item="sTitle"}]
+                                            <option value="[{ $sValue }]"[{if $oView->isAttributeSelected($oAttribute->eightselect_attributes__oxname->value, $sValue) }] SELECTED[{/if}]>[{ $sTitle }]</option>
+                                        [{/foreach}]
+                                    </optgroup>
+                                [{/foreach}]
+                            </select>
+                        [{/if}]
                     </td>
                 </tr>
             [{/foreach}]
@@ -78,7 +99,12 @@
     </table>
 
     <table cellspacing="0" cellpadding="0" border="0" width="98%">
-        <tr>
+        <tr class="required-info">
+            <td valign="top" class="edittext">
+                [{ oxmultilang ident="EIGHTSELECT_ADMIN_ATTRIBUTE_REQUIRED_INFO" }]
+            </td>
+        </tr>
+        <tr class="submit">
             <td valign="top" class="edittext">
                 <input type="submit" class="edittext" style="width: 210px;" name="save" value="[{ oxmultilang ident="GENERAL_SAVE" }]" [{ $readonly }]>
             </td>

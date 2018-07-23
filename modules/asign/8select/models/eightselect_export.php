@@ -6,6 +6,16 @@
  */
 class eightselect_export extends oxBase
 {
+    /** @var string */
+    const EIGHTSELECT_CSV_DELIMITER = ';';
+
+    /** @var string */
+    const EIGHTSELECT_CSV_QUALIFIER = '"';
+
+    /** @var string */
+    const EIGHTSELECT_CSV_MULTI_DELIMITER = '|';
+
+    /** @var int */
     public static $err_nofeedid = -99;
 
     /**
@@ -86,7 +96,7 @@ class eightselect_export extends oxBase
     public function getCsvHeader()
     {
         $aCsvHeaderFields = array_keys($this->_aCsvAttributes);
-        $sCsvHeader = implode(oxRegistry::getConfig()->getConfigParam('sEightSelectCsvDelimiter'), $aCsvHeaderFields);
+        $sCsvHeader = implode(self::EIGHTSELECT_CSV_DELIMITER, $aCsvHeaderFields);
         return $sCsvHeader . PHP_EOL;
     }
 
@@ -145,8 +155,8 @@ class eightselect_export extends oxBase
      */
     private function _getAttributesAsString()
     {
-        $sDelimiter = oxRegistry::getConfig()->getConfigParam('sEightSelectCsvDelimiter');
-        $sQualifier = oxRegistry::getConfig()->getConfigParam('sEightSelectCsvQualifier');
+        $sDelimiter = self::EIGHTSELECT_CSV_DELIMITER;
+        $sQualifier = self::EIGHTSELECT_CSV_QUALIFIER;
 
         $sLine = '';
         foreach ($this->_aCsvAttributes as $sFieldName => $sFieldValue) {

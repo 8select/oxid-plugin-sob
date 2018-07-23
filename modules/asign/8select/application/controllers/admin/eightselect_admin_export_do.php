@@ -91,12 +91,6 @@ class eightselect_admin_export_do extends DynExportBase
 
         /** @var oxArticle $oArticle */
         if ($oArticle = $this->getOneArticle($iCnt, $blContinue)) {
-            if ($oArticle->isVariant()) {
-                $oParent = $oArticle->getParentArticle();
-            } else {
-                $oParent = $oArticle;
-            }
-
             /** @var eightselect_export $oEightSelectExport */
             $oEightSelectExport = clone $oEightSelectTmpExport;
 
@@ -104,6 +98,7 @@ class eightselect_admin_export_do extends DynExportBase
                 fwrite($this->fpFile, $oEightSelectExport->getCsvHeader());
             }
 
+            $oParent = $oArticle->getParentArticle();
             $oEightSelectExport->setArticle($oArticle, $oParent);
             $oEightSelectExport->setCategory($this->getCategoryString($oParent, ' / '));
             fwrite($this->fpFile, $oEightSelectExport->getCsvLine());
@@ -137,10 +132,9 @@ class eightselect_admin_export_do extends DynExportBase
         $sArticleTable = getViewName("oxarticles", $iExpLang);
         $sO2CView = getViewName('oxobject2category', $iExpLang);
 
-        $sSelect = "INSERT INTO {$sHeapTable} SELECT oxarticles.OXID FROM {$sArticleTable} as oxarticles, {$sO2CView} AS oxobject2category WHERE 1";
-        // $sSelect .= ' '.$oArticle->getSqlActiveSnippet();
-
-        $sSelect .= " AND ( oxarticles.OXID = oxobject2category.OXOBJECTID OR oxarticles.OXPARENTID = oxobject2category.OXOBJECTID ) ";
+        $sSelect = "INSERT INTO {$sHeapTable} ";
+        $sSelect .= "SELECT oxarticles.OXID FROM {$sArticleTable} as oxarticles, {$sO2CView} AS oxobject2category ";
+        $sSelect .= "WHERE OXPARENTID != '' AND oxarticles.OXPARENTID = oxobject2category.OXOBJECTID ";
 
         if ($sCatAdd) {
             $sSelect .= $sCatAdd;
@@ -160,5 +154,15 @@ class eightselect_admin_export_do extends DynExportBase
         $sSelect .= " GROUP BY oxarticles.OXID ORDER BY OXARTNUM ASC";
 
         return $oDB->execute($sSelect) ? true : false;
+    }
+
+    /**
+     * removes parent articles so that we only have variants itself
+     *
+     * @param string $sHeapTable table name
+     */
+    protected function _removeParentArticles($sHeapTable)
+    {
+        /* we don't have parent articles in heap-table, so we can skip that */
     }
 }
