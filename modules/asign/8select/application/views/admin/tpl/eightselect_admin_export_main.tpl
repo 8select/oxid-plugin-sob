@@ -27,6 +27,7 @@
         <td valign="top" class="edittext">
             <h2>[{ oxmultilang ident="EIGHTSELECT_ADMIN_EXPORT_DO_TITLE" }]</h2>
             <form name="myedit" id="myedit" action="[{ $oViewConf->getSelfLink() }]" target="eightselect_admin_export_do" method="post">
+                [{ $oViewConf->getHiddenSid() }]
                 <input type="hidden" name="cl" value="[{$sClassDo}]">
                 <input type="hidden" name="fnc" value="start">
                 <input type="submit" class="edittext" name="do_full" value="[{ oxmultilang ident="EIGHTSELECT_ADMIN_EXPORT_DO_FULL" }]" [{ $readonly }]>

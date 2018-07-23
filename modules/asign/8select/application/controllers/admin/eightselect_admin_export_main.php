@@ -33,11 +33,4 @@ class eightselect_admin_export_main extends DynExportBase
      */
     protected $_sThisTemplate = "eightselect_admin_export_main.tpl";
 
-    /**
-     * Calls parent rendering methods, sends implementation class names to template
-     * and returns default template name
-     *
-     * @return string
-     */
-
 }

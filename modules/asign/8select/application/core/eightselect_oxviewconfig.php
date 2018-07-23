@@ -8,7 +8,7 @@ class eightselect_oxviewconfig extends eightselect_oxviewconfig_parent
     private $_blEightSelectActive = null;
 
     /**
-     * @return bool|null
+     * @return bool
      */
     public function isEightSelectActive()
     {
@@ -18,11 +18,11 @@ class eightselect_oxviewconfig extends eightselect_oxviewconfig_parent
 
         $this->_blEightSelectActive = (bool)$this->getConfig()->getConfigParam('blEightSelectActive');
 
-        if (!$this->getEightSelectApiId()) {
-            $this->_blEightSelectActive = false;
+        if ($this->isPreview()) {
+            $this->_blEightSelectActive = true;
         }
 
-        if (!$this->isPreview()) {
+        if (!$this->getEightSelectApiId()) {
             $this->_blEightSelectActive = false;
         }
 
@@ -40,14 +40,13 @@ class eightselect_oxviewconfig extends eightselect_oxviewconfig_parent
     /**
      * @return bool
      */
-    public function isPreview() {
-
+    public function isPreview()
+    {
         if ($this->getConfig()->getConfigParam('blEightSelectPreview')) {
-            $blPreview = $this->getConfig()->getRequestParameter("8s_preview");
-            return !is_null($blPreview);
+            return (bool)$this->getConfig()->getRequestParameter("8s_preview");
         }
 
-        return true;
+        return false;
     }
 
     /**

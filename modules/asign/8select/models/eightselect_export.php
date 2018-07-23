@@ -279,7 +279,6 @@ class eightselect_export extends oxBase
 
         $_GET['iStart'] = 0;
         $_GET['refresh'] = 0;
-        $_GET['sExportMinStock'] = $this->getConfig()->getConfigParam('sEightSelectExportMinStock');
 
         /** @var eightselect_admin_export_do $oExportDo */
         $oExportDo = oxNew('eightselect_admin_export_do');
