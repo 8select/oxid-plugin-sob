@@ -18,8 +18,9 @@ class eightselect_export_static extends eightselect_export_abstract
      */
     public function run()
     {
-        /* ToDo: 'model' is the virtual parent article */
-        !isset($this->_aCsvAttributes['model']) ? null : $this->_aCsvAttributes['model'] = '';
+        if ($this->_oParent) {
+            !isset($this->_aCsvAttributes['model']) ? null : $this->_aCsvAttributes['model'] = $this->_oParent->oxarticles__oxartnum->value;
+        }
 
         !isset($this->_aCsvAttributes['sku']) ? null : $this->_aCsvAttributes['sku'] = $this->_oArticle->oxarticles__oxartnum->value;
         !isset($this->_aCsvAttributes['status']) ? null : $this->_aCsvAttributes['status'] = (int)$this->_oArticle->isBuyable();
