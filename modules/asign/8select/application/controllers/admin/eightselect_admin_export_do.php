@@ -124,6 +124,8 @@ class eightselect_admin_export_do extends DynExportBase
                 /** @var eightselect_export $oEightSelectExport */
                 $oEightSelectExportVirtual = clone $oEightSelectExport;
                 $oEightSelectExportVirtual->setArticle($this->_aParent[$oArticle->oxarticles__oxparentid->value]['article_object']);
+                $oEightSelectExportVirtual->setParent($this->_aParent[$oArticle->oxarticles__oxparentid->value]['article_object']);
+                $oEightSelectExportVirtual->setCategory($this->_aParent[$oArticle->oxarticles__oxparentid->value]['category_string']);
 
                 // clear parent from other variant
                 if (!isset($this->_aVirtual[$oArticle->oxarticles__oxparentid->value])) {

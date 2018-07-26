@@ -182,6 +182,7 @@ class eightselect_export extends oxBase
         $oEightSelectExportStatic->setAttributes($this->_aCsvAttributes);
         $oEightSelectExportStatic->setArticle($this->_oArticle);
         $oEightSelectExportStatic->setVirtual($this->_oVirtual);
+        $oEightSelectExportStatic->setParent($this->_oParent);
         $oEightSelectExportStatic->run();
 
         /** @var eightselect_export_dynamic $oEightSelectExportDynamic */
@@ -189,6 +190,7 @@ class eightselect_export extends oxBase
         $oEightSelectExportDynamic->setAttributes($this->_aCsvAttributes);
         $oEightSelectExportDynamic->setArticle($this->_oArticle);
         $oEightSelectExportDynamic->setVirtual($this->_oVirtual);
+        $oEightSelectExportDynamic->setParent($this->_oParent);
         $oEightSelectExportDynamic->run();
 
         // copy empty variant infos from virtual
