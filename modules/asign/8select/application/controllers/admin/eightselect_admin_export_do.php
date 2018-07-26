@@ -26,6 +26,12 @@ class eightselect_admin_export_do extends DynExportBase
      */
     protected $_sThisTemplate = "eightselect_admin_export_do.tpl";
 
+    /** @var array */
+    private $_aParent = [];
+
+    /** @var array */
+    private $_aVirtual = [];
+
     /**
      * Prepares export
      */
@@ -91,16 +97,48 @@ class eightselect_admin_export_do extends DynExportBase
 
         /** @var oxArticle $oArticle */
         if ($oArticle = $this->getOneArticle($iCnt, $blContinue)) {
+
+            // set parent article (performance loading)
+            if (!isset($this->_aParent[$oParent->oxarticles__oxparentid->value])) {
+                // clear parent from other variant
+                $this->_aParent = [];
+                $oParent = $oArticle->getParentArticle();
+                $this->_aParent[$oArticle->oxarticles__oxparentid->value]['article_object'] = $oParent;
+                $this->_aParent[$oArticle->oxarticles__oxparentid->value]['category_string'] = $this->getCategoryString($oParent, ' / ');
+            }
+
             /** @var eightselect_export $oEightSelectExport */
             $oEightSelectExport = clone $oEightSelectTmpExport;
+            $oEightSelectExport->setArticle($oArticle);
+            $oEightSelectExport->setParent($this->_aParent[$oArticle->oxarticles__oxparentid->value]['article_object']);
+            $oEightSelectExport->setCategory($this->_aParent[$oArticle->oxarticles__oxparentid->value]['category_string']);
 
+            // set header if it's the first article
             if ((int)$iCnt === 0) {
                 fwrite($this->fpFile, $oEightSelectExport->getCsvHeader());
             }
 
-            $oParent = $oArticle->getParentArticle();
-            $oEightSelectExport->setArticle($oArticle, $oParent);
-            $oEightSelectExport->setCategory($this->getCategoryString($oParent, ' / '));
+            // set virtual article for each color
+            $sVirtualMasterSku = $oEightSelectExport->getVirtualMasterSku();
+            if ($sVirtualMasterSku && !isset($this->_aVirtual[$oArticle->oxarticles__oxparentid->value][$sVirtualMasterSku])) {
+                /** @var eightselect_export $oEightSelectExport */
+                $oEightSelectExportVirtual = clone $oEightSelectExport;
+                $oEightSelectExportVirtual->setArticle($this->_aParent[$oArticle->oxarticles__oxparentid->value]['article_object']);
+
+                // clear parent from other variant
+                if (!isset($this->_aVirtual[$oArticle->oxarticles__oxparentid->value])) {
+                    $this->_aVirtual = [];
+                }
+
+                $this->_aVirtual[$oArticle->oxarticles__oxparentid->value][$sVirtualMasterSku] = $oEightSelectExportVirtual;
+
+                // write virtual parent at first time in CSV
+                fwrite($this->fpFile, $oEightSelectExportVirtual->getCsvLineVirtual($sVirtualMasterSku));
+            }
+
+            $oEightSelectExport->setVirtual($this->_aVirtual[$oArticle->oxarticles__oxparentid->value][$sVirtualMasterSku]);
+
+            // write variant to CSV
             fwrite($this->fpFile, $oEightSelectExport->getCsvLine());
 
             return ++$iExportedItems;
@@ -151,7 +189,7 @@ class eightselect_admin_export_do extends DynExportBase
             }
         }
 
-        $sSelect .= " GROUP BY oxarticles.OXID ORDER BY OXARTNUM ASC";
+        $sSelect .= " GROUP BY oxarticles.OXID ORDER BY OXPARENTID, OXARTNUM ASC";
 
         return $oDB->execute($sSelect) ? true : false;
     }

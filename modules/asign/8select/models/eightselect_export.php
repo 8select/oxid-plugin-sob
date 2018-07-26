@@ -18,6 +18,8 @@ class eightselect_export extends oxBase
     /** @var int */
     public static $err_nofeedid = -99;
 
+    private $_sCategoryString = null;
+
     /**
      * Current class name
      *
@@ -39,6 +41,11 @@ class eightselect_export extends oxBase
      * @var oxArticle
      */
     protected $_oParent = null;
+
+    /**
+     * @var eightselect_export
+     */
+    protected $_oVirtual = null;
 
     /**
      * @var string
@@ -80,12 +87,50 @@ class eightselect_export extends oxBase
 
     /**
      * @param oxArticle $oArticle
-     * @param oxArticle $oParent
      */
-    public function setArticle(oxArticle &$oArticle, oxArticle &$oParent)
+    public function setArticle(oxArticle &$oArticle)
     {
         $this->_oArticle = $oArticle;
+    }
+
+    /**
+     * @return oxArticle
+     */
+    public function getArticle()
+    {
+        return $this->_oArticle;
+    }
+
+    /**
+     * @param oxArticle $oParent
+     */
+    public function setParent(oxArticle $oParent)
+    {
         $this->_oParent = $oParent;
+    }
+
+    /**
+     * @param eightselect_export|null $oStaticVirtual
+     */
+    public function setVirtual(&$oStaticVirtual)
+    {
+        $this->_oVirtual = $oStaticVirtual;
+    }
+
+    public function getVirtualMasterSku()
+    {
+        /** @var eightselect_export_dynamic $oEighSelectExportDynamic */
+        $oEighSelectExportDynamic = oxNew('eightselect_export_dynamic');
+        $oEighSelectExportDynamic->setArticle($this->_oArticle);
+        $oEighSelectExportDynamic->setParent($this->_oParent);
+        $sFieldValue = strtolower($oEighSelectExportDynamic->getVariantSelection('farbe'));
+
+        if ($sFieldValue) {
+            $sVirtualMasterSku = $this->_oParent->oxarticles__oxartnum->value . '-' . str_replace(' ', '', $sFieldValue);
+            return $sVirtualMasterSku;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -107,20 +152,53 @@ class eightselect_export extends oxBase
      */
     public function getCsvLine()
     {
+        $this->_initExpotrData();
+
+        $this->_aCsvAttributes['mastersku'] = $this->_oVirtual->getAttributeValue('sku');
+
+        $sLine = $this->_getAttributesAsString();
+        return $sLine . PHP_EOL;
+    }
+
+    /**
+     * Returns single line CSV article as string
+     *
+     * @return string
+     */
+    public function getCsvLineVirtual($sVirtualMasterSku)
+    {
+        $this->_initExpotrData();
+
+        $this->_aCsvAttributes['sku'] = $sVirtualMasterSku;
+
+        $sLine = $this->_getAttributesAsString();
+        return $sLine . PHP_EOL;
+    }
+
+    private function _initExpotrData()
+    {
         /** @var eightselect_export_static $oEightSelectExportStatic */
         $oEightSelectExportStatic = oxNew('eightselect_export_static');
         $oEightSelectExportStatic->setAttributes($this->_aCsvAttributes);
-        $oEightSelectExportStatic->setArticle($this->_oArticle, $this->_oParent);
+        $oEightSelectExportStatic->setArticle($this->_oArticle);
+        $oEightSelectExportStatic->setVirtual($this->_oVirtual);
         $oEightSelectExportStatic->run();
 
         /** @var eightselect_export_dynamic $oEightSelectExportDynamic */
         $oEightSelectExportDynamic = oxNew('eightselect_export_dynamic');
         $oEightSelectExportDynamic->setAttributes($this->_aCsvAttributes);
-        $oEightSelectExportDynamic->setArticle($this->_oArticle, $this->_oParent);
+        $oEightSelectExportDynamic->setArticle($this->_oArticle);
+        $oEightSelectExportDynamic->setVirtual($this->_oVirtual);
         $oEightSelectExportDynamic->run();
 
-        $sLine = $this->_getAttributesAsString();
-        return $sLine . PHP_EOL;
+        // copy empty variant infos from virtual
+        if ($this->_oVirtual instanceof eightselect_export) {
+            foreach ($this->_aCsvAttributes as $sAttrName => $sAttrValue) {
+                if ($sAttrValue == '') {
+                    $this->_aCsvAttributes[$sAttrName] = $this->_oVirtual->getAttributeValue($sAttrName);
+                }
+            }
+        }
     }
 
     /**
@@ -182,6 +260,14 @@ class eightselect_export extends oxBase
         }
 
         return rtrim($sLine, $sDelimiter);
+    }
+
+    /**
+     * @param string $sAttributeName
+     */
+    public function getAttributeValue($sAttributeName)
+    {
+        return isset($this->_aCsvAttributes[$sAttributeName]) ? $this->_aCsvAttributes[$sAttributeName] : '';
     }
 
     /**
@@ -273,6 +359,15 @@ class eightselect_export extends oxBase
                 unlink($sFile);
             }
         }
+    }
+
+    public function setCategoryString($sCategoryString)
+    {
+        if ($this->_aCsvAttributes['']) {
+
+        }
+
+        $this->_sCategoryString = $sCategoryString;
     }
 
     /**

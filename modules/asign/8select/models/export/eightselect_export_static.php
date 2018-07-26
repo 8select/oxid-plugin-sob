@@ -28,7 +28,6 @@ class eightselect_export_static extends eightselect_export_abstract
         !isset($this->_aCsvAttributes['bilder']) ? null : $this->_aCsvAttributes['bilder'] = $this->_getPictures();
         !isset($this->_aCsvAttributes['beschreibung']) ? null : $this->_aCsvAttributes['beschreibung'] = $this->_oArticle->getLongDescription();
         !isset($this->_aCsvAttributes['beschreibung1']) ? null : $this->_aCsvAttributes['beschreibung1'] = $this->_oArticle->oxarticles__oxshortdesc->value;
-        !isset($this->_aCsvAttributes['mastersku']) ? null : $this->_aCsvAttributes['mastersku'] = $this->_oParent->oxarticles__oxartnum->value;
 
         /** @var oxManufacturer $oManufacturer */
         $oManufacturer = $this->_oArticle->getManufacturer();
@@ -39,17 +38,13 @@ class eightselect_export_static extends eightselect_export_abstract
         if (isset($this->_aCsvAttributes['angebots_preis'])) {
             /** @var oxPrice $oPrice */
             $oPrice = $this->_oArticle->getPrice();
-            $this->_aCsvAttributes['angebots_preis'] = $oPrice->getPrice();
+            if ($oPrice) {
+                $this->_aCsvAttributes['angebots_preis'] = $oPrice->getPrice();
+            }
         }
 
-        if (isset($this->_aCsvAttributes['angebots_preis'])) {
-            /** @var oxPrice $oTPrice */
-            $oTPrice = $this->_oArticle->getTPrice();
-            if ($oTPrice) {
-                $this->_aCsvAttributes['streich_preis'] = $oTPrice->getPrice();
-            } else {
-                $this->_aCsvAttributes['streich_preis'] = $oPrice->getPrice();
-            }
+        if (isset($this->_aCsvAttributes['streich_preis'])) {
+            $this->_aCsvAttributes['streich_preis'] = $this->_oArticle->getBasePrice();
         }
     }
 

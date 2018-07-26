@@ -19,6 +19,11 @@ abstract class eightselect_export_abstract extends oxBase
     protected $_oArticle = null;
 
     /**
+     * @var eightselect_export
+     */
+    protected $_oVirtual = null;
+
+    /**
      * @var oxArticle
      */
     protected $_oParent = null;
@@ -38,12 +43,29 @@ abstract class eightselect_export_abstract extends oxBase
 
     /**
      * @param oxArticle $oArticle
-     * @param oxArticle $oParent
      */
-    public function setArticle(oxArticle &$oArticle, oxArticle &$oParent)
+    public function setArticle(oxArticle &$oArticle)
     {
         $this->_oArticle = $oArticle;
+    }
+
+    /**
+     * @param oxArticle $oParent
+     */
+    public function setParent(oxArticle &$oParent)
+    {
         $this->_oParent = $oParent;
+    }
+
+    /**
+     * @param eightselect_export|null $oVirtual
+     */
+    public function setVirtual(&$oVirtual)
+    {
+        if ($this->_oVirtual instanceof eightselect_export) {
+            $this->_oVirtual = $oVirtual;
+            $this->setParent($this->_oVirtual->getArticle());
+        }
     }
 
     /**
@@ -55,14 +77,17 @@ abstract class eightselect_export_abstract extends oxBase
      * @param string $sAttributeName
      * @return string
      */
-    protected function _getVariantSelection($sAttributeName)
+    public function getVariantSelection($sAttributeName)
     {
+        if ($this->_oParent === null) {
+            return '';
+        }
+
         $sTable = getViewName('eightselect_attribute2oxid');
 
         /** @var oxList $oList */
         $oList = oxNew('oxList');
         $oList->init('eightselect_attribute2oxid');
-        $sSql = "SELECT OXOBJECT FROM {$sTable} WHERE ESATTRIBUTE = '{$sAttributeName}'";
         $oList->selectString("SELECT OXOBJECT FROM {$sTable} WHERE ESATTRIBUTE = '{$sAttributeName}'");
 
         /** @var eightselect_attribute2oxid $oAttr2Oxid */
