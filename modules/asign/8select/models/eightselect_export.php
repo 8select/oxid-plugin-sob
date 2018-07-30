@@ -288,7 +288,7 @@ class eightselect_export extends oxBase
         $aParams = [
             '#FEEDID#'    => $sFeedId,
             '#FEEDTYPE#'  => $blFull ? 'product_feed' : 'property_feed',
-            '#TIMESTAMP#' => time(),
+            '#TIMESTAMP#' => round(microtime(true) * 1000)
         ];
 
         $sFilename = str_replace(array_keys($aParams), $aParams, self::$_sExportFileName);
