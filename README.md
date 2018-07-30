@@ -1,17 +1,30 @@
 # 8select (CSE) Module
 
-## Requirements: AWS SDK ##
-
-Das Modul benötigt für den Upload der Feeds das AWS SDK. Dies muss im Shop-Verzeichnis unter "vendor/" installiert sein. Gehen Sie hierzu in Ihr Shop-Verzeichnis und führen folgenden befehl aus:
-
-```
-composer require aws/aws-sdk-php
-```
-
 ## Installation
 
 1. Modul herunterladen: [Download from GitLab](https://gitlab.com/a-sign/oxid-modules/8select/-/archive/master/8select-master.zip)
 2. Modul entpacken und in das Shopverzeichnis kopieren/hochladen
+
+## Requirements: AWS SDK
+
+Das Modul benötigt für den Upload der Feeds das AWS SDK. Dies muss im Shopverzeichnis unter "vendor/" installiert sein.
+
+Mit diesem Modul erhalten Sie bereits eine composer.json für die nächsten Schritte. Wenn Sie diese bereits in das Shopverzeichnis kopiert haben, überspringen Sie die nächsten Code-Zeilen. Falls Sie eine eigene composer.json haben, muss vorab folgende Zeile hinzugefügt werden:
+```
+{
+    "require": {
+        "aws/aws-sdk-php": "^3.62"
+    }
+}
+```
+- Composer herunterladen und installieren:
+```
+curl -sS https://getcomposer.org/installer | php
+```
+- Die benötigten Pakete (AWS SDK etc.) installieren. Dies erzeugt auch das korrekte "vendor" Unterverzeichnis:
+```
+php composer.phar install
+```
 
 ## Activation & Configuration
 
