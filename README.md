@@ -10,6 +10,7 @@
 Das Modul benötigt für den Upload der Feeds das AWS SDK. Dies muss im Shopverzeichnis unter "vendor/" installiert sein.
 
 Mit diesem Modul erhalten Sie bereits eine composer.json für die nächsten Schritte. Wenn Sie diese bereits in das Shopverzeichnis kopiert haben, überspringen Sie die nächsten Code-Zeilen. Falls Sie eine eigene composer.json haben, muss vorab folgende Zeile hinzugefügt werden:
+
 ```
 {
     "require": {
@@ -17,11 +18,15 @@ Mit diesem Modul erhalten Sie bereits eine composer.json für die nächsten Schr
     }
 }
 ```
+
 - Composer herunterladen und installieren:
+
 ```
 curl -sS https://getcomposer.org/installer | php
 ```
+
 - Die benötigten Pakete (AWS SDK etc.) installieren. Dies erzeugt auch das korrekte "vendor" Unterverzeichnis:
+
 ```
 php composer.phar install
 ```
