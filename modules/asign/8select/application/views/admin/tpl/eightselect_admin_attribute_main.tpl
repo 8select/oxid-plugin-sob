@@ -59,41 +59,43 @@
             </tr>
         </thead>
         <tbody>
-            [{foreach from=$aAttributesEightselect item="oAttribute"}]
-                <tr>
-                    <td class="edittext" valign="top" align="left">
-                        [{if $oAttribute->isRequired()}]<b>[{/if}]
-                        [{ $oAttribute->eightselect_attributes__oxtitle->value }]
-                        [{if $oAttribute->isRequired()}] *</b>[{/if}]
-                    </td>
-                    <td>
-                        [{ $oAttribute->eightselect_attributes__oxdescription->value }]
-                    </td>
-                    <td class="edittext">
-                        [{if $oAttribute->eightselect_attributes__oxname->value == 'groesse' || $oAttribute->eightselect_attributes__oxname->value == 'farbe'}]
-                            <select multiple size="3" name="oxid2eightselect[[{$oAttribute->eightselect_attributes__oxname->value}]][]" id="oxid2eightselect_[{$oAttribute->eightselect_attributes__oxname->value}]" class="editinput" [{$readonly}]>
-                                [{foreach from=$aAttributesOxid key="sOptGroup" item="aAttribute"}]
-                                    [{if $sOptGroup == $sEightSelectOptGroupVarselect}]
-                                        [{foreach from=$aAttribute key="sValue" item="sTitle"}]
-                                            <option value="[{ $sValue }]"[{if $oView->isAttributeSelected($oAttribute->eightselect_attributes__oxname->value, $sValue) }] SELECTED[{/if}]>[{ $sTitle }]</option>
-                                        [{/foreach}]
-                                    [{/if}]
-                                [{/foreach}]
-                            </select>
-                        [{else}]
-                            <select name="oxid2eightselect[[{$oAttribute->eightselect_attributes__oxname->value}]][]" id="oxid2eightselect_[{$oAttribute->eightselect_attributes__oxname->value}]" class="editinput" [{$readonly}]>
-                                <option value="-">---</option>
-                                [{foreach from=$aAttributesOxid key="sOptGroup" item="aAttribute"}]
-                                    <optgroup label="[{$sOptGroup}]">
-                                        [{foreach from=$aAttribute key="sValue" item="sTitle"}]
-                                            <option value="[{ $sValue }]"[{if $oView->isAttributeSelected($oAttribute->eightselect_attributes__oxname->value, $sValue) }] SELECTED[{/if}]>[{ $sTitle }]</option>
-                                        [{/foreach}]
-                                    </optgroup>
-                                [{/foreach}]
-                            </select>
-                        [{/if}]
-                    </td>
-                </tr>
+            [{foreach from=$aAttributesEightselect key="sAttributeKey" item="aAttributeEightSelect"}]
+                [{if $aAttributeEightSelect.labelName}]
+                    <tr>
+                        <td class="edittext" valign="top" align="left">
+                            [{if $aAttributeEightSelect.required}]<b>[{/if}]
+                            [{$aAttributeEightSelect.labelName }]
+                            [{if $aAttributeEightSelect.required}] *</b>[{/if}]
+                        </td>
+                        <td>
+                            [{ $aAttributeEightSelect.labelDescr }]
+                        </td>
+                        <td class="edittext">
+                            [{if $sAttributeKey == 'groesse' || $sAttributeKey == 'farbe'}]
+                                <select multiple size="3" name="oxid2eightselect[[{$sAttributeKey}]][]" id="oxid2eightselect_[{$sAttributeKey}]" class="editinput" [{$readonly}]>
+                                    [{foreach from=$aAttributesOxid key="sOptGroup" item="aAttribute"}]
+                                        [{if $sOptGroup == $sEightSelectOptGroupVarselect}]
+                                            [{foreach from=$aAttribute key="sValue" item="sTitle"}]
+                                                <option value="[{ $sValue }]"[{if $oView->isAttributeSelected($sAttributeKey, $sValue) }] SELECTED[{/if}]>[{ $sTitle }]</option>
+                                            [{/foreach}]
+                                        [{/if}]
+                                    [{/foreach}]
+                                </select>
+                            [{else}]
+                                <select name="oxid2eightselect[[{$sAttributeKey}]][]" id="oxid2eightselect_[{$sAttributeKey}]" class="editinput" [{$readonly}]>
+                                    <option value="-">---</option>
+                                    [{foreach from=$aAttributesOxid key="sOptGroup" item="aAttribute"}]
+                                        <optgroup label="[{$sOptGroup}]">
+                                            [{foreach from=$aAttribute key="sValue" item="sTitle"}]
+                                                <option value="[{ $sValue }]"[{if $oView->isAttributeSelected($sAttributeKey, $sValue) }] SELECTED[{/if}]>[{ $sTitle }]</option>
+                                            [{/foreach}]
+                                        </optgroup>
+                                    [{/foreach}]
+                                </select>
+                            [{/if}]
+                        </td>
+                    </tr>
+                [{/if}]
             [{/foreach}]
         </tbody>
     </table>

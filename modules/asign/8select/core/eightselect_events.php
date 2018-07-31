@@ -7,7 +7,6 @@ class eightselect_events
 {
     static private $oMetaDataHandler = null;
     static private $sLogTable = null;
-    static private $sAttributeTable = null;
     static private $sAttribute2OxidTable = null;
 
     /**
@@ -17,8 +16,6 @@ class eightselect_events
     {
         self::_init();
         self::_addLogTable();
-        self::_addAttributeTable();
-        self::_addAttributes();
         self::_addAttribute2OxidTable();
         self::_addAttributes2Oxid();
 
@@ -63,9 +60,6 @@ class eightselect_events
         $o8SelectLog = oxNew('eightselect_log');
         self::$sLogTable = $o8SelectLog->getCoreTableName();
 
-        $o8SelectAttributes = oxNew('eightselect_attribute');
-        self::$sAttributeTable = $o8SelectAttributes->getCoreTableName();
-
         $o8SelectAttribute2Oxid = oxNew('eightselect_attribute2oxid');
         self::$sAttribute2OxidTable = $o8SelectAttribute2Oxid->getCoreTableName();
     }
@@ -87,50 +81,6 @@ class eightselect_events
                         PRIMARY KEY (`OXID`)
                       ) CHARSET=utf8";
             oxDb::getDb()->execute($sSql);
-        }
-    }
-
-    /**
-     * Add attribute table
-     */
-    private static function _addAttributeTable()
-    {
-        $sTableName = self::$sAttributeTable;
-
-        if (!self::$oMetaDataHandler->tableExists($sTableName)) {
-            $sSql = "CREATE TABLE `{$sTableName}` (
-                        `OXID` VARCHAR(32) NOT NULL,
-                        `OXNAME` VARCHAR(32) NOT NULL,
-                        `OXTITLE` VARCHAR(32) NOT NULL DEFAULT '',
-                        `OXTITLE_1` VARCHAR(32) NOT NULL DEFAULT '',
-                        `OXTITLE_2` VARCHAR(32) NOT NULL DEFAULT '',
-                        `OXTITLE_3` VARCHAR(32) NOT NULL DEFAULT '',
-                        `OXDESCRIPTION` VARCHAR(255) NOT NULL DEFAULT '',
-                        `OXDESCRIPTION_1` VARCHAR(255) NOT NULL DEFAULT '',
-                        `OXDESCRIPTION_2` VARCHAR(255) NOT NULL DEFAULT '',
-                        `OXDESCRIPTION_3` VARCHAR(255) NOT NULL DEFAULT '',
-                        `OXTIMESTAMP` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                        PRIMARY KEY (`OXID`, `OXNAME`)
-                      ) CHARSET=utf8";
-            oxDb::getDb()->execute($sSql);
-        }
-    }
-
-    /**
-     * Add attributes to attribute table
-     */
-    private static function _addAttributes()
-    {
-        $oEightselectAttribute = oxNew('eightselect_attribute');
-
-        $oUtils = oxNew('oxUtilsObject');
-        $sSqlCheck = 'SELECT 1 FROM `' . self::$sAttributeTable . '` WHERE `OXNAME` = ?';
-        $sSqlInsert = 'INSERT INTO `' . self::$sAttributeTable . '` (`OXID`, `OXNAME`, `OXTITLE`, `OXDESCRIPTION`) VALUES (?, ?, ?, ?)';
-
-        foreach ($oEightselectAttribute->getAllFields() as $sAttributeName => $aAttributeParams) {
-            if ($aAttributeParams['configurable'] && !oxDb::getDb()->getOne($sSqlCheck, [$sAttributeName])) {
-                oxDb::getDb()->execute($sSqlInsert, [$oUtils->generateUId(), $sAttributeName, $aAttributeParams['labelName'], $aAttributeParams['labelDescr']]);
-            }
         }
     }
 

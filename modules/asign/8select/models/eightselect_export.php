@@ -65,7 +65,7 @@ class eightselect_export extends oxBase
         if ($sType === 'do_full') {
             $aCsvFields = $oEightSelectAttribute->getAllFields();
         } else {
-            $aCsvFields = $oEightSelectAttribute->getUpdateFields();
+            $aCsvFields = $oEightSelectAttribute->getFieldsByType('forUpdate');
         }
 
         $this->_aCsvAttributes = array_fill_keys(array_keys($aCsvFields), '');
@@ -112,7 +112,7 @@ class eightselect_export extends oxBase
     public function getCsvHeader()
     {
         $aCsvHeaderFields = array_keys($this->_aCsvAttributes);
-        $sCsvHeader = implode(self::EIGHTSELECT_CSV_DELIMITER, $aCsvHeaderFields);
+        $sCsvHeader = self::EIGHTSELECT_CSV_QUALIFIER.implode(self::EIGHTSELECT_CSV_QUALIFIER.self::EIGHTSELECT_CSV_DELIMITER.self::EIGHTSELECT_CSV_QUALIFIER, $aCsvHeaderFields).self::EIGHTSELECT_CSV_QUALIFIER;
         return $sCsvHeader . PHP_EOL;
     }
 

@@ -93,24 +93,16 @@ class eightselect_admin_attribute_main extends oxAdminDetails
     }
 
     /**
-     * Return possible 8select attributes
+     * Return sorted 8select attributes
      *
      * @return object oxList
      * @throws oxSystemComponentException
      */
     private function _getAttributesFromEightselect()
     {
-        $oAttributeList = oxNew('oxList');
-        $oAttributeList->init('eightselect_attribute');
-        $oAttributeList->getList();
-
-        $aList = $oAttributeList->getArray();
-
-        usort($aList, function($oAttribut1, $oAttribut2){
-            return strcmp($oAttribut1->eightselect_attributes__oxtitle->value, $oAttribut2->eightselect_attributes__oxtitle->value);
-        });
-
-        return $aList;
+        /** @var eightselect_attribute $oAttribute */
+        $oAttribute = oxNew('eightselect_attribute');
+        return $oAttribute->getFieldsByType('configurable', true);
     }
 
     /**

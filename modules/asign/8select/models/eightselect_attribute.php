@@ -4,7 +4,7 @@
  * Attributes manager
  *
  */
-class eightselect_attribute extends oxI18n
+class eightselect_attribute extends oxBase
 {
     /**
      * Current class name
@@ -13,12 +13,11 @@ class eightselect_attribute extends oxI18n
      */
     protected $_sClassName = 'eightselect_attribute';
 
-    /**
-     * Core database table name. $sCoreTable could be only original data table name and not view name.
-     *
-     * @var string
-     */
-    protected $_sCoreTable = 'eightselect_attributes';
+    /** @var array */
+    protected $_aFields = [];
+
+    /** @var array */
+    protected $_aEightselectFieldsSorted = null;
 
     /**
      * All fields with additional data
@@ -162,7 +161,7 @@ class eightselect_attribute extends oxI18n
         'farbe'          => [
             'labelName'    => 'Farbe',
             'labelDescr'   => 'Name der Varianten-Auswahl für "Farbe" (siehe "Artikel verwalten" -> "Artikel" -> "Varianten" -> "Name der Auswahl")<br />Mehrfachauswahl möglich',
-            'required'     => false,
+            'required'     => true,
             'configurable' => true,
             'forUpdate'    => true,
         ],
@@ -367,32 +366,57 @@ class eightselect_attribute extends oxI18n
     /**
      * Return all CSV field names in correct order
      *
+     * @param bool get fields as sorted array (first: required; second; name)
      * @return array
      */
-    public function getAllFields()
+    public function getAllFields($blSorted = false)
     {
-        return $this->_aEightselectFields;
+        if (!$blSorted) {
+            return $this->_aEightselectFields;
+        }
+
+        if ($this->_aEightselectFieldsSorted !== null) {
+            return $this->_aEightselectFieldsSorted;
+        }
+
+        $this->_aEightselectFieldsSorted = $this->_aEightselectFields;
+
+        uasort($this->_aEightselectFieldsSorted, function ($a, $b) {
+            $sALabel = str_replace(['Ä', 'Ö', 'Ü'], ['Aa', 'Oa', 'Ua'], $a['labelName']);
+            $sBLabel = str_replace(['Ä', 'Ö', 'Ü'], ['Aa', 'Oa', 'Ua'], $b['labelName']);
+
+            if ($a['required'] == $b['required']) {
+                if ($sALabel == $sBLabel) {
+                    return 0;
+                }
+                return $sALabel < $sBLabel ? -1 : 1;
+            }
+            return $a['required'] > $b['required'] ? -1 : 1;
+        });
+
+        return $this->_aEightselectFieldsSorted;
     }
 
-    public function getUpdateFields()
+    /**
+     * @param string Field type (e.g. 'configurable' or 'forUpdate')
+     * @return array
+     */
+    public function getFieldsByType($sFieldType, $blSorted = false)
     {
-        static $aUpdateFields = null;
+        if (isset($this->_aFieldsByType[$sFieldType])) {
+            return $this->_aFieldsByType[$sFieldType];
+        }
 
-        if ($aUpdateFields === null) {
-            $aUpdateFields = [];
+        $aFields = [];
 
-            foreach ($this->getAllFields() as $sName => $aFieldProps) {
-                if ($aFieldProps['forUpdate']) {
-                    $aUpdateFields[] = $sName;
-                }
+        foreach ($this->getAllFields($blSorted) as $sName => $aFieldProps) {
+            if ($aFieldProps[$sFieldType]) {
+                $aFields[] = $sName;
             }
         }
 
-        return array_intersect_key($this->getAllFields(), array_flip($aUpdateFields));
-    }
+        $this->_aFieldsByType[$sFieldType] = array_intersect_key($this->getAllFields($blSorted), array_flip($aFields));
 
-    public function isRequired()
-    {
-        return $this->_aEightselectFields[$this->eightselect_attributes__oxname->value]['required'];
+        return $this->_aFieldsByType[$sFieldType];
     }
 }
