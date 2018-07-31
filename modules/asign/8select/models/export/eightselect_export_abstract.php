@@ -19,11 +19,6 @@ abstract class eightselect_export_abstract extends oxBase
     protected $_oArticle = null;
 
     /**
-     * @var eightselect_export
-     */
-    protected $_oVirtual = null;
-
-    /**
      * @var oxArticle
      */
     protected $_oParent = null;
@@ -55,17 +50,6 @@ abstract class eightselect_export_abstract extends oxBase
     public function setParent(oxArticle &$oParent)
     {
         $this->_oParent = $oParent;
-    }
-
-    /**
-     * @param eightselect_export|null $oVirtual
-     */
-    public function setVirtual(&$oVirtual)
-    {
-        if ($this->_oVirtual instanceof eightselect_export) {
-            $this->_oVirtual = $oVirtual;
-            $this->setParent($this->_oVirtual->getArticle());
-        }
     }
 
     /**

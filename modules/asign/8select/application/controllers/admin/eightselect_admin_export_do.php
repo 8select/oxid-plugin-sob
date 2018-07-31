@@ -29,9 +29,6 @@ class eightselect_admin_export_do extends DynExportBase
     /** @var array */
     private $_aParent = [];
 
-    /** @var array */
-    private $_aVirtual = [];
-
     /**
      * Prepares export
      */
@@ -118,28 +115,6 @@ class eightselect_admin_export_do extends DynExportBase
                 fwrite($this->fpFile, $oEightSelectExport->getCsvHeader());
             }
 
-            // set virtual article for each color
-            $sVirtualMasterSku = $oEightSelectExport->getVirtualMasterSku();
-            if ($sVirtualMasterSku && !isset($this->_aVirtual[$oArticle->oxarticles__oxparentid->value][$sVirtualMasterSku])) {
-                /** @var eightselect_export $oEightSelectExport */
-                $oEightSelectExportVirtual = clone $oEightSelectExport;
-                $oEightSelectExportVirtual->setArticle($this->_aParent[$oArticle->oxarticles__oxparentid->value]['article_object']);
-                $oEightSelectExportVirtual->setParent($this->_aParent[$oArticle->oxarticles__oxparentid->value]['article_object']);
-                $oEightSelectExportVirtual->setCategory($this->_aParent[$oArticle->oxarticles__oxparentid->value]['category_string']);
-
-                // clear parent from other variant
-                if (!isset($this->_aVirtual[$oArticle->oxarticles__oxparentid->value])) {
-                    $this->_aVirtual = [];
-                }
-
-                $this->_aVirtual[$oArticle->oxarticles__oxparentid->value][$sVirtualMasterSku] = $oEightSelectExportVirtual;
-
-                // write virtual parent at first time in CSV
-                fwrite($this->fpFile, $oEightSelectExportVirtual->getCsvLineVirtual($sVirtualMasterSku));
-            }
-
-            $oEightSelectExport->setVirtual($this->_aVirtual[$oArticle->oxarticles__oxparentid->value][$sVirtualMasterSku]);
-
             // write variant to CSV
             fwrite($this->fpFile, $oEightSelectExport->getCsvLine());
 
@@ -191,7 +166,7 @@ class eightselect_admin_export_do extends DynExportBase
             }
         }
 
-        $sSelect .= " GROUP BY oxarticles.OXID ORDER BY OXPARENTID, OXARTNUM ASC";
+        $sSelect .= " GROUP BY oxarticles.OXID ORDER BY OXARTNUM ASC";
 
         return $oDB->execute($sSelect) ? true : false;
     }

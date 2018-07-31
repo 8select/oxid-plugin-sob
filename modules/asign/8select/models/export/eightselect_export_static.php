@@ -13,16 +13,17 @@ class eightselect_export_static extends eightselect_export_abstract
      */
     protected $_sClassName = 'eightselect_export_static';
 
+    /** @var string */
+    protected $_sVirtualMasterSku = null;
+
     /**
      * Set static fields (not configurable ones)
      */
     public function run()
     {
-        if ($this->_oParent) {
-            !isset($this->_aCsvAttributes['model']) ? null : $this->_aCsvAttributes['model'] = $this->_oParent->oxarticles__oxartnum->value;
-        }
-
         !isset($this->_aCsvAttributes['sku']) ? null : $this->_aCsvAttributes['sku'] = $this->_oArticle->oxarticles__oxartnum->value;
+        !isset($this->_aCsvAttributes['mastersku']) ? null : $this->_aCsvAttributes['mastersku'] = $this->_getVirtualMasterSku();
+        !isset($this->_aCsvAttributes['model']) ? null : $this->_aCsvAttributes['model'] = $this->_oParent->oxarticles__oxartnum->value;
         !isset($this->_aCsvAttributes['status']) ? null : $this->_aCsvAttributes['status'] = (int)$this->_oArticle->isBuyable();
         !isset($this->_aCsvAttributes['name1']) ? null : $this->_aCsvAttributes['name1'] = $this->_oArticle->oxarticles__oxtitle->value ? $this->_oArticle->oxarticles__oxtitle->value : $this->_oParent->oxarticles__oxtitle->value;
         !isset($this->_aCsvAttributes['produkt_url']) ? null : $this->_aCsvAttributes['produkt_url'] = $this->_oArticle->getLink();
@@ -61,5 +62,27 @@ class eightselect_export_static extends eightselect_export_abstract
         }
 
         return implode(eightselect_export::EIGHTSELECT_CSV_MULTI_DELIMITER, $aPictureUrls);
+    }
+
+    private function _getVirtualMasterSku()
+    {
+        if ($this->_sVirtualMasterSku !== null) {
+            return $this->_sVirtualMasterSku;
+        }
+
+        $this->_sVirtualMasterSku = '';
+
+        /** @var eightselect_export_dynamic $oEighSelectExportDynamic */
+        $oEighSelectExportDynamic = oxNew('eightselect_export_dynamic');
+        $oEighSelectExportDynamic->setArticle($this->_oArticle);
+        $oEighSelectExportDynamic->setParent($this->_oParent);
+        $sFieldValue = strtolower($oEighSelectExportDynamic->getVariantSelection('farbe'));
+
+        if ($sFieldValue) {
+            $sVirtualMasterSku = $this->_oParent->oxarticles__oxartnum->value . '-' . str_replace(' ', '', $sFieldValue);
+            $this->_sVirtualMasterSku = $sVirtualMasterSku;
+        }
+
+        return $this->_sVirtualMasterSku;
     }
 }
