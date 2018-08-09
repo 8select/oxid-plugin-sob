@@ -18,8 +18,6 @@ class eightselect_export extends oxBase
     /** @var int */
     public static $err_nofeedid = -99;
 
-    private $_sCategoryString = null;
-
     /**
      * Current class name
      *
@@ -41,6 +39,11 @@ class eightselect_export extends oxBase
      * @var oxArticle
      */
     protected $_oParent = null;
+
+    /**
+     * @var eightselect_export
+     */
+    protected $_oParentExport = null;
 
     /**
      * @var string
@@ -72,15 +75,6 @@ class eightselect_export extends oxBase
     }
 
     /**
-     * @param string $sCategory
-     */
-    public function setCategory($sCategory)
-    {
-        $this->_aCsvAttributes['kategorie1'] = $sCategory;
-        $this->_setAdditionalCategories();
-    }
-
-    /**
      * @param oxArticle $oArticle
      */
     public function setArticle(oxArticle &$oArticle)
@@ -105,13 +99,56 @@ class eightselect_export extends oxBase
     }
 
     /**
+     * @throws oxSystemComponentException
+     */
+    public function initData()
+    {
+        /** @var eightselect_export_static $oEightSelectExportStatic */
+        $oEightSelectExportStatic = oxNew('eightselect_export_static');
+        $oEightSelectExportStatic->setAttributes($this->_aCsvAttributes);
+        $oEightSelectExportStatic->setArticle($this->_oArticle);
+        $oEightSelectExportStatic->setParent($this->_oParent);
+        $oEightSelectExportStatic->setParentExport($this->_oParentExport);
+        $oEightSelectExportStatic->run();
+
+        /** @var eightselect_export_dynamic $oEightSelectExportDynamic */
+        $oEightSelectExportDynamic = oxNew('eightselect_export_dynamic');
+        $oEightSelectExportDynamic->setAttributes($this->_aCsvAttributes);
+        $oEightSelectExportDynamic->setArticle($this->_oArticle);
+        $oEightSelectExportDynamic->setParent($this->_oParent);
+        $oEightSelectExportDynamic->run();
+
+        // copy empty variant infos from parent export
+        if ($this->_oParentExport instanceof eightselect_export) {
+            foreach ($this->_aCsvAttributes as $sAttrName => $sAttrValue) {
+                if ($sAttrValue == '') {
+                    $this->_aCsvAttributes[$sAttrName] = $this->_oParentExport->getAttributeValue($sAttrName);
+                }
+            }
+        }
+    }
+
+    /**
      * Returns single line CSV header as string
      *
      * @return string
      */
     public function getCsvHeader()
     {
-        $aCsvHeaderFields = array_keys($this->_aCsvAttributes);
+        $sType = oxRegistry::getConfig()->getRequestParameter("do_full") ? 'do_full' : 'do_update';
+
+        if ($sType === 'do_update') {
+            $aCsvHeaderFields = [];
+            /** @var eightselect_attribute $oEightSelectAttribute */
+            $oEightSelectAttribute = oxNew('eightselect_attribute');
+            $aCsvUpdateFields = $oEightSelectAttribute->getFieldsByType('forUpdate');
+            foreach ($aCsvUpdateFields as $sKey => $aCsvField) {
+                $aCsvHeaderFields[] = $aCsvField['propertyFeedName'];
+            }
+        } else {
+            $aCsvHeaderFields = array_keys($this->_aCsvAttributes);
+        }
+
         $sCsvHeader = self::EIGHTSELECT_CSV_QUALIFIER.implode(self::EIGHTSELECT_CSV_QUALIFIER.self::EIGHTSELECT_CSV_DELIMITER.self::EIGHTSELECT_CSV_QUALIFIER, $aCsvHeaderFields).self::EIGHTSELECT_CSV_QUALIFIER;
         return $sCsvHeader . PHP_EOL;
     }
@@ -123,58 +160,11 @@ class eightselect_export extends oxBase
      */
     public function getCsvLine()
     {
-        /** @var eightselect_export_static $oEightSelectExportStatic */
-        $oEightSelectExportStatic = oxNew('eightselect_export_static');
-        $oEightSelectExportStatic->setAttributes($this->_aCsvAttributes);
-        $oEightSelectExportStatic->setArticle($this->_oArticle);
-        $oEightSelectExportStatic->setParent($this->_oParent);
-        $oEightSelectExportStatic->run();
-
-        /** @var eightselect_export_dynamic $oEightSelectExportDynamic */
-        $oEightSelectExportDynamic = oxNew('eightselect_export_dynamic');
-        $oEightSelectExportDynamic->setAttributes($this->_aCsvAttributes);
-        $oEightSelectExportDynamic->setArticle($this->_oArticle);
-        $oEightSelectExportDynamic->setParent($this->_oParent);
-        $oEightSelectExportDynamic->run();
-
-        // copy empty variant infos from parent
-        if ($this->_oParent instanceof eightselect_export) {
-            foreach ($this->_aCsvAttributes as $sAttrName => $sAttrValue) {
-                if ($sAttrValue == '') {
-                    $this->_aCsvAttributes[$sAttrName] = $this->_oParent->getAttributeValue($sAttrName);
-                }
-            }
-        }
+        $this->initData();
+        $this->checkRequired();
 
         $sLine = $this->_getAttributesAsString();
         return $sLine . PHP_EOL;
-    }
-
-    /**
-     * @throws oxConnectionException
-     */
-    private function _setAdditionalCategories()
-    {
-        $sCategoryTable = getViewName('oxcategories');
-        $sO2CTable = getViewName('oxobject2category');
-        $sSql = "SELECT oxcategories.OXTITLE
-                  FROM {$sO2CTable} AS oxobject2category
-                  JOIN {$sCategoryTable} AS oxcategories ON oxobject2category.OXOBJECTID = oxcategories.OXID
-                  WHERE oxobject2category.OXOBJECTID = ?
-                  ORDER BY OXTIME ASC";
-        $aCategories = oxDb::getDb()->getCol($sSql, [$this->_oArticle->getId()]);
-
-        // remove first category, it's already in kategorie1
-        if (count($aCategories) > 1) {
-            array_shift($aCategories);
-            $i = 2;
-            foreach ($aCategories as $sCategoryTitle) {
-                if (isset($this->_aCsvAttributes['kategorie' . $i])) {
-                    $this->_aCsvAttributes['kategorie' . $i] = $sCategoryTitle;
-                }
-                $i++;
-            }
-        }
     }
 
     /**
@@ -310,13 +300,38 @@ class eightselect_export extends oxBase
         }
     }
 
-    public function setCategoryString($sCategoryString)
+    /**
+     * @param eightselect_export $oParentExport
+     */
+    public function setParentExport($oParentExport)
     {
-        if ($this->_aCsvAttributes['']) {
+        $this->_oParentExport = $oParentExport;
+    }
 
+    /**
+     * Check if all required fields are not empty
+     *
+     * @return bool
+     * @throws oxSystemComponentException
+     */
+    public function checkRequired()
+    {
+        static $aRequiredFields = null;
+        if ($aRequiredFields === null) {
+            $aRequiredFields = [];
+
+            /** @var eightselect_attribute $oEightSelectAttribute */
+            $oEightSelectAttribute = oxNew('eightselect_attribute');
+            $aRequiredFields = array_keys($oEightSelectAttribute->getFieldsByType('required'));
         }
 
-        $this->_sCategoryString = $sCategoryString;
+        foreach ($aRequiredFields as $sRequiredField ) {
+            if (empty($this->_aCsvAttributes[$sRequiredField])) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -352,7 +367,6 @@ class eightselect_export extends oxBase
         $_GET['do_update'] = true;
         $this->_exportCron($iShopId);
     }
-
 
     private function _uploadCron($iShopId)
     {
