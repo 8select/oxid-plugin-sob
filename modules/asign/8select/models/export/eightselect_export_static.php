@@ -21,15 +21,12 @@ class eightselect_export_static extends eightselect_export_abstract
      */
     public function run()
     {
-        !isset($this->_aCsvAttributes['sku']) ? null : $this->_aCsvAttributes['sku'] = $this->_oArticle->oxarticles__oxartnum->value;
         !isset($this->_aCsvAttributes['mastersku']) ? null : $this->_aCsvAttributes['mastersku'] = $this->_getVirtualMasterSku();
-        !isset($this->_aCsvAttributes['model']) ? null : $this->_aCsvAttributes['model'] = $this->_oParent->oxarticles__oxartnum->value;
+        !isset($this->_aCsvAttributes['model']) || !$this->_oParent ? null : $this->_aCsvAttributes['model'] = $this->_oParent->oxarticles__oxartnum->value;
         !isset($this->_aCsvAttributes['status']) ? null : $this->_aCsvAttributes['status'] = (int)$this->_oArticle->isBuyable();
         !isset($this->_aCsvAttributes['name1']) ? null : $this->_aCsvAttributes['name1'] = $this->_oArticle->oxarticles__oxtitle->value ? $this->_oArticle->oxarticles__oxtitle->value : $this->_oParent->oxarticles__oxtitle->value;
         !isset($this->_aCsvAttributes['produkt_url']) ? null : $this->_aCsvAttributes['produkt_url'] = $this->_oArticle->getLink();
         !isset($this->_aCsvAttributes['bilder']) ? null : $this->_aCsvAttributes['bilder'] = $this->_getPictures();
-        !isset($this->_aCsvAttributes['beschreibung']) ? null : $this->_aCsvAttributes['beschreibung'] = $this->_oArticle->getLongDescription();
-        !isset($this->_aCsvAttributes['beschreibung1']) ? null : $this->_aCsvAttributes['beschreibung1'] = $this->_oArticle->oxarticles__oxshortdesc->value;
 
         /** @var oxManufacturer $oManufacturer */
         $oManufacturer = $this->_oArticle->getManufacturer();
@@ -48,6 +45,8 @@ class eightselect_export_static extends eightselect_export_abstract
         if (isset($this->_aCsvAttributes['streich_preis'])) {
             $this->_aCsvAttributes['streich_preis'] = $this->_oArticle->getBasePrice();
         }
+
+        $this->_setCategories();
     }
 
     private function _getPictures()
@@ -64,8 +63,16 @@ class eightselect_export_static extends eightselect_export_abstract
         return implode(eightselect_export::EIGHTSELECT_CSV_MULTI_DELIMITER, $aPictureUrls);
     }
 
+    /**
+     * @return string
+     * @throws oxSystemComponentException
+     */
     private function _getVirtualMasterSku()
     {
+        if (!$this->_oParent) {
+            return '';
+        }
+
         if ($this->_sVirtualMasterSku !== null) {
             return $this->_sVirtualMasterSku;
         }
@@ -84,5 +91,43 @@ class eightselect_export_static extends eightselect_export_abstract
         }
 
         return $this->_sVirtualMasterSku;
+    }
+
+    /**
+     * @throws oxConnectionException
+     */
+    public function _setCategories()
+    {
+        if ($this->_oParentExport) {
+            $this->_aCsvAttributes['kategorie1'] = $this->_oParentExport->getAttributeValue('kategorie1');
+            $this->_aCsvAttributes['kategorie2'] = $this->_oParentExport->getAttributeValue('kategorie2');
+            $this->_aCsvAttributes['kategorie3'] = $this->_oParentExport->getAttributeValue('kategorie3');
+            return;
+        } elseif ($this->_oParent) {
+            $sOxid = $this->_oParent->getId();
+        } else {
+            $sOxid = $this->_oArticle->getId();
+        }
+
+        $sCategoryTable = getViewName('oxcategories');
+        $sO2CTable = getViewName('oxobject2category');
+        $sSql = "SELECT treecat.OXTITLE
+                    FROM {$sO2CTable} AS oxobject2category
+                    JOIN {$sCategoryTable} AS oxcategories ON oxobject2category.OXCATNID = oxcategories.OXID
+                    JOIN {$sCategoryTable} as treecat ON oxcategories.OXROOTID = treecat.OXROOTID AND treecat.OXLEFT <= oxcategories.OXLEFT AND treecat.OXRIGHT >= oxcategories.OXRIGHT
+                    WHERE oxobject2category.OXOBJECTID = ? AND oxcategories.OXACTIVE = '1' AND oxcategories.OXHIDDEN = '0'
+                    ORDER BY oxobject2category.OXTIME, treecat.OXLEFT ASC
+                    LIMIT 3";
+        $aCategories = oxDb::getDb()->getCol($sSql, [$sOxid]);
+
+        if (count($aCategories) > 0) {
+            $i = 1;
+            foreach ($aCategories as $sCategoryTitle) {
+                if (isset($this->_aCsvAttributes['kategorie' . $i])) {
+                    $this->_aCsvAttributes['kategorie' . $i] = $sCategoryTitle;
+                }
+                $i++;
+            }
+        }
     }
 }

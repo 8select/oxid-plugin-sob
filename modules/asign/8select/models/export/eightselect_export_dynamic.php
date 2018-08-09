@@ -6,6 +6,10 @@
  */
 class eightselect_export_dynamic extends eightselect_export_abstract
 {
+    private $_aIgnoreConvertHtmlToText = [
+        'beschreibung',
+    ];
+
     /**
      * Current class name
      *
@@ -51,8 +55,11 @@ class eightselect_export_dynamic extends eightselect_export_abstract
     {
         $sTable = getViewName('oxarticles');
         $sArticleField = $oAttr2oxid->eightselect_attribute2oxid__oxobject->value;
+
         $sSql = "SELECT {$sArticleField} FROM {$sTable} WHERE OXID = ?";
         $sValue = oxDb::getDb()->getOne($sSql, [$this->_oArticle->getId()]);
+
+        $sValue = $this->_convertHtmlToText($sValue, $oAttr2oxid->eightselect_attribute2oxid__esattribute->value);
         $this->_aCsvAttributes[$oAttr2oxid->eightselect_attribute2oxid__esattribute->value] = $sValue;
     }
 
@@ -63,8 +70,11 @@ class eightselect_export_dynamic extends eightselect_export_abstract
     {
         $sTable = getViewName('oxartextends');
         $sArtExtendsField = $oAttr2oxid->eightselect_attribute2oxid__oxobject->value;
+
         $sSql = "SELECT {$sArtExtendsField} FROM {$sTable} WHERE OXID = ?";
         $sValue = oxDb::getDb()->getOne($sSql, [$this->_oArticle->getId()]);
+
+        $sValue = $this->_convertHtmlToText($sValue, $oAttr2oxid->eightselect_attribute2oxid__esattribute->value);
         $this->_aCsvAttributes[$oAttr2oxid->eightselect_attribute2oxid__esattribute->value] = $sValue;
     }
 
@@ -84,6 +94,7 @@ class eightselect_export_dynamic extends eightselect_export_abstract
                     AND o2a.OXOBJECTID = ?";
         $sValue = oxDb::getDb()->getOne($sSql, [$sAttributeId, $this->_oArticle->getId()]);
 
+        $sValue = $this->_convertHtmlToText($sValue, $oAttr2oxid->eightselect_attribute2oxid__esattribute->value);
         $this->_aCsvAttributes[$oAttr2oxid->eightselect_attribute2oxid__esattribute->value] = $sValue;
     }
 
@@ -94,5 +105,23 @@ class eightselect_export_dynamic extends eightselect_export_abstract
     {
         $sEightSelectAttribute = $oAttr2oxid->eightselect_attribute2oxid__esattribute->value;
         $this->_aCsvAttributes[$sEightSelectAttribute] = $this->getVariantSelection($sEightSelectAttribute);
+    }
+
+    /**
+     * Convert newlines to break and remove HTML tags
+     *
+     * @param string $sValue
+     * @param string $sEightSelectAttributeName
+     * @return string $sValue
+     */
+    private function _convertHtmlToText($sValue, $sEightSelectAttributeName)
+    {
+        if (!in_array($sEightSelectAttributeName, $this->_aIgnoreConvertHtmlToText)) {
+            $sWithOutNewLines = str_replace(["\r\n", "\r", "\n"], '<br>', $sValue);
+            $sWihtOutHtml = strip_tags($sWithOutNewLines);
+            $sValue = html_entity_decode($sWihtOutHtml);
+        }
+
+        return $sValue;
     }
 }

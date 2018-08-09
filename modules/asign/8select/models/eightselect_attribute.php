@@ -26,13 +26,15 @@ class eightselect_attribute extends oxBase
      */
     protected $_aEightselectFields = [
         'sku'            => [
+            'propertyFeedName' => 'prop_sku',
             'labelName'    => 'SKU',
             'labelDescr'   => 'Die Sku ist einzigartig, sie enthält Modell, Farbe und Größe',
             'required'     => true,
-            'configurable' => false,
+            'configurable' => true,
             'forUpdate'    => true,
         ],
         'mastersku'      => [
+            'propertyFeedName' => 'prop_parentSku',
             'labelName'    => '',
             'labelDescr'   => '',
             'required'     => true,
@@ -40,6 +42,7 @@ class eightselect_attribute extends oxBase
             'forUpdate'    => true,
         ],
         'status'         => [
+            'propertyFeedName' => 'prop_isInStock',
             'labelName'    => '',
             'labelDescr'   => '',
             'required'     => true,
@@ -47,6 +50,7 @@ class eightselect_attribute extends oxBase
             'forUpdate'    => true,
         ],
         'ean'            => [
+            'propertyFeedName' => 'prop_ean',
             'labelName'    => 'EAN-Code',
             'labelDescr'   => 'Standardisierte eindeutige Materialnummer nach EAN (European Article Number) oder UPC (Unified Product Code).',
             'required'     => false,
@@ -54,6 +58,7 @@ class eightselect_attribute extends oxBase
             'forUpdate'    => true,
         ],
         'model'          => [
+            'propertyFeedName' => 'prop_model',
             'labelName'    => '',
             'labelDescr'   => '',
             'required'     => true,
@@ -61,6 +66,7 @@ class eightselect_attribute extends oxBase
             'forUpdate'    => true,
         ],
         'name1'          => [
+            'propertyFeedName' => 'prop_name',
             'labelName'    => '',
             'labelDescr'   => '',
             'required'     => true,
@@ -84,18 +90,19 @@ class eightselect_attribute extends oxBase
         'kategorie2'     => [
             'labelName'    => '',
             'labelDescr'   => '',
-            'required'     => true,
+            'required'     => false,
             'configurable' => false,
             'forUpdate'    => false,
         ],
         'kategorie3'     => [
             'labelName'    => '',
             'labelDescr'   => '',
-            'required'     => true,
+            'required'     => false,
             'configurable' => false,
             'forUpdate'    => false,
         ],
         'streich_preis'  => [
+            'propertyFeedName' => 'prop_retailPrice',
             'labelName'    => '',
             'labelDescr'   => '',
             'required'     => true,
@@ -103,6 +110,7 @@ class eightselect_attribute extends oxBase
             'forUpdate'    => true,
         ],
         'angebots_preis' => [
+            'propertyFeedName' => 'prop_discountPrice',
             'labelName'    => '',
             'labelDescr'   => '',
             'required'     => true,
@@ -110,6 +118,7 @@ class eightselect_attribute extends oxBase
             'forUpdate'    => true,
         ],
         'groesse'        => [
+            'propertyFeedName' => 'prop_size',
             'labelName'    => 'Größe',
             'labelDescr'   => 'Name der Varianten-Auswahl für "Größe" (siehe "Artikel verwalten" -> "Artikel" -> "Varianten" -> "Name der Auswahl")<br />Mehrfachauswahl möglich',
             'required'     => true,
@@ -117,6 +126,7 @@ class eightselect_attribute extends oxBase
             'forUpdate'    => true,
         ],
         'marke'          => [
+            'propertyFeedName' => 'prop_brand',
             'labelName'    => '',
             'labelDescr'   => '',
             'required'     => true,
@@ -159,6 +169,7 @@ class eightselect_attribute extends oxBase
             'forUpdate'    => false,
         ],
         'farbe'          => [
+            'propertyFeedName' => 'prop_color',
             'labelName'    => 'Farbe',
             'labelDescr'   => 'Name der Varianten-Auswahl für "Farbe" (siehe "Artikel verwalten" -> "Artikel" -> "Varianten" -> "Name der Auswahl")<br />Mehrfachauswahl möglich',
             'required'     => true,
@@ -320,6 +331,7 @@ class eightselect_attribute extends oxBase
             'forUpdate'    => false,
         ],
         'produkt_url'    => [
+            'propertyFeedName' => 'prop_url',
             'labelName'    => '',
             'labelDescr'   => '',
             'required'     => true,
@@ -327,6 +339,7 @@ class eightselect_attribute extends oxBase
             'forUpdate'    => true,
         ],
         'bilder'         => [
+            'propertyFeedName' => 'images',
             'labelName'    => '',
             'labelDescr'   => '',
             'required'     => true,
@@ -334,31 +347,32 @@ class eightselect_attribute extends oxBase
             'forUpdate'    => true,
         ],
         'beschreibung'   => [
-            'labelName'    => '',
-            'labelDescr'   => '',
+            'propertyFeedName' => 'prop_description',
+            'labelName'    => 'Beschreibung HTML',
+            'labelDescr'   => 'Der Beschreibungstext zum Artikel im HTML-Format',
             'required'     => true,
-            'configurable' => false,
+            'configurable' => true,
             'forUpdate'    => true,
         ],
         'beschreibung1'  => [
-            'labelName'    => '',
-            'labelDescr'   => '',
+            'labelName'    => 'Beschreibung Text',
+            'labelDescr'   => 'Der Beschreibungstext zum Artikel in Text-Format (automatische Konvertierung von HTML zu Text)',
             'required'     => true,
-            'configurable' => false,
+            'configurable' => true,
             'forUpdate'    => false,
         ],
         'beschreibung2'  => [
-            'labelName'    => '',
-            'labelDescr'   => '',
-            'required'     => true,
-            'configurable' => false,
+            'labelName'    => 'Alternativer Beschreibungstext',
+            'labelDescr'   => 'Zusätzliche Informationen zum Produkt, technische Beschreibung, Kurzbeschreibung oder auch Keywords.',
+            'required'     => false,
+            'configurable' => true,
             'forUpdate'    => false,
         ],
         'sonstiges'      => [
-            'labelName'    => '',
+            'labelName'    => 'Sonstiges',
             'labelDescr'   => '',
-            'required'     => true,
-            'configurable' => false,
+            'required'     => false,
+            'configurable' => true,
             'forUpdate'    => false,
         ],
     ];

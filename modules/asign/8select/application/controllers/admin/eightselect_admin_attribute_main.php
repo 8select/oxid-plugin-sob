@@ -55,6 +55,7 @@ class eightselect_admin_attribute_main extends oxAdminDetails
 
         // Default static Oxid fields
         $aArticleFields = [
+            ['oxarticlesfield;OXARTNUM', $oLang->translateString('ARTICLE_MAIN_ARTNUM')],
             ['oxarticlesfield;OXTITLE', $oLang->translateString('ARTICLE_MAIN_TITLE')],
             ['oxarticlesfield;OXSHORTDESC', $oLang->translateString('GENERAL_ARTICLE_OXSHORTDESC')],
             ['oxartextendsfield;OXLONGDESC', $oLang->translateString('GENERAL_ARTICLE_OXLONGDESC')],

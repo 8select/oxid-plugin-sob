@@ -24,6 +24,11 @@ abstract class eightselect_export_abstract extends oxBase
     protected $_oParent = null;
 
     /**
+     * @var eightselect_export
+     */
+    protected $_oParentExport = null;
+
+    /**
      * @var array
      */
     protected $_aCsvAttributes = [];
@@ -45,11 +50,19 @@ abstract class eightselect_export_abstract extends oxBase
     }
 
     /**
-     * @param oxArticle $oParent
+     * @param oxArticle|null $oParent
      */
-    public function setParent(oxArticle &$oParent)
+    public function setParent(&$oParent)
     {
         $this->_oParent = $oParent;
+    }
+
+    /**
+     * @param eightselect_export|null $oParentExport
+     */
+    public function setParentExport(&$oParentExport)
+    {
+        $this->_oParentExport = $oParentExport;
     }
 
     /**

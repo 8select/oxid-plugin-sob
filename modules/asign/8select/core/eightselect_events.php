@@ -109,6 +109,21 @@ class eightselect_events
     {
         $aAttributes2Oxid = [
             [
+                'eightselectAttribute' => 'sku',
+                'oxidObject'           => 'OXARTNUM',
+                'type'                 => 'oxarticlesfield',
+            ],
+            [
+                'eightselectAttribute' => 'beschreibung',
+                'oxidObject'           => 'OXLONGDESC',
+                'type'                 => 'oxartextendsfield',
+            ],
+            [
+                'eightselectAttribute' => 'beschreibung1',
+                'oxidObject'           => 'OXLONGDESC',
+                'type'                 => 'oxartextendsfield',
+            ],
+            [
                 'eightselectAttribute' => 'ean',
                 'oxidObject'           => 'OXEAN',
                 'type'                 => 'oxarticlesfield',

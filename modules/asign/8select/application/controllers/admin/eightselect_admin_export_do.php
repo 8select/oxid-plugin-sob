@@ -95,20 +95,27 @@ class eightselect_admin_export_do extends DynExportBase
         /** @var oxArticle $oArticle */
         if ($oArticle = $this->getOneArticle($iCnt, $blContinue)) {
 
+            $sParentId = $oArticle->oxarticles__oxparentid->value;
+
             // set parent article (performance loading)
-            if (!isset($this->_aParent[$oParent->oxarticles__oxparentid->value])) {
+            if (!isset($this->_aParent[$sParentId])) {
                 // clear parent from other variant
                 $this->_aParent = [];
                 $oParent = $oArticle->getParentArticle();
-                $this->_aParent[$oArticle->oxarticles__oxparentid->value]['article_object'] = $oParent;
-                $this->_aParent[$oArticle->oxarticles__oxparentid->value]['category_string'] = $this->getCategoryString($oParent, ' / ');
+                $this->_aParent[$sParentId]['article_parent'] = $oParent;
+
+                /** @var eightselect_export $oEightSelectParentExport */
+                $oEightSelectParentExport = clone $oEightSelectTmpExport;
+                $oEightSelectParentExport->setArticle($oParent);
+                $oEightSelectParentExport->initData();
+                $this->_aParent[$sParentId]['export_parent'] = $oEightSelectParentExport;
             }
 
             /** @var eightselect_export $oEightSelectExport */
             $oEightSelectExport = clone $oEightSelectTmpExport;
             $oEightSelectExport->setArticle($oArticle);
-            $oEightSelectExport->setParent($this->_aParent[$oArticle->oxarticles__oxparentid->value]['article_object']);
-            $oEightSelectExport->setCategory($this->_aParent[$oArticle->oxarticles__oxparentid->value]['category_string']);
+            $oEightSelectExport->setParent($this->_aParent[$oArticle->oxarticles__oxparentid->value]['article_parent']);
+            $oEightSelectExport->setParentExport($this->_aParent[$oArticle->oxarticles__oxparentid->value]['export_parent']);
 
             // set header if it's the first article
             if ((int)$iCnt === 0) {
