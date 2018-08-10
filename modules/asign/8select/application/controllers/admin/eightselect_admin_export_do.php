@@ -98,7 +98,7 @@ class eightselect_admin_export_do extends DynExportBase
             $sParentId = $oArticle->oxarticles__oxparentid->value;
 
             // set parent article (performance loading)
-            if (!isset($this->_aParent[$sParentId])) {
+            if ($oArticle->isVariant() && !isset($this->_aParent[$sParentId])) {
                 // clear parent from other variant
                 $this->_aParent = [];
                 $oParent = $oArticle->getParentArticle();
@@ -114,8 +114,11 @@ class eightselect_admin_export_do extends DynExportBase
             /** @var eightselect_export $oEightSelectExport */
             $oEightSelectExport = clone $oEightSelectTmpExport;
             $oEightSelectExport->setArticle($oArticle);
-            $oEightSelectExport->setParent($this->_aParent[$oArticle->oxarticles__oxparentid->value]['article_parent']);
-            $oEightSelectExport->setParentExport($this->_aParent[$oArticle->oxarticles__oxparentid->value]['export_parent']);
+
+            if ($oArticle->isVariant()) {
+                $oEightSelectExport->setParent($this->_aParent[$oArticle->oxarticles__oxparentid->value]['article_parent']);
+                $oEightSelectExport->setParentExport($this->_aParent[$oArticle->oxarticles__oxparentid->value]['export_parent']);
+            }
 
             // set header if it's the first article
             if ((int)$iCnt === 0) {
@@ -156,7 +159,8 @@ class eightselect_admin_export_do extends DynExportBase
 
         $sSelect = "INSERT INTO {$sHeapTable} ";
         $sSelect .= "SELECT oxarticles.OXID FROM {$sArticleTable} as oxarticles, {$sO2CView} AS oxobject2category ";
-        $sSelect .= "WHERE OXPARENTID != '' AND oxarticles.OXPARENTID = oxobject2category.OXOBJECTID ";
+        $sSelect .= "WHERE (OXPARENTID != '' AND oxarticles.OXPARENTID = oxobject2category.OXOBJECTID) OR ";
+        $sSelect .= "(OXPARENTID = '' AND OXVARCOUNT = 0)";
 
         if ($sCatAdd) {
             $sSelect .= $sCatAdd;

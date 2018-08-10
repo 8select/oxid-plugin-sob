@@ -121,6 +121,11 @@ class eightselect_export extends oxBase
         $oEightSelectExportDynamic->setParent($this->_oParent);
         $oEightSelectExportDynamic->run();
 
+        // special handling for main articles without variants
+        if (!$this->_oArticle->isVariant()) {
+            $this->_aCsvAttributes['groesse'] = 'onesize';
+        }
+
         // copy empty variant infos from parent export
         if ($this->_oParentExport instanceof eightselect_export) {
             foreach ($this->_aCsvAttributes as $sAttrName => $sAttrValue) {
@@ -188,17 +193,14 @@ class eightselect_export extends oxBase
                 $sFieldValue = strip_tags($sFieldValue);
             }
 
-            // add slashes to " and ; in the data
-            $sFieldValue = addcslashes($sFieldValue, $sDelimiter . $sQualifier);
+            // add slashes to ; in the value
+            $sFieldValue = addcslashes($sFieldValue, $sDelimiter);
+
+            // add extra double quote if double quote is in there
+            $sFieldValue = str_replace('"', '""', $sFieldValue);
 
             // add delimiter and qualifier
-            if ($sFieldValue != '' && !is_integer($sFieldValue) && is_string($sFieldValue)) {
-                $sLine .= $sQualifier . $sFieldValue . $sQualifier;
-            } else {
-                $sLine .= $sFieldValue;
-            }
-
-            $sLine .= $sDelimiter;
+            $sLine .= $sQualifier . $sFieldValue . $sQualifier . $sDelimiter;
         }
 
         return rtrim($sLine, $sDelimiter);
