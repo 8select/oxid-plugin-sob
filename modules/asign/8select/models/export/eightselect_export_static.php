@@ -23,7 +23,7 @@ class eightselect_export_static extends eightselect_export_abstract
     {
         !isset($this->_aCsvAttributes['mastersku']) ? null : $this->_aCsvAttributes['mastersku'] = $this->_getVirtualMasterSku();
         !isset($this->_aCsvAttributes['model']) || !$this->_oParent ? null : $this->_aCsvAttributes['model'] = $this->_oParent->oxarticles__oxartnum->value;
-        !isset($this->_aCsvAttributes['status']) ? null : $this->_aCsvAttributes['status'] = (int)$this->_oArticle->isBuyable();
+        !isset($this->_aCsvAttributes['status']) ? null : $this->_aCsvAttributes['status'] = (int)($this->_oArticle->getStockStatus() >= 0);
         !isset($this->_aCsvAttributes['name1']) ? null : $this->_aCsvAttributes['name1'] = $this->_oArticle->oxarticles__oxtitle->value ? $this->_oArticle->oxarticles__oxtitle->value : $this->_oParent->oxarticles__oxtitle->value;
         !isset($this->_aCsvAttributes['produkt_url']) ? null : $this->_aCsvAttributes['produkt_url'] = $this->_oArticle->getLink();
         !isset($this->_aCsvAttributes['bilder']) ? null : $this->_aCsvAttributes['bilder'] = $this->_getPictures();

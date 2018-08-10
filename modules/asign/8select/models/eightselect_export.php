@@ -124,7 +124,7 @@ class eightselect_export extends oxBase
         // copy empty variant infos from parent export
         if ($this->_oParentExport instanceof eightselect_export) {
             foreach ($this->_aCsvAttributes as $sAttrName => $sAttrValue) {
-                if ($sAttrValue == '') {
+                if ($sAttrValue === '') {
                     $this->_aCsvAttributes[$sAttrName] = $this->_oParentExport->getAttributeValue($sAttrName);
                 }
             }
