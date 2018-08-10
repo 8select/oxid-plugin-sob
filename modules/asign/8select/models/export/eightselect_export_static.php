@@ -104,30 +104,60 @@ class eightselect_export_static extends eightselect_export_abstract
             $this->_aCsvAttributes['kategorie3'] = $this->_oParentExport->getAttributeValue('kategorie3');
             return;
         } elseif ($this->_oParent) {
-            $sOxid = $this->_oParent->getId();
+            $aCatIds = $this->_oParent->getCategoryIds();
         } else {
-            $sOxid = $this->_oArticle->getId();
+            $aCatIds = $this->_oArticle->getCategoryIds();
         }
 
-        $sCategoryTable = getViewName('oxcategories');
-        $sO2CTable = getViewName('oxobject2category');
-        $sSql = "SELECT treecat.OXTITLE
-                    FROM {$sO2CTable} AS oxobject2category
-                    JOIN {$sCategoryTable} AS oxcategories ON oxobject2category.OXCATNID = oxcategories.OXID
-                    JOIN {$sCategoryTable} as treecat ON oxcategories.OXROOTID = treecat.OXROOTID AND treecat.OXLEFT <= oxcategories.OXLEFT AND treecat.OXRIGHT >= oxcategories.OXRIGHT
-                    WHERE oxobject2category.OXOBJECTID = ? AND oxcategories.OXACTIVE = '1' AND oxcategories.OXHIDDEN = '0'
-                    ORDER BY oxobject2category.OXTIME, treecat.OXLEFT ASC
-                    LIMIT 3";
-        $aCategories = oxDb::getDb()->getCol($sSql, [$sOxid]);
+        $aCategories = array_slice($this->_getCategoryPaths($aCatIds), 0, 3);
 
-        if (count($aCategories) > 0) {
+        if (count($aCategories)) {
             $i = 1;
-            foreach ($aCategories as $sCategoryTitle) {
-                if (isset($this->_aCsvAttributes['kategorie' . $i])) {
-                    $this->_aCsvAttributes['kategorie' . $i] = $sCategoryTitle;
-                }
-                $i++;
+            foreach ($aCategories as $sCategoryPath) {
+                $this->_aCsvAttributes['kategorie'.$i++] = $sCategoryPath;
             }
         }
+    }
+
+    /**
+     * @param array $aCatIds
+     * @return array $aCatPaths
+     * @throws oxSystemComponentException
+     */
+    private function _getCategoryPaths($aCatIds)
+    {
+        static $oTmpCat = null;
+        if ($oTmpCat === null) {
+            $oTmpCat = oxNew('oxCategory');
+        }
+        
+        static $aCategoryPath = [];
+
+        $aCatPaths = array();
+        foreach ($aCatIds as $sCat) {
+            $aTmp = explode('=', $sCat);
+            $sCatId = $aTmp[0];
+            $iTime = (int)$aTmp[1];
+            if (!$aCategoryPath[$sCatId]) {
+                $oCat = clone $oTmpCat;
+                $oCat->load($sCatId);
+                $aCategories[$sCatId] = $oCat;
+                $sCatPath = str_replace('/', '%2F', html_entity_decode($oCat->oxcategories__oxtitle->value, ENT_QUOTES|ENT_HTML401));
+                while ($oCat->oxcategories__oxid->value != $oCat->oxcategories__oxrootid->value) {
+                    $sParentCatId = $oCat->oxcategories__oxparentid->value;
+                    $oCat = clone $oTmpCat;
+                    $oCat->load($sParentCatId);
+                    $sCatPath = str_replace('/', '%2F', html_entity_decode($oCat->oxcategories__oxtitle->value, ENT_QUOTES|ENT_HTML401)) . eightselect_export::EIGHTSELECT_CATEGORY_DELIMITER . $sCatPath;
+                }
+                $aCategoryPath[$sCatId] = $sCatPath;
+            }
+            if ($iTime == 1) {
+                array_unshift($aCatPaths, $aCategoryPath[$sCatId]);
+            } else {
+                array_push($aCatPaths, $aCategoryPath[$sCatId]);
+            }
+        }
+
+        return array_filter(array_unique($aCatPaths));
     }
 }

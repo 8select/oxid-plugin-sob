@@ -15,6 +15,9 @@ class eightselect_export extends oxBase
     /** @var string */
     const EIGHTSELECT_CSV_MULTI_DELIMITER = '|';
 
+    /** @var string */
+    const EIGHTSELECT_CATEGORY_DELIMITER = ' / ';
+
     /** @var int */
     public static $err_nofeedid = -99;
 
