@@ -9,6 +9,11 @@
     <div class="-eightselect-widget-container" style="display: none;">
         <div data-sku="[{$oDetailsProduct->getFieldData('oxartnum')}]" data-8select-widget-id="sys-psv" data-load-distance-factor="0"></div>
     </div>
+    <script type="text/javascript">
+        if (window._8select !== undefined) {
+            window._8select.initCSE();
+        }
+    </script>
 [{else}]
     [{$smarty.block.parent}]
 [{/if}]

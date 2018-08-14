@@ -19,9 +19,7 @@ $aModule = [
     'url'         => 'https://www.a-sign.ch',
     'email'       => 'info@a-sign.ch',
     'extend'      => [
-        'details'           => 'asign/8select/application/controllers/eightselect_details',
-        'oxwarticledetails' => 'asign/8select/application/components/widget/eightselect_oxwarticledetails',
-        'oxviewconfig'      => 'asign/8select/application/core/eightselect_oxviewconfig',
+        'oxviewconfig' => 'asign/8select/application/core/eightselect_oxviewconfig',
     ],
     'files'       => [
         // Core
@@ -64,11 +62,6 @@ $aModule = [
             'template' => 'layout/base.tpl',
             'block'    => 'base_style',
             'file'     => '/application/views/blocks/base_style.tpl',
-        ],
-        [
-            'template' => 'page/details/inc/productmain.tpl',
-            'block'    => 'details_productmain_variantselections',
-            'file'     => '/application/views/blocks/page/details/inc/eightselect_details_productmain_variantselections.tpl',
         ],
         [
             'template' => 'page/details/inc/related_products.tpl',
