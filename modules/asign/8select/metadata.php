@@ -20,6 +20,7 @@ $aModule = [
     'email'       => 'info@a-sign.ch',
     'extend'      => [
         'oxviewconfig' => 'asign/8select/application/core/eightselect_oxviewconfig',
+        'oxarticle'    => 'asign/8select/application/models/eightselect_oxarticle',
     ],
     'files'       => [
         // Core
