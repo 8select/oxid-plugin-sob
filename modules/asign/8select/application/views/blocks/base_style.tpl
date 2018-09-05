@@ -41,7 +41,9 @@
                         fnc: "tobasket",
                         sku: sku,
                         am: quantity
-                    }, location.reload());
+                    }, function(data){
+                        setTimeout(function() { location.reload(); }, 1000);
+                    });
 
                 return Promise.resolve()
             } catch (error) {
