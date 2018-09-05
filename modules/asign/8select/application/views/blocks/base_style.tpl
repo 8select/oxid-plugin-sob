@@ -1,6 +1,6 @@
 [{if !$oViewConf}]
     [{assign var="oViewConf" value=$oView->getConfig()}]
-[{/if}]
+    [{/if}]
 
 [{if $oViewConf->isEightSelectActive()}]
     <script type="text/javascript">
@@ -29,8 +29,26 @@
                 }
                 document.querySelector('[data-8select-widget-id=sys-psv]').style.display = 'block'
             }
-        }
+        };
+        window._eightselect_shop_plugin = window._eightselect_shop_plugin || {};
+        window._eightselect_shop_plugin.addToCart = function (sku, quantity, Promise) {
+            try {
+
+                jQuery.post('[{$oViewConf->getSelfActionLink()}]',
+                    {
+                        stoken: "[{$oViewConf->getSessionChallengeToken()}]",
+                        cl: "start",
+                        fnc: "tobasket",
+                        sku: sku,
+                        am: quantity
+                    }, location.reload());
+
+                return Promise.resolve()
+            } catch (error) {
+                return Promise.reject(error)
+            }
+        };
     </script>
-[{/if}]
+    [{/if}]
 
 [{$smarty.block.parent}]

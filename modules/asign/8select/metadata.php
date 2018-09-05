@@ -21,6 +21,7 @@ $aModule = [
     'extend'      => [
         'oxviewconfig' => 'asign/8select/application/core/eightselect_oxviewconfig',
         'oxarticle'    => 'asign/8select/application/models/eightselect_oxarticle',
+        'oxcmp_basket' => 'asign/8select/application/components/eightselect_oxcmp_basket',
     ],
     'files'       => [
         // Core
