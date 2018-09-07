@@ -30,20 +30,37 @@
                 document.querySelector('[data-8select-widget-id=sys-psv]').style.display = 'block'
             }
         };
+        window._stoken = "[{$oViewConf->getSessionChallengeToken()}]";
         window._eightselect_shop_plugin = window._eightselect_shop_plugin || {};
         window._eightselect_shop_plugin.addToCart = function (sku, quantity, Promise) {
             try {
 
                 jQuery.post('[{$oViewConf->getSelfActionLink()}]',
                     {
-                        stoken: "[{$oViewConf->getSessionChallengeToken()}]",
+                        stoken: window._stoken,
                         cl: "start",
                         fnc: "tobasket",
                         sku: sku,
                         am: quantity
-                    }, function(data){
-                        setTimeout(function() { location.reload(); }, 1000);
+                    }).done(function(){
+
+                    jQuery.getJSON("[{$oViewConf->getSelfActionLink()}]", {
+                        stoken: window._stoken,
+                        cl: "start",
+                        fnc: "getAjaxBasket",
+                        returntype: 'json',
+                    }, function(data, status){
+                        if (data.basket_ajax) {
+                            $(".minibasket-menu").replaceWith( data.basket_ajax );
+                            $(".shopping-bag-text").html( data.count_ajax );
+                        }
+                        if (data.stoken_ajax) {
+                            $("input[name=stoken]").val( data.stoken_ajax );
+                            window._stoken = data.stoken_ajax;
+                        }
                     });
+
+                });
 
                 return Promise.resolve()
             } catch (error) {
