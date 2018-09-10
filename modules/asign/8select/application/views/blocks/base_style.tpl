@@ -33,23 +33,19 @@
         window._stoken = "[{$oViewConf->getSessionChallengeToken()}]";
         window._eightselect_shop_plugin = window._eightselect_shop_plugin || {};
         window._eightselect_shop_plugin.addToCart = function (sku, quantity, Promise) {
-            try {
+            var reject = function (jqXHR, textStatus, errorThrown) {
+                return Promise.reject(errorThrown)
+            }
 
-                jQuery.post('[{$oViewConf->getSelfActionLink()}]',
-                    {
-                        stoken: window._stoken,
-                        cl: "start",
-                        fnc: "tobasket",
-                        sku: sku,
-                        am: quantity
-                    }).done(function(){
-
-                    jQuery.getJSON("[{$oViewConf->getSelfActionLink()}]", {
-                        stoken: window._stoken,
-                        cl: "start",
-                        fnc: "getAjaxBasket",
-                        returntype: 'json',
-                    }, function(data, status){
+            var updateMinibasket = function(){
+                jQuery.getJSON("[{$oViewConf->getSelfActionLink()}]", {
+                    stoken: window._stoken,
+                    cl: "start",
+                    fnc: "getAjaxBasket",
+                    returntype: 'json',
+                })
+                .done(function(data, status){
+                    try {
                         if (data.basket_ajax) {
                             $(".minibasket-menu").replaceWith( data.basket_ajax );
                             $(".shopping-bag-text").html( data.count_ajax );
@@ -58,11 +54,27 @@
                             $("input[name=stoken]").val( data.stoken_ajax );
                             window._stoken = data.stoken_ajax;
                         }
-                    });
+                    } catch (error) {
+                        console.log(error)
+                    }
+                    return Promise.resolve()
+                })
+                .fail(reject);
+            }
 
-                });
-
-                return Promise.resolve()
+            try {
+                jQuery.post(
+                    '[{$oViewConf->getSelfActionLink()}]',
+                    {
+                        stoken: window._stoken,
+                        cl: "start",
+                        fnc: "tobasket",
+                        sku: sku,
+                        am: quantity
+                    }
+                )
+                .done(updateMinibasket)
+                .fail(reject);
             } catch (error) {
                 return Promise.reject(error)
             }
