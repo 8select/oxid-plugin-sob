@@ -34,8 +34,8 @@
         window._eightselect_shop_plugin = window._eightselect_shop_plugin || {};
         window._eightselect_shop_plugin.addToCart = function (sku, quantity, Promise) {
             var reject = function (jqXHR, textStatus, errorThrown) {
-                return Promise.reject(errorThrown)
-            }
+                return Promise.reject(errorThrown);
+            };
 
             var updateMinibasket = function(){
                 jQuery.getJSON("[{$oViewConf->getSelfActionLink()}]", {
@@ -57,10 +57,10 @@
                     } catch (error) {
                         console.log(error)
                     }
-                    return Promise.resolve()
+                    return Promise.resolve();
                 })
                 .fail(reject);
-            }
+            };
 
             try {
                 jQuery.post(
@@ -76,7 +76,7 @@
                 .done(updateMinibasket)
                 .fail(reject);
             } catch (error) {
-                return Promise.reject(error)
+                return Promise.reject(error);
             }
         };
     </script>
