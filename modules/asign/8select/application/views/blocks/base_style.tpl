@@ -10,7 +10,7 @@
             window.eightlytics || function (w) {
                 w.eightlytics = function () {
                     window.eightlytics.queue = window.eightlytics.queue || [];
-                    window.eightlytics.queue.push(arguments)
+                    window.eightlytics.queue.push(arguments);
                 };
             }(w);
             var script = d.createElement(s);
@@ -25,9 +25,9 @@
         window._eightselect_config['sys'] = {
             callback: function (error, sku, widgetUuid) {
                 if (error) {
-                    return
+                    return;
                 }
-                document.querySelector('[data-8select-widget-id=sys-psv]').style.display = 'block'
+                document.querySelector('[data-8select-widget-id=sys-psv]').style.display = 'block';
             }
         };
         window._stoken = "[{$oViewConf->getSessionChallengeToken()}]";
@@ -35,7 +35,7 @@
         window._eightselect_shop_plugin.addToCart = function(sku, quantity, Promise) {
             var jqueryFail = function(reject) {
                 return function(jqXHR, textStatus, errorThrown) {
-                    return reject(errorThrown)
+                    return reject(errorThrown);
                 }
             };
 
@@ -46,12 +46,12 @@
                         cl: 'start',
                         fnc: 'tobasket',
                         sku: sku,
-                        am: quantity,
+                        am: quantity
                     })
                     .done(resolve)
-                    .fail(jqueryFail(reject))
+                    .fail(jqueryFail(reject));
                 } catch (error) {
-                    reject(error)
+                    reject(error);
                 }
             }).then(function() {
                 return new Promise(function(resolve, reject) {
@@ -59,28 +59,28 @@
                         stoken: window._stoken,
                         cl: 'start',
                         fnc: 'getAjaxBasket',
-                        returntype: 'json',
+                        returntype: 'json'
                     })
                     .done(function(data, status) {
                         try {
                             if (data.basket_ajax) {
-                                $('.minibasket-menu').replaceWith(data.basket_ajax)
-                                $('.shopping-bag-text').html(data.count_ajax)
+                                $('.minibasket-menu').replaceWith(data.basket_ajax);
+                                $('.shopping-bag-text').html(data.count_ajax);
                             }
                             if (data.stoken_ajax) {
-                                $('input[name=stoken]').val(data.stoken_ajax)
-                                window._stoken = data.stoken_ajax
+                                $('input[name=stoken]').val(data.stoken_ajax);
+                                window._stoken = data.stoken_ajax;
                             }
                         } catch (error) {
-                            console.log(error)
+                            console.log(error);
                         }
-                        resolve()
+                        resolve();
                     })
-                    .fail(jqueryFail(reject))
-                })
-            })
+                    .fail(jqueryFail(reject));
+                });
+            });
         };
     </script>
-    [{/if}]
+[{/if}]
 
 [{$smarty.block.parent}]
