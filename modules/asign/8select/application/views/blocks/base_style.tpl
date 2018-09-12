@@ -32,52 +32,53 @@
         };
         window._stoken = "[{$oViewConf->getSessionChallengeToken()}]";
         window._eightselect_shop_plugin = window._eightselect_shop_plugin || {};
-        window._eightselect_shop_plugin.addToCart = function (sku, quantity, Promise) {
-            var reject = function (jqXHR, textStatus, errorThrown) {
-                return Promise.reject(errorThrown);
+        window._eightselect_shop_plugin.addToCart = function(sku, quantity, Promise) {
+            var jqueryFail = function(reject) {
+                return function(jqXHR, textStatus, errorThrown) {
+                    return reject(errorThrown)
+                }
             };
 
-            var updateMinibasket = function(){
-                jQuery.getJSON("[{$oViewConf->getSelfActionLink()}]", {
-                    stoken: window._stoken,
-                    cl: "start",
-                    fnc: "getAjaxBasket",
-                    returntype: 'json',
-                })
-                .done(function(data, status){
-                    try {
-                        if (data.basket_ajax) {
-                            $(".minibasket-menu").replaceWith( data.basket_ajax );
-                            $(".shopping-bag-text").html( data.count_ajax );
-                        }
-                        if (data.stoken_ajax) {
-                            $("input[name=stoken]").val( data.stoken_ajax );
-                            window._stoken = data.stoken_ajax;
-                        }
-                    } catch (error) {
-                        console.log(error)
-                    }
-                    return Promise.resolve();
-                })
-                .fail(reject);
-            };
-
-            try {
-                jQuery.post(
-                    '[{$oViewConf->getSelfActionLink()}]',
-                    {
+            return new Promise(function(resolve, reject) {
+                try {
+                    jQuery.post('[{$oViewConf->getSelfActionLink()}]', {
                         stoken: window._stoken,
-                        cl: "start",
-                        fnc: "tobasket",
+                        cl: 'start',
+                        fnc: 'tobasket',
                         sku: sku,
-                        am: quantity
-                    }
-                )
-                .done(updateMinibasket)
-                .fail(reject);
-            } catch (error) {
-                return Promise.reject(error);
-            }
+                        am: quantity,
+                    })
+                    .done(resolve)
+                    .fail(jqueryFail(reject))
+                } catch (error) {
+                    reject(error)
+                }
+            }).then(function() {
+                return new Promise(function(resolve, reject) {
+                    jQuery.getJSON('[{$oViewConf->getSelfActionLink()}]', {
+                        stoken: window._stoken,
+                        cl: 'start',
+                        fnc: 'getAjaxBasket',
+                        returntype: 'json',
+                    })
+                    .done(function(data, status) {
+                        try {
+                            if (data.basket_ajax) {
+                                $('.minibasket-menu').replaceWith(data.basket_ajax)
+                                $('.shopping-bag-text').html(data.count_ajax)
+                            }
+                            if (data.stoken_ajax) {
+                                $('input[name=stoken]').val(data.stoken_ajax)
+                                window._stoken = data.stoken_ajax
+                            }
+                        } catch (error) {
+                            console.log(error)
+                        }
+                        resolve()
+                    })
+                    .fail(jqueryFail(reject))
+                })
+            })
         };
     </script>
     [{/if}]
