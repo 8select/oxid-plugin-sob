@@ -55,29 +55,17 @@
                 }
             }).then(function() {
                 return new Promise(function(resolve, reject) {
-                    jQuery.getJSON('[{$oViewConf->getSelfActionLink()}]', {
-                        stoken: window._stoken,
-                        cl: 'start',
-                        fnc: 'getAjaxBasket',
-                        returntype: 'json'
+                    jQuery.post('[{$oViewConf->getSelfActionLink()}]', {
+                        cl: 'oxwMinibasket'
                     })
                     .done(function(data, status) {
-                        try {
-                            if (data.basket_ajax) {
-                                $('.minibasket-menu').replaceWith(data.basket_ajax);
-                                $('.shopping-bag-text').html(data.count_ajax);
-                            }
-                            if (data.stoken_ajax) {
-                                $('input[name=stoken]').val(data.stoken_ajax);
-                                window._stoken = data.stoken_ajax;
-                            }
-                        } catch (error) {
-                            console.log(error);
-                        }
+                        //ToDo: replace first element of return value with exiting content element
                         resolve();
                     })
                     .fail(jqueryFail(reject));
                 });
+
+                // ToDo: add second call for basket count
             });
         };
     </script>
