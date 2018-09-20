@@ -59,13 +59,36 @@
                         cl: 'oxwMinibasket'
                     })
                     .done(function(data, status) {
-                        //ToDo: replace first element of return value with exiting content element
+                        try {
+                            var result = $(data);
+                            var element = $(result).first();
+
+                            var ident = element.attr('id') ? ('#' + element.attr('id')) : '.' + element.attr('class').replace(" ", ".");
+
+                            var selector = element.prop('tagName') + ident;
+
+                            $(selector).replaceWith(data);
+                        } catch (error) {
+                            console.log(error);
+                        }
                         resolve();
                     })
                     .fail(jqueryFail(reject));
-                });
 
-                // ToDo: add second call for basket count
+                    if ( $('.shopping-bag-text').length > 0 ) {
+                        jQuery.ajax({
+                            url: '[{$oViewConf->getSelfActionLink()}]',
+                            method: "POST",
+                            data: {
+                                stoken: window._stoken,
+                                cl: 'oxwMiniBasket',
+                                fnc: 'getBasketItemsCount'
+                            }
+                        }).done(function(data) {
+                            $('.shopping-bag-text,#countValue').html(data);
+                        });
+                    }
+                });
             });
         };
     </script>

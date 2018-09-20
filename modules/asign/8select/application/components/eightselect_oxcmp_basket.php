@@ -10,6 +10,8 @@ class eightselect_oxcmp_basket extends eightselect_oxcmp_basket_parent
      * @param null $aPersParam
      * @param bool $blOverride
      * @return mixed
+     * @throws oxConnectionException
+     * @throws oxSystemComponentException
      */
     public function tobasket($sProductId = null, $dAmount = null, $aSel = null, $aPersParam = null, $blOverride = false)
     {
@@ -26,32 +28,11 @@ class eightselect_oxcmp_basket extends eightselect_oxcmp_basket_parent
         return parent::tobasket($sProductId, $dAmount, $aSel, $aPersParam, $blOverride);
     }
 
-    public function getAjaxBasket() {
-        $oActView = $this->getConfig()->getTopActiveView(); //oxNew('oxubase');
-
-        $oSmarty = oxRegistry::get('oxUtilsView')->getSmarty();
-        $oSession = oxRegistry::getSession();
-
-        $oBasket = $oSession->getBasket();
-        $oBasket->calculateBasket(true);
-
-        $oSmarty->assign('oView', $oActView);
-        $oSmarty->assign('oViewConf', $oActView->getViewConfig());
-        $oSmarty->assign('oxcmp_basket', $oBasket);
-        $oSmarty->assign('oxcmp_user', $oActView->getComponent('oxcmp_user'));
-
-        $aReturn['basket_ajax'] = $oSmarty->fetch('widget/header/minibasket.tpl');
-        $aReturn['stoken_ajax'] = $oActView->getViewConfig()->getSessionChallengeToken();
-        $aReturn['count_ajax'] = $oBasket->getItemsCount();
-
-        header("Content-type: text/json");
-        oxRegistry::getUtils()->showMessageAndExit( json_encode($aReturn) );
-    }
-
     /**
      * @param $sSKU
      * @return object
      * @throws oxSystemComponentException
+     * @throws oxConnectionException
      */
     protected function _loadArticleWithSKU( $sSKU )
     {
