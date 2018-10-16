@@ -18,10 +18,6 @@ class eightselect_oxviewconfig extends eightselect_oxviewconfig_parent
 
         $this->_blEightSelectActive = (bool)$this->getConfig()->getConfigParam('blEightSelectActive');
 
-        if ($this->isPreview()) {
-            $this->_blEightSelectActive = true;
-        }
-
         if (!$this->getEightSelectApiId()) {
             $this->_blEightSelectActive = false;
         }
@@ -38,23 +34,15 @@ class eightselect_oxviewconfig extends eightselect_oxviewconfig_parent
     }
 
     /**
-     * @return bool
-     */
-    public function isPreview()
-    {
-        if ($this->getConfig()->getConfigParam('blEightSelectPreview')) {
-            return (bool)$this->getConfig()->getRequestParameter("8s_preview");
-        }
-
-        return false;
-    }
-
-    /**
      * @param string $sWidgetType
      * @return bool
      */
     public function showEightSelectWidget($sWidgetType)
     {
+        if ($this->getConfig()->getConfigParam('blEightSelectPreview') && !$this->getConfig()->getRequestParameter("8s_preview")) {
+            return false;
+        }
+
         $sWidgetType = ucwords($sWidgetType, "-");
         $sWidgetType = str_replace('-', '', $sWidgetType);
         return (bool) $this->getConfig()->getConfigParam('blEightSelectWidget'.$sWidgetType);
