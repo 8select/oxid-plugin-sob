@@ -27,10 +27,10 @@ class eightselect_export_static extends eightselect_export_abstract
             $sModel = $this->_oArticle->oxarticles__oxartnum->value;
         }
 
-        if ($this->_oArticle->oxarticles__oxtitle->rawValue) {
-            $sTitle = $this->_oArticle->oxarticles__oxtitle->rawValue;
+        if ($this->_oArticle->oxarticles__oxtitle->value) {
+            $sTitle = $this->_oArticle->oxarticles__oxtitle->value;
         } elseif ($this->_oParent) {
-            $sTitle = $this->_oParent->oxarticles__oxtitle->rawValue;
+            $sTitle = $this->_oParent->oxarticles__oxtitle->value;
         } else {
             $sTitle = '';
         }
@@ -38,7 +38,7 @@ class eightselect_export_static extends eightselect_export_abstract
         !isset($this->_aCsvAttributes['mastersku']) ? null : $this->_aCsvAttributes['mastersku'] = $this->_getVirtualMasterSku();
         !isset($this->_aCsvAttributes['model']) ? null : $this->_aCsvAttributes['model'] = $sModel;
         !isset($this->_aCsvAttributes['status']) ? null : $this->_aCsvAttributes['status'] = (int)($this->_oArticle->getStockStatus() >= 0);
-        !isset($this->_aCsvAttributes['name1']) ? null : $this->_aCsvAttributes['name1'] = $sTitle;
+        !isset($this->_aCsvAttributes['name1']) ? null : $this->_aCsvAttributes['name1'] = html_entity_decode($sTitle, ENT_QUOTES|ENT_HTML401);
         !isset($this->_aCsvAttributes['produkt_url']) ? null : $this->_aCsvAttributes['produkt_url'] = $this->_oArticle->getLink();
         !isset($this->_aCsvAttributes['bilder']) ? null : $this->_aCsvAttributes['bilder'] = $this->_getPictures();
 
