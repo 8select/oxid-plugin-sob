@@ -57,7 +57,14 @@ class eightselect_export_static extends eightselect_export_abstract
         }
 
         if (isset($this->_aCsvAttributes['streich_preis'])) {
-            $this->_aCsvAttributes['streich_preis'] = $this->_oArticle->getBasePrice();
+            /** @var oxPrice $oTPrice */
+            $oTPrice = $this->_oArticle->getTPrice();
+            if ($oTPrice) {
+                $fPrice = $oTPrice->getPrice();
+            } else {
+                $fPrice = $this->_aCsvAttributes['angebots_preis'];
+            }
+            $this->_aCsvAttributes['streich_preis'] = $fPrice;
         }
 
         $this->_setCategories();
