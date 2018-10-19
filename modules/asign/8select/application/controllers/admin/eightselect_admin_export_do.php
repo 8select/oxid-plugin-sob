@@ -159,8 +159,8 @@ class eightselect_admin_export_do extends DynExportBase
 
         $sSelect = "INSERT INTO {$sHeapTable} ";
         $sSelect .= "SELECT oxarticles.OXID FROM {$sArticleTable} as oxarticles, {$sO2CView} AS oxobject2category ";
-        $sSelect .= "WHERE (OXPARENTID != '' AND oxarticles.OXPARENTID = oxobject2category.OXOBJECTID) OR ";
-        $sSelect .= "(OXPARENTID = '' AND OXVARCOUNT = 0)";
+        $sSelect .= "WHERE ((OXPARENTID != '' AND oxarticles.OXPARENTID = oxobject2category.OXOBJECTID) ";
+        $sSelect .= "OR (OXPARENTID = '' AND OXVARCOUNT = 0))";
 
         if ($sCatAdd) {
             $sSelect .= $sCatAdd;
