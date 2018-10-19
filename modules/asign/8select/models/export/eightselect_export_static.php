@@ -113,9 +113,9 @@ class eightselect_export_static extends eightselect_export_abstract
     public function _setCategories()
     {
         if ($this->_oParentExport) {
-            $this->_aCsvAttributes['kategorie1'] = $this->_oParentExport->getAttributeValue('kategorie1');
-            $this->_aCsvAttributes['kategorie2'] = $this->_oParentExport->getAttributeValue('kategorie2');
-            $this->_aCsvAttributes['kategorie3'] = $this->_oParentExport->getAttributeValue('kategorie3');
+            !isset($this->_aCsvAttributes['kategorie1']) ? null : $this->_aCsvAttributes['kategorie1'] = $this->_oParentExport->getAttributeValue('kategorie1');
+            !isset($this->_aCsvAttributes['kategorie2']) ? null : $this->_aCsvAttributes['kategorie2'] = $this->_oParentExport->getAttributeValue('kategorie2');
+            !isset($this->_aCsvAttributes['kategorie3']) ? null : $this->_aCsvAttributes['kategorie3'] = $this->_oParentExport->getAttributeValue('kategorie3');
             return;
         } elseif ($this->_oParent) {
             $aCatIds = $this->_oParent->getCategoryIds();
@@ -128,7 +128,8 @@ class eightselect_export_static extends eightselect_export_abstract
         if (count($aCategories)) {
             $i = 1;
             foreach ($aCategories as $sCategoryPath) {
-                $this->_aCsvAttributes['kategorie'.$i++] = $sCategoryPath;
+                !isset($this->_aCsvAttributes['kategorie'.$i]) ? null : $this->_aCsvAttributes['kategorie'.$i] = $sCategoryPath;
+                $i++;
             }
         }
     }
