@@ -27,10 +27,10 @@ class eightselect_export_static extends eightselect_export_abstract
             $sModel = $this->_oArticle->oxarticles__oxartnum->value;
         }
 
-        if ($this->_oArticle->oxarticles__oxtitle->value) {
-            $sTitle = $this->_oArticle->oxarticles__oxtitle->value;
+        if ($this->_oArticle->oxarticles__oxtitle->rawValue) {
+            $sTitle = $this->_oArticle->oxarticles__oxtitle->rawValue;
         } elseif ($this->_oParent) {
-            $sTitle = $this->_oParent->oxarticles__oxtitle->value;
+            $sTitle = $this->_oParent->oxarticles__oxtitle->rawValue;
         } else {
             $sTitle = '';
         }
@@ -45,7 +45,7 @@ class eightselect_export_static extends eightselect_export_abstract
         /** @var oxManufacturer $oManufacturer */
         $oManufacturer = $this->_oArticle->getManufacturer();
         if ($oManufacturer) {
-            !isset($this->_aCsvAttributes['marke']) ? null : $this->_aCsvAttributes['marke'] = $oManufacturer->oxmanufacturers__oxtitle->value;
+            !isset($this->_aCsvAttributes['marke']) ? null : $this->_aCsvAttributes['marke'] = $oManufacturer->oxmanufacturers__oxtitle->rawValue;
         }
 
         if (isset($this->_aCsvAttributes['angebots_preis'])) {
@@ -157,12 +157,12 @@ class eightselect_export_static extends eightselect_export_abstract
                 $oCat = clone $oTmpCat;
                 $oCat->load($sCatId);
                 $aCategories[$sCatId] = $oCat;
-                $sCatPath = str_replace('/', '%2F', html_entity_decode($oCat->oxcategories__oxtitle->value, ENT_QUOTES|ENT_HTML401));
+                $sCatPath = str_replace('/', '%2F', html_entity_decode($oCat->oxcategories__oxtitle->rawValue, ENT_QUOTES|ENT_HTML401));
                 while ($oCat->oxcategories__oxid->value != $oCat->oxcategories__oxrootid->value) {
                     $sParentCatId = $oCat->oxcategories__oxparentid->value;
                     $oCat = clone $oTmpCat;
                     $oCat->load($sParentCatId);
-                    $sCatPath = str_replace('/', '%2F', html_entity_decode($oCat->oxcategories__oxtitle->value, ENT_QUOTES|ENT_HTML401)) . eightselect_export::EIGHTSELECT_CATEGORY_DELIMITER . $sCatPath;
+                    $sCatPath = str_replace('/', '%2F', html_entity_decode($oCat->oxcategories__oxtitle->rawValue, ENT_QUOTES|ENT_HTML401)) . eightselect_export::EIGHTSELECT_CATEGORY_DELIMITER . $sCatPath;
                 }
                 $aCategoryPath[$sCatId] = $sCatPath;
             }
