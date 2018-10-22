@@ -28,9 +28,9 @@ class eightselect_export_static extends eightselect_export_abstract
         }
 
         if ($this->_oArticle->oxarticles__oxtitle->value) {
-            $sTitle = $this->_oArticle->oxarticles__oxtitle->value;
+            $sTitle = $this->_oArticle->oxarticles__oxtitle->rawValue;
         } elseif ($this->_oParent) {
-            $sTitle = $this->_oParent->oxarticles__oxtitle->value;
+            $sTitle = $this->_oParent->oxarticles__oxtitle->rawValue;
         } else {
             $sTitle = '';
         }
