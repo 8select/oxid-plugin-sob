@@ -159,8 +159,7 @@ class eightselect_admin_export_do extends DynExportBase
         $sSelect = "INSERT INTO {$sHeapTable} ";
         $sSelect .= "SELECT oxarticles.OXID FROM {$sArticleTable} as oxarticles ";
         $sSelect .= "LEFT JOIN {$sArticleTable} AS mainart ON mainart.OXID = oxarticles.OXPARENTID ";
-        $sSelect .= "WHERE oxarticles.OXACTIVE = 1 ";
-        $sSelect .= "AND (oxarticles.OXPARENTID != '' OR (oxarticles.OXPARENTID = '' AND oxarticles.OXVARCOUNT = 0)) ";
+        $sSelect .= "WHERE (oxarticles.OXPARENTID != '' OR (oxarticles.OXPARENTID = '' AND oxarticles.OXVARCOUNT = 0)) ";
 
         if ($sCatAdd) {
             $sSelect .= $sCatAdd;
