@@ -24,6 +24,8 @@ class eightselect_events
             $oEightSelectModule = oxNew('oxModule');
             $oEightSelectModule->load('asign_8select');
 
+            self::_clearSmartyCache();
+
             /** @var eightselect_log $oEightSelectLog */
             $oEightSelectLog = oxNew('eightselect_log');
             $oEightSelectLog->addLog('Module onActivate', 'Version: ' . $oEightSelectModule->getInfo('version') . ' success');
@@ -43,6 +45,8 @@ class eightselect_events
             /** @var oxModule $oEightSelectModule */
             $oEightSelectModule = oxNew('oxModule');
             $oEightSelectModule->load('asign_8select');
+
+            self::_clearSmartyCache();
 
             /** @var eightselect_log $oEightSelectLog */
             $oEightSelectLog = oxNew('eightselect_log');
@@ -144,5 +148,24 @@ class eightselect_events
                 oxDb::getDb()->execute($sSqlInsert, [$oUtils->generateUId(), $oUtils->getShopId(), $aAttribute2Oxid['eightselectAttribute'], $aAttribute2Oxid['oxidObject'], $aAttribute2Oxid['type']]);
             }
         }
+    }
+
+    private static function _clearSmartyCache()
+    {
+        /** @var oxUtilsView $oUtilsView */
+        $oUtilsView = oxRegistry::get('oxUtilsView');
+        $sSmartyDir = $oUtilsView->getSmartyDir();
+
+        if ($sSmartyDir && is_readable($sSmartyDir)) {
+            foreach (glob($sSmartyDir . '*') as $sFile) {
+                if (!is_dir($sFile)) {
+                    @unlink($sFile);
+                }
+            }
+        }
+
+        //reset output cache
+        $oCache = oxNew('oxcache');
+        $oCache->reset(false);
     }
 }
