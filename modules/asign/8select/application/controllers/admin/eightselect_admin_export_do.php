@@ -155,12 +155,12 @@ class eightselect_admin_export_do extends DynExportBase
         $oArticle->setLanguage($iExpLang);
 
         $sArticleTable = getViewName("oxarticles", $iExpLang);
-        $sO2CView = getViewName('oxobject2category', $iExpLang);
 
         $sSelect = "INSERT INTO {$sHeapTable} ";
-        $sSelect .= "SELECT oxarticles.OXID FROM {$sArticleTable} as oxarticles, {$sO2CView} AS oxobject2category ";
-        $sSelect .= "WHERE ((OXPARENTID != '' AND oxarticles.OXPARENTID = oxobject2category.OXOBJECTID) ";
-        $sSelect .= "OR (OXPARENTID = '' AND OXVARCOUNT = 0))";
+        $sSelect .= "SELECT oxarticles.OXID FROM {$sArticleTable} as oxarticles ";
+        $sSelect .= "LEFT JOIN {$sArticleTable} AS mainart ON mainart.OXID = oxarticles.OXPARENTID ";
+        $sSelect .= "WHERE oxarticles.OXACTIVE = 1 ";
+        $sSelect .= "AND (oxarticles.OXPARENTID != '' OR (oxarticles.OXPARENTID = '' AND oxarticles.OXVARCOUNT = 0)) ";
 
         if ($sCatAdd) {
             $sSelect .= $sCatAdd;
@@ -173,11 +173,11 @@ class eightselect_admin_export_do extends DynExportBase
             $oEightSelectLog = oxNew('eightselect_log');
             $mDateTime = $oEightSelectLog->getLastSuccessExportDate($blFull);
             if ($mDateTime) {
-                $sSelect .= " AND oxarticles.OXTIMESTAMP >= " . $oDB->quote($mDateTime);
+                $sSelect .= "AND (oxarticles.OXTIMESTAMP >= " . $oDB->quote($mDateTime) . " OR mainart.OXTIMESTAMP >= " . $oDB->quote($mDateTime) . ") ";
             }
         }
 
-        $sSelect .= " GROUP BY oxarticles.OXID ORDER BY OXARTNUM ASC";
+        $sSelect .= "GROUP BY oxarticles.OXID ORDER BY oxarticles.OXARTNUM ASC";
 
         return $oDB->execute($sSelect) ? true : false;
     }
