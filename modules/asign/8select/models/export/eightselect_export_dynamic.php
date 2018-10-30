@@ -6,8 +6,9 @@
  */
 class eightselect_export_dynamic extends eightselect_export_abstract
 {
-    private $_aIgnoreConvertHtmlToText = [
-        'beschreibung',
+    private $_aConvertHtml = [
+        'beschreibung'  => '_removeNewLines',
+        'beschreibung1' => '_removeNewLinesAndHtml',
     ];
 
     /**
@@ -37,11 +38,11 @@ class eightselect_export_dynamic extends eightselect_export_abstract
                 $sType = $oAttr2oxid->eightselect_attribute2oxid__oxtype->value;
                 if ($sType === 'oxarticlesfield') {
                     $this->_processArticlesField($oAttr2oxid);
-                } elseif($sType === 'oxartextendsfield') {
+                } elseif ($sType === 'oxartextendsfield') {
                     $this->_processArtExtendsField($oAttr2oxid);
-                } elseif($sType === 'oxattributeid') {
+                } elseif ($sType === 'oxattributeid') {
                     $this->_processAttribute($oAttr2oxid);
-                } elseif($sType === 'oxvarselect') {
+                } elseif ($sType === 'oxvarselect') {
                     $this->_processVarSelect($oAttr2oxid);
                 }
             }
@@ -59,7 +60,7 @@ class eightselect_export_dynamic extends eightselect_export_abstract
         $sSql = "SELECT {$sArticleField} FROM {$sTable} WHERE OXID = ?";
         $sValue = oxDb::getDb()->getOne($sSql, [$this->_oArticle->getId()]);
 
-        $sValue = $this->_convertHtmlToText($sValue, $oAttr2oxid->eightselect_attribute2oxid__esattribute->value);
+        $sValue = $this->_convertHtml($sValue, $oAttr2oxid->eightselect_attribute2oxid__esattribute->value);
         $this->_aCsvAttributes[$oAttr2oxid->eightselect_attribute2oxid__esattribute->value] = $sValue;
     }
 
@@ -74,7 +75,7 @@ class eightselect_export_dynamic extends eightselect_export_abstract
         $sSql = "SELECT {$sArtExtendsField} FROM {$sTable} WHERE OXID = ?";
         $sValue = oxDb::getDb()->getOne($sSql, [$this->_oArticle->getId()]);
 
-        $sValue = $this->_convertHtmlToText($sValue, $oAttr2oxid->eightselect_attribute2oxid__esattribute->value);
+        $sValue = $this->_convertHtml($sValue, $oAttr2oxid->eightselect_attribute2oxid__esattribute->value);
         $this->_aCsvAttributes[$oAttr2oxid->eightselect_attribute2oxid__esattribute->value] = $sValue;
     }
 
@@ -94,7 +95,7 @@ class eightselect_export_dynamic extends eightselect_export_abstract
                     AND o2a.OXOBJECTID = ?";
         $sValue = oxDb::getDb()->getOne($sSql, [$sAttributeId, $this->_oArticle->getId()]);
 
-        $sValue = $this->_convertHtmlToText($sValue, $oAttr2oxid->eightselect_attribute2oxid__esattribute->value);
+        $sValue = $this->_convertHtml($sValue, $oAttr2oxid->eightselect_attribute2oxid__esattribute->value);
         $this->_aCsvAttributes[$oAttr2oxid->eightselect_attribute2oxid__esattribute->value] = $sValue;
     }
 
@@ -108,20 +109,48 @@ class eightselect_export_dynamic extends eightselect_export_abstract
     }
 
     /**
-     * Convert newlines to break and remove HTML tags
+     * Convert HTML content
      *
      * @param string $sValue
      * @param string $sEightSelectAttributeName
      * @return string $sValue
      */
-    private function _convertHtmlToText($sValue, $sEightSelectAttributeName)
+    private function _convertHtml($sValue, $sEightSelectAttributeName)
     {
-        if (!in_array($sEightSelectAttributeName, $this->_aIgnoreConvertHtmlToText)) {
-            $sWithOutNewLines = str_replace(["\r\n", "\r", "\n"], '<br>', $sValue);
-            $sWihtOutHtml = strip_tags($sWithOutNewLines);
-            $sValue = html_entity_decode($sWihtOutHtml);
+        if (empty($sValue)) {
+            return $sValue;
+        }
+
+        if (array_key_exists($sEightSelectAttributeName, $this->_aConvertHtml) && method_exists($this, $sFunc = $this->_aConvertHtml[$sEightSelectAttributeName])) {
+            $sValue = $this->$sFunc($sValue);
         }
 
         return $sValue;
+    }
+
+    /**
+     * Remove newlines
+     *
+     * @param string $sValue
+     * @return string
+     */
+    private function _removeNewLines($sValue)
+    {
+        return str_replace(["\r\n", "\r", "\n"], ' ', $sValue);
+    }
+
+    /**
+     * Remove newlines and HTML tags
+     *
+     * @param string $sValue
+     * @return string
+     */
+    private function _removeNewLinesAndHtml($sValue)
+    {
+        $sWithOutNewLines = str_replace(["\r\n", "\r", "\n"], '<br>', $sValue);
+        $sWithExtraSpaces = str_replace(">", '> ', $sWithOutNewLines);
+        $sWithOutHtml = strip_tags($sWithExtraSpaces);
+        $sWithOutHtmlEntities = html_entity_decode($sWithOutHtml);
+        return trim(preg_replace('/[\h\xa0\xc2]+/', ' ', $sWithOutHtmlEntities));
     }
 }
