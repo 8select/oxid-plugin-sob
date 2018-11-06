@@ -14,7 +14,7 @@ $aModule = [
                       <p>Gerne begleiten wir Sie bei der Installation und stehen auch sonst für alle Fragen rund um die Installation zur Verfügung. Sie erreichen uns bei Fragen unter <b>+49 (0)941 20 609 6-10</b> und per E-Mail unter <b><a href="mailto:onboarding@8select.de">onboarding@8select.de</a></b></p>
                       <p>Ihr 8select-Team</p>',
     'thumbnail'   => '8selectLogo.jpeg',
-    'version'     => '1.0.0 RC1',
+    'version'     => '__VERSION__',
     'author'      => 'A-SIGN GmbH',
     'url'         => 'https://www.a-sign.ch',
     'email'       => 'info@a-sign.ch',
