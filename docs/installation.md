@@ -16,6 +16,10 @@
 
 ### Anforderungen an Webserver / MySQL / PHP / PHP Erweiterungen
 
+Voraussetzung ist PHP 5.5.x.
+
+Weitere Voraussetzungen ergeben sich aus denen der Oxid Version:
+
 - [Oxid EE](https://docs.oxid-esales.com/eshop/de/5.3/installation/neu-installation/systemvoraussetzungen/systemvoraussetzungen-ee.html)
 - [Oxid CE](https://docs.oxid-esales.com/eshop/de/5.3/installation/neu-installation/systemvoraussetzungen/systemvoraussetzungen-ce.html)
 - [Oxid PE](https://docs.oxid-esales.com/eshop/de/5.3/installation/neu-installation/systemvoraussetzungen/systemvoraussetzungen-pe.html)
