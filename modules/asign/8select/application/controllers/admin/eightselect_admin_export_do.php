@@ -20,6 +20,11 @@ class eightselect_admin_export_do extends DynExportBase
     public $sClassMain = "eightselect_admin_export_main";
 
     /**
+     * define max. number of records to export in one go
+     */
+    public $_iExportPerTick = 1000000;
+
+    /**
      * Current class template name.
      *
      * @var string
@@ -28,6 +33,7 @@ class eightselect_admin_export_do extends DynExportBase
 
     /** @var array */
     private $_aParent = [];
+
 
     /**
      * Prepares export
@@ -212,8 +218,6 @@ class eightselect_admin_export_do extends DynExportBase
         $_GET[$sType] = true;
         $_GET['iStart'] = 0;
         $_GET['refresh'] = 0;
-
-        $this->_iExportPerTick = 1000000;
 
         $this->start();
         $this->run();
