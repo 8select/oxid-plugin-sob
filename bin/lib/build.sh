@@ -24,6 +24,7 @@ rm -rf vendor
 rm -rf bin/lib
 rm -f bin/release.sh
 rm -rf dist
+rm -rf .git*
 
 sed -i '' "s@__VERSION__@${VERSION}@g" modules/asign/8select/metadata.php
 
