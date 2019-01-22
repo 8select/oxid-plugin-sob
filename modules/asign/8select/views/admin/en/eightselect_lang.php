@@ -38,5 +38,5 @@ $aLang = [
     'EIGHTSELECT_ADMIN_EXPORT_UPLOAD_SUCCESS'      => 'Feed successfully transferred',
     'EIGHTSELECT_ADMIN_EXPORT_UPLOAD_NOFILE'       => 'Feed not found!',
     'EIGHTSELECT_ADMIN_EXPORT_UPLOAD_UNKNOWNERROR' => 'Unknown upload error!',
-    'EIGHTSELECT_ADMIN_EXPORT_UPLOAD_RUNNING'      => 'Upload running...',
+    'EIGHTSELECT_ADMIN_EXPORT_UPLOAD_RUNNING'      => 'Upload running...'
 ];
