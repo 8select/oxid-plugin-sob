@@ -1,5 +1,9 @@
 # Change Log
 
+## [1.0.5](https://github.com/8select/oxid-plugin-sob/tree/1.0.5) (2019-1-28)
+
+[Full Changelog](https://github.com/8select/oxid-plugin-sob/compare/1.0.4...1.0.5)
+
 ## [1.0.4](https://github.com/8select/oxid-plugin-sob/tree/1.0.4) (2019-1-21)
 
 [Full Changelog](https://github.com/8select/oxid-plugin-sob/compare/1.0.3...1.0.4)
