@@ -1,10 +1,10 @@
 #!/usr/bin/env bash -e
 . $(dirname "$0")/lib/common.sh
 
-if [ "$#" -ne 2 ]; then
+if [ "$#" -ne 4 ]; then
     echo "Illegal number of parameters"
     echo "Usage:"
-    echo "bin/release.sh <version> <profile>"
+    echo "bin/release.sh <version> <profile> <S3-access-key> <S3-access-key-secret>"
     exit 1
 fi
 
