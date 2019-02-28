@@ -31,7 +31,7 @@ class eightselect_dispatcher
         $this->oRequest = $request;
 
         $sMethod = $this->oRequest->getArgument(eightselect_request::ARGUMENT_METHOD);
-        $iShopId = (int)$this->oRequest->getArgument(eightselect_request::ARGUMENT_SHOP_ID);
+        $iShopId = $this->oRequest->getArgument(eightselect_request::ARGUMENT_SHOP_ID);
 
         if (!oxDb::getDb()->getOne('SELECT 1 FROM oxshops WHERE OXID = ?', [$iShopId])) {
             throw new UnexpectedValueException("Can't find ShopID {$iShopId}");
