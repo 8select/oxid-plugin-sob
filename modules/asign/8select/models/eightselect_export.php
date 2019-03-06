@@ -193,8 +193,7 @@ class eightselect_export extends oxBase
                 $sFieldValue = strip_tags($sFieldValue);
             }
 
-            // add slashes to ; in the value
-            $sFieldValue = addcslashes($sFieldValue, $sDelimiter);
+            // Don't add slashes to ; in the value: They are already in quotes, escaping them only breaks HTML entities
 
             // add extra double quote if double quote is in there
             $sFieldValue = str_replace('"', '""', $sFieldValue);
