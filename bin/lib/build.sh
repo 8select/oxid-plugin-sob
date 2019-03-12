@@ -1,7 +1,7 @@
 PLUGIN_NAME="CseEightselectBasic"
 
 DIST_DIR="dist"
-ZIP_NAME="${PLUGIN_NAME}_Oxid-EE-5_${VERSION}.zip"
+ZIP_NAME="${PLUGIN_NAME}_Oxid-4-5_${VERSION}.zip"
 DIST_PATH="${CURRENT_DIR}/../../${DIST_DIR}/${ZIP_NAME}"
 BUILD_DIR=`mktemp -d`
 PLUGIN_DIR="${BUILD_DIR}/${PLUGIN_NAME}"
