@@ -103,25 +103,27 @@ class eightselect_admin_export_do extends DynExportBase
 
             $sParentId = $oArticle->oxarticles__oxparentid->value;
 
-            // set parent article (performance loading)
-            if ($oArticle->isVariant() && !isset($this->_aParent[$sParentId])) {
-                // clear parent from other variant
-                $this->_aParent = [];
-                $oParent = $oArticle->getParentArticle();
-                $this->_aParent[$sParentId]['article_parent'] = $oParent;
-
-                /** @var eightselect_export $oEightSelectParentExport */
-                $oEightSelectParentExport = clone $oEightSelectTmpExport;
-                $oEightSelectParentExport->setArticle($oParent);
-                $oEightSelectParentExport->initData();
-                $this->_aParent[$sParentId]['export_parent'] = $oEightSelectParentExport;
-            }
-
             /** @var eightselect_export $oEightSelectExport */
             $oEightSelectExport = clone $oEightSelectTmpExport;
             $oEightSelectExport->setArticle($oArticle);
 
-            if ($oArticle->isVariant()) {
+            // set parent article (performance loading)
+            if ($oArticle->isVariant() && !isset($this->_aParent[$sParentId])) {
+                // clear parent from other variant
+                $this->_aParent = [];
+                // $oParent can be false here: Check for this possibility
+                if ($oParent = $oArticle->getParentArticle()) {
+                    $this->_aParent[$sParentId]['article_parent'] = $oParent;
+
+                    /** @var eightselect_export $oEightSelectParentExport */
+                    $oEightSelectParentExport = clone $oEightSelectTmpExport;
+                    $oEightSelectParentExport->setArticle($oParent);
+                    $oEightSelectParentExport->initData();
+                    $this->_aParent[$sParentId]['export_parent'] = $oEightSelectParentExport;
+                }
+            }
+
+            if ($oArticle->isVariant() && isset($this->_aParent[$sParentId])) {
                 $oEightSelectExport->setParent($this->_aParent[$oArticle->oxarticles__oxparentid->value]['article_parent']);
                 $oEightSelectExport->setParentExport($this->_aParent[$oArticle->oxarticles__oxparentid->value]['export_parent']);
             }
