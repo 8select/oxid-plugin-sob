@@ -1,5 +1,13 @@
 # Change Log
 
+## [1.0.6](https://github.com/8select/oxid-plugin-sob/tree/1.0.6) (2019-3-13)
+
+[Full Changelog](https://github.com/8select/oxid-plugin-sob/compare/1.0.5...1.0.6)
+
+**Fixed Bugs:**
+
+- Release/1.0.6 [\#7](https://github.com/8select/oxid-plugin-sob/pull/7) ([norisk-it](https://github.com/norisk-it))
+
 ## [1.0.5](https://github.com/8select/oxid-plugin-sob/tree/1.0.5) (2019-1-28)
 
 [Full Changelog](https://github.com/8select/oxid-plugin-sob/compare/1.0.4...1.0.5)
