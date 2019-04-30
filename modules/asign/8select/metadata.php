@@ -23,6 +23,7 @@ $aModule = [
         'oxarticle'     => 'asign/8select/application/models/eightselect_oxarticle',
         'oxcmp_basket'  => 'asign/8select/application/components/eightselect_oxcmp_basket',
         'oxwminibasket' => 'asign/8select/application/components/eightselect_oxwminibasket',
+        'module_config' => 'asign/8select/application/controllers/admin/eightselect_module_config',
     ],
     'files'       => [
         // Core
@@ -58,6 +59,12 @@ $aModule = [
             'block'    => 'checkout_thankyou_main',
             'file'     => '/application/views/blocks/page/checkout/eightselect_performance-tracking.tpl',
         ],
+        array(
+            'template' => 'module_config.tpl',
+            'block'    => 'admin_module_config_var_type_select',
+            'file'     => '/application/views/blocks/eightselect_module_config.tpl',
+            'position' => 1,
+        ),
     ],
     'settings'    => [
         [
@@ -89,6 +96,18 @@ $aModule = [
             'name'  => 'blEightSelectWidgetSysPsv',
             'type'  => 'bool',
             'value' => 'true',
+        ],
+        [
+            'group' => 'eightselect_widget',
+            'name'  => 'sArticleSkuField',
+            'type'  => 'select',
+            'value' => 'oxarticles;OXARTNUM',
+        ],
+        [
+            'group' => 'eightselect_widget',
+            'name'  => 'sArticleColorField',
+            'type'  => 'select',
+            'value' => 'oxvarselect;Farbe',
         ],
         [
             'group' => 'eightselect_feed',
