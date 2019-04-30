@@ -93,8 +93,8 @@ class eightselect_export extends oxSuperCfg
     {
         $categoryAssignView = getViewName('oxobject2category');
         $maxCategories = count($tableFields);
-        $categoryIdQuery = "SELECT OXCATNID FROM $categoryAssignView WHERE OXOBJECTID = ? ORDER BY OXTIME LIMIT ?";
-        $categoryIds = oxDb::getDb()->getCol($categoryIdQuery, [$articleId, $maxCategories]);
+        $categoryIdQuery = "SELECT OXCATNID FROM $categoryAssignView WHERE OXOBJECTID = ? ORDER BY OXTIME LIMIT $maxCategories";
+        $categoryIds = oxDb::getDb()->getCol($categoryIdQuery, [$articleId]);
         $categoryPaths = $this->_getCategoryPaths($categoryIds);
         foreach ($categoryPaths as $i => $categoryPath) {
             $this->data['oxcategory.' . $i] = ['label' => 'Category ' . $i, 'value' => $categoryPath,];
@@ -110,7 +110,7 @@ class eightselect_export extends oxSuperCfg
     protected function _buildAttributeFields($articleId, $tableFields)
     {
         $attributeAssignView = getViewName('oxobject2attribute');
-        $attributeQuery = "SELECT OXVALUE FROM $attributeAssignView WHERE OXOBJECTID = ?";
+        $attributeQuery = "SELECT OXVALUE FROM $attributeAssignView WHERE OXATTRID = ? AND OXOBJECTID = ?";
         foreach ($tableFields as $fieldData) {
             list(, $attributeId) = explode('=', $fieldData['name']);
             $attributeValue = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getOne($attributeQuery, [$attributeId, $articleId]);
@@ -135,11 +135,11 @@ class eightselect_export extends oxSuperCfg
             'value' => '',
         ];
         if ($vendorId) {
-            $manufacturerView = getViewName('oxvendor');
-            $manufacturerQuery = "SELECT OXTITLE FROM $manufacturerView WHERE OXID = ?";
-            $manufacturerTitle = oxDb::getDb()->getOne($manufacturerQuery, [$vendorId]);
-            if ($manufacturerTitle) {
-                $this->data[$fieldData['name']]['value'] = $manufacturerTitle;
+            $vendorView = getViewName('oxvendor');
+            $vendorQuery = "SELECT OXTITLE FROM $vendorView WHERE OXID = ?";
+            $vendorTitle = oxDb::getDb()->getOne($vendorQuery, [$vendorId]);
+            if ($vendorTitle) {
+                $this->data[$fieldData['name']]['value'] = $vendorTitle;
             }
         }
     }
