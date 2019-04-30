@@ -84,27 +84,4 @@ class eightselect_attribute extends oxSuperCfg
     {
         return $this->_aVarNames;
     }
-
-    /**
-     * @param string Field type (e.g. 'configurable' or 'forUpdate')
-     * @return array
-     */
-    public function getFieldsByType($sFieldType, $blSorted = false)
-    {
-        if (isset($this->_aFieldsByType[$sFieldType])) {
-            return $this->_aFieldsByType[$sFieldType];
-        }
-
-        $aFields = [];
-
-        foreach ($this->getAllFields($blSorted) as $sName => $aFieldProps) {
-            if ($aFieldProps[$sFieldType]) {
-                $aFields[] = $sName;
-            }
-        }
-
-        $this->_aFieldsByType[$sFieldType] = array_intersect_key($this->getAllFields($blSorted), array_flip($aFields));
-
-        return $this->_aFieldsByType[$sFieldType];
-    }
 }
