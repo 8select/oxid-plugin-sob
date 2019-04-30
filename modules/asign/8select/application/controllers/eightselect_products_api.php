@@ -27,15 +27,14 @@ class eightselect_products_api extends oxUBase
         parent::init();
         header("Content-Type: application/json; charset=utf-8");
 
-        $error = new stdClass();
-        $error->error = 'AUTH_ERROR';
+        $error = ['error' => 'AUTH_ERROR'];
 
         // First: Check if we even got those IDs configured
         $apiId = $this->getConfig()->getConfigParam('sEightSelectApiId');
         $feedId = $this->getConfig()->getConfigParam('sEightSelectFeedId');
         if (!$apiId || !$feedId) {
             header("HTTP/1.1 500 Internal Server Error");
-            $error->message = 'credentials not configured';
+            $error['message'] = 'credentials not configured';
             die(json_encode($error));
         }
 
@@ -50,7 +49,7 @@ class eightselect_products_api extends oxUBase
         // Third: Check if the given credentials match with ours
         if ($givenFeedId !== $feedId || $givenApiId !== $apiId) {
             header("HTTP/1.1 403 Forbidden");
-            $error->message = 'credential mismatch';
+            $error['message'] = 'credential mismatch';
             die(json_encode($error));
         }
     }
@@ -62,11 +61,12 @@ class eightselect_products_api extends oxUBase
      */
     public function render()
     {
-        $response = new stdClass();
-        $response->limit = $this->getLimit();
-        $response->offset = $this->getOffset();
-        $response->total = $this->getTotalArticlesSum();
-        $response->data = $this->getData();
+        $response = [
+            'limit'  => $this->getLimit(),
+            'offset' => $this->getOffset(),
+            'total'  => $this->getTotalArticlesSum(),
+            'data'   => $this->getData(),
+        ];
 
         die(json_encode($response));
     }
@@ -77,12 +77,12 @@ class eightselect_products_api extends oxUBase
     public function renderAttributes()
     {
         $data = oxRegistry::get('eightselect_attribute')->getAllFields();
-
-        $response = new stdClass();
-        $response->limit = count($data);
-        $response->offset = 0;
-        $response->total = count($data);
-        $response->data = $data;
+        $response = [
+            'limit'  => count($data),
+            'offset' => 0,
+            'total'  => count($data),
+            'data'   => $data,
+        ];
 
         die(json_encode($response));
     }
@@ -93,12 +93,12 @@ class eightselect_products_api extends oxUBase
     public function renderVariantDimensions()
     {
         $data = oxRegistry::get('eightselect_attribute')->getVarNames();
-
-        $response = new stdClass();
-        $response->limit = count($data);
-        $response->offset = 0;
-        $response->total = count($data);
-        $response->data = $data;
+        $response = [
+            'limit'  => count($data),
+            'offset' => 0,
+            'total'  => count($data),
+            'data'   => $data,
+        ];
 
         die(json_encode($response));
     }
