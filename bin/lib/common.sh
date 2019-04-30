@@ -11,5 +11,3 @@ CURRENT_DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 VERSION=${1}
 PROFILE=${2}
-S3_ACCESS_KEY=${3}
-S3_ACCESS_KEY_SECRET=${4}
