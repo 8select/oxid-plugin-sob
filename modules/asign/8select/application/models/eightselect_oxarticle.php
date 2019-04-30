@@ -56,8 +56,10 @@ class eightselect_oxarticle extends eightselect_oxarticle_parent
     private function getEightSelectColorLabels()
     {
         if ($this->_aEightSelectColorLabels === null) {
-            $sSql = "SELECT OXOBJECT FROM eightselect_attribute2oxid WHERE ESATTRIBUTE = 'farbe'";
-            $this->_aEightSelectColorLabels = (array) oxDb::getDb()->getCol($sSql);
+            $colorField = oxRegistry::getConfig()->getConfigParam('SHOP_MODULE_sArticleColorField');
+            list(, $colorLabel) = explode(';', $colorField);
+
+            $this->_aEightSelectColorLabels = [$colorLabel];
         }
 
         return $this->_aEightSelectColorLabels;
