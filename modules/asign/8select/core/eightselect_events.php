@@ -7,7 +7,6 @@ class eightselect_events
 {
     static private $oMetaDataHandler = null;
     static private $sLogTable = null;
-    static private $sAttribute2OxidTable = null;
 
     /**
      * Execute action on activate event
@@ -16,8 +15,7 @@ class eightselect_events
     {
         self::_init();
         self::_addLogTable();
-        self::_addAttribute2OxidTable();
-        self::_addAttributes2Oxid();
+        self::_addEndpointsToSeo();
 
         try {
             /** @var oxModule $oEightSelectModule */
@@ -63,9 +61,6 @@ class eightselect_events
 
         $o8SelectLog = oxNew('eightselect_log');
         self::$sLogTable = $o8SelectLog->getCoreTableName();
-
-        $o8SelectAttribute2Oxid = oxNew('eightselect_attribute2oxid');
-        self::$sAttribute2OxidTable = $o8SelectAttribute2Oxid->getCoreTableName();
     }
 
     /**
@@ -89,64 +84,28 @@ class eightselect_events
     }
 
     /**
-     * Add attribute 2 Oxid table
+     * _addEndpointsToSeo
+     * -----------------------------------------------------------------------------------------------------------------
+     * Add API endpoints to as oxSEO entries
      */
-    private static function _addAttribute2OxidTable()
+    private static function _addEndpointsToSeo()
     {
-        $sTableName = self::$sAttribute2OxidTable;
-
-        if (!self::$oMetaDataHandler->tableExists($sTableName)) {
-            $sSql = "CREATE TABLE `{$sTableName}` (
-                        `OXID` VARCHAR(32) NOT NULL,
-                        `OXSHOPID` INT(11) NOT NULL,
-                        `ESATTRIBUTE` VARCHAR(32) NOT NULL,
-                        `OXOBJECT` VARCHAR(32) NOT NULL,
-                        `OXTYPE` VARCHAR(32) NOT NULL,
-                        `OXTIMESTAMP` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                        PRIMARY KEY (`OXID`)
-                      ) CHARSET=utf8";
-            oxDb::getDb()->execute($sSql);
-        }
-    }
-
-    private static function _addAttributes2Oxid()
-    {
-        $aAttributes2Oxid = [
-            [
-                'eightselectAttribute' => 'sku',
-                'oxidObject'           => 'OXARTNUM',
-                'type'                 => 'oxarticlesfield',
-            ],
-            [
-                'eightselectAttribute' => 'beschreibung',
-                'oxidObject'           => 'OXLONGDESC',
-                'type'                 => 'oxartextendsfield',
-            ],
-            [
-                'eightselectAttribute' => 'beschreibung1',
-                'oxidObject'           => 'OXLONGDESC',
-                'type'                 => 'oxartextendsfield',
-            ],
-            [
-                'eightselectAttribute' => 'ean',
-                'oxidObject'           => 'OXEAN',
-                'type'                 => 'oxarticlesfield',
-            ],
-            [
-                'eightselectAttribute' => 'name2',
-                'oxidObject'           => 'OXSHORTDESC',
-                'type'                 => 'oxarticlesfield',
-            ],
+        $baseDir = 'cse-api/';
+        $urls = [
+            'products'           => 'render',
+            'attributes'         => 'renderAttributes',
+            'variant-dimensions' => 'renderVariantDimensions',
         ];
 
-        $oUtils = oxNew('oxUtilsObject');
-        $sSqlCheck = 'SELECT 1 FROM `' . self::$sAttribute2OxidTable . '` WHERE `ESATTRIBUTE` = ? AND OXSHOPID = ?';
-        $sSqlInsert = 'INSERT INTO `' . self::$sAttribute2OxidTable . '` (`OXID`, `OXSHOPID`, `ESATTRIBUTE`, `OXOBJECT`,  `OXTYPE`) VALUES (?, ?, ?, ?, ?)';
+        $shopID = oxRegistry::getConfig()->getShopId();
+        $defaultLang = oxRegistry::getConfig()->getConfigParam('sDefaultLang');
 
-        foreach ($aAttributes2Oxid as $aAttribute2Oxid) {
-            if (!oxDb::getDb()->getOne($sSqlCheck, [$aAttribute2Oxid['eightselectAttribute'], $oUtils->getShopId()])) {
-                oxDb::getDb()->execute($sSqlInsert, [$oUtils->generateUId(), $oUtils->getShopId(), $aAttribute2Oxid['eightselectAttribute'], $aAttribute2Oxid['oxidObject'], $aAttribute2Oxid['type']]);
-            }
+        foreach ($urls as $endpoint => $renderFunction) {
+            $stdUrl = "index.php?cl=eightselect_products_api&fnc=$renderFunction";
+            $seoUrl = $baseDir . $endpoint;
+            $oxID = oxRegistry::get('oxSeoEncoder')->getDynamicObjectId($shopID, $stdUrl);
+
+            oxRegistry::get('oxSeoEncoder')->addSeoEntry($oxID, $shopID, $defaultLang, $stdUrl, $seoUrl, 'static', 0);
         }
     }
 

@@ -26,39 +26,21 @@ $aModule = [
     ],
     'files'       => [
         // Core
-        'eightselect_dispatcher'           => 'asign/8select/core/eightselect_dispatcher.php',
-        'eightselect_events'               => 'asign/8select/core/eightselect_events.php',
-        'eightselect_request'              => 'asign/8select/core/eightselect_request.php',
+        'eightselect_events'       => 'asign/8select/core/eightselect_events.php',
+        'eightselect_export'       => 'asign/8select/core/eightselect_export.php',
+        'eightselect_attribute'    => 'asign/8select/core/eightselect_attribute.php',
 
         // Controllers
-        'eightselect_admin_attribute'      => 'asign/8select/application/controllers/admin/eightselect_admin_attribute.php',
-        'eightselect_admin_attribute_main' => 'asign/8select/application/controllers/admin/eightselect_admin_attribute_main.php',
-        'eightselect_admin_export'         => 'asign/8select/application/controllers/admin/eightselect_admin_export.php',
-        'eightselect_admin_export_do'      => 'asign/8select/application/controllers/admin/eightselect_admin_export_do.php',
-        'eightselect_admin_export_main'    => 'asign/8select/application/controllers/admin/eightselect_admin_export_main.php',
-        'eightselect_admin_export_upload'  => 'asign/8select/application/controllers/admin/eightselect_admin_export_upload.php',
+        'eightselect_products_api' => 'asign/8select/application/controllers/eightselect_products_api.php',
 
         // Models
-        'eightselect_attribute'            => 'asign/8select/models/eightselect_attribute.php',
-        'eightselect_attribute2oxid'       => 'asign/8select/models/eightselect_attribute2oxid.php',
-        'eightselect_aws'                  => 'asign/8select/models/eightselect_aws.php',
-        'eightselect_export'               => 'asign/8select/models/eightselect_export.php',
-        'eightselect_log'                  => 'asign/8select/models/eightselect_log.php',
-        'eightselect_export_abstract'      => 'asign/8select/models/export/eightselect_export_abstract.php',
-        'eightselect_export_dynamic'       => 'asign/8select/models/export/eightselect_export_dynamic.php',
-        'eightselect_export_static'        => 'asign/8select/models/export/eightselect_export_static.php',
+        'eightselect_log'          => 'asign/8select/models/eightselect_log.php',
     ],
     'events'      => [
         'onActivate'   => 'eightselect_events::onActivate',
         'onDeactivate' => 'eightselect_events::onDeactivate',
     ],
     'templates'   => [
-        'eightselect_admin_attribute.tpl'      => 'asign/8select/application/views/admin/tpl/eightselect_admin_attribute.tpl',
-        'eightselect_admin_attribute_main.tpl' => 'asign/8select/application/views/admin/tpl/eightselect_admin_attribute_main.tpl',
-        'eightselect_admin_export.tpl'         => 'asign/8select/application/views/admin/tpl/eightselect_admin_export.tpl',
-        'eightselect_admin_export_do.tpl'      => 'asign/8select/application/views/admin/tpl/eightselect_admin_export_do.tpl',
-        'eightselect_admin_export_main.tpl'    => 'asign/8select/application/views/admin/tpl/eightselect_admin_export_main.tpl',
-        'eightselect_admin_export_upload.tpl'  => 'asign/8select/application/views/admin/tpl/eightselect_admin_export_upload.tpl',
     ],
     'blocks'      => [
         [
