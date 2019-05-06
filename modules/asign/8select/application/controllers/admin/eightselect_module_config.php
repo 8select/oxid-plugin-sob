@@ -26,7 +26,7 @@ class eightselect_module_config extends eightselect_module_config_parent
             ['oxarticles;OXEAN', $oLang->translateString('ARTICLE_MAIN_EAN')],
             ['oxarticles;OXWIDTH', $oLang->translateString('GENERAL_ARTICLE_OXWIDTH')],
             ['oxarticles;OXHEIGHT', $oLang->translateString('GENERAL_ARTICLE_OXHEIGHT')],
-            ['oxarticles;OXHLENGTH', $oLang->translateString('GENERAL_ARTICLE_OXLENGTH')],
+            ['oxarticles;OXLENGTH', $oLang->translateString('GENERAL_ARTICLE_OXLENGTH')],
         ];
 
         $sOptGroupAttribute = oxRegistry::getLang()->translateString('EIGHTSELECT_ADMIN_ATTRIBUTE_OPTGROUP_ARTICLE');
