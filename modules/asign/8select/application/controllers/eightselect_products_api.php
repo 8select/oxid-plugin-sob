@@ -11,12 +11,13 @@ class eightselect_products_api extends oxUBase
     protected $requiredFields = [
         'oxarticles.OXID',
         'oxarticles.OXPARENTID',
-        'oxarticles.OXARTNUM',
         'oxarticles.OXTITLE',
-        'oxarticles.OXPIC1',
-        'oxarticles.OXPIC2',
-        'oxarticles.OXPIC3',
+        'oxarticles.OXPRICE',
+        'oxarticles.OXTPRICE',
         'oxseo.URL',
+        'product.PICTURES',
+        'product.SKU',
+        'product.BUYABLE',
     ];
 
     /**
@@ -150,7 +151,7 @@ class eightselect_products_api extends oxUBase
     protected function getRequiredArticleFields()
     {
         $fields = $this->getFields();
-        $requiredArticleFields = ['OXID', 'OXPARENTID', 'OXARTNUM', 'OXTITLE'];
+        $requiredArticleFields = [];
         foreach ($fields as $fieldData) {
             list($table, $field) = explode('.', $fieldData['name']);
 
@@ -167,6 +168,8 @@ class eightselect_products_api extends oxUBase
                 for ($i = 1; $i <= 12; $i++) {
                     $requiredArticleFields[] = 'OXPIC' . $i;
                 }
+            } elseif ($table === 'product' && $field === 'SKU') {
+                $requiredArticleFields[] = $this->getConfig()->getConfigParam('sArticleSkuField');
             }
         }
 
@@ -197,7 +200,7 @@ class eightselect_products_api extends oxUBase
 
         $export = oxNew('eightselect_export');
 
-        return $export->getExportData($this->getFields(), $articleData);
+        return $export->getExportData($this->getFields(), $articleData, $this->requiredFields);
     }
 
     /**
