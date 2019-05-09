@@ -15,7 +15,6 @@ class eightselect_oxarticle extends eightselect_oxarticle_parent
      * Return virtual master SKU (with color value suffix if color-variant is selected)
      *
      * @return string
-     * @throws oxConnectionException
      */
     public function getEightSelectVirtualSku()
     {
@@ -23,7 +22,9 @@ class eightselect_oxarticle extends eightselect_oxarticle_parent
             return $this->_sVirtualMasterSku;
         }
 
-        $this->_sVirtualMasterSku = $this->oxarticles__oxartnum->value;
+        $skuField = oxRegistry::getConfig()->getConfigParam('sArticleSkuField');
+
+        $this->_sVirtualMasterSku = $this->getFieldData($skuField);
 
         $oView = $this->getConfig()->getTopActiveView();
         if ($oView instanceof Details) {
@@ -31,7 +32,7 @@ class eightselect_oxarticle extends eightselect_oxarticle_parent
 
             if ($aVarSelections && $aVarSelections['blPerfectFit'] && $aVarSelections['oActiveVariant']) {
                 $oVariant = $aVarSelections['oActiveVariant'];
-                $this->_sVirtualMasterSku = $oVariant->oxarticles__oxartnum->value;
+                $this->_sVirtualMasterSku = $oVariant->getFieldData($skuField);
             } elseif (isset($aVarSelections['selections']) && count($aVarSelections['selections'])) {
                 $aEightSelectColorLabels = $this->getEightSelectColorLabels();
 
@@ -51,9 +52,8 @@ class eightselect_oxarticle extends eightselect_oxarticle_parent
 
     /**
      * @return array
-     * @throws oxConnectionException
      */
-    private function getEightSelectColorLabels()
+    protected function getEightSelectColorLabels()
     {
         if ($this->_aEightSelectColorLabels === null) {
             $colorField = oxRegistry::getConfig()->getConfigParam('SHOP_MODULE_sArticleColorField');

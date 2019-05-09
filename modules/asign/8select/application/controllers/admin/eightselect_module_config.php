@@ -8,11 +8,11 @@ class eightselect_module_config extends eightselect_module_config_parent
     /**
      * getEightSelectFields
      * -----------------------------------------------------------------------------------------------------------------
-     * Returns all possible fields for SKU or color
+     * Returns all possible fields for color
      *
      * @return array
      */
-    public function getEightSelectFields()
+    public function getEightSelectColorFields()
     {
         $aSelectAttributes = [];
         $oLang = oxRegistry::getLang();
@@ -55,5 +55,25 @@ class eightselect_module_config extends eightselect_module_config_parent
         }
 
         return $aSelectAttributes;
+    }
+
+    /**
+     * getEightSelectSkuFields
+     * -----------------------------------------------------------------------------------------------------------------
+     * Returns all possible SKU fields
+     *
+     * @return array
+     */
+    public function getEightSelectSkuFields()
+    {
+        $oLang = oxRegistry::getLang();
+
+        return [
+            'OXID'      => $oLang->translateString('GENERAL_ARTICLE_OXID'),
+            'OXARTNUM'  => $oLang->translateString('GENERAL_ARTICLE_OXARTNUM'),
+            'OXEAN'     => $oLang->translateString('GENERAL_ARTICLE_OXEAN'),
+            'OXMPN'     => $oLang->translateString('GENERAL_ARTICLE_OXMPN'),
+            'OXDISTEAN' => $oLang->translateString('GENERAL_ARTICLE_OXDISTEAN'),
+        ];
     }
 }
