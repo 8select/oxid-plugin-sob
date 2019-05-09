@@ -95,7 +95,7 @@ class eightselect_log extends oxBase
     public function setLastSuccessExportDate($blFull, $sDateTime = null)
     {
         if ($sDateTime === null) {
-            $sDateTime = date('Y-m-d H:i:s');
+            $sDateTime = oxDb::getDb()->getOne('SELECT now()');
         }
 
         $iShopId = $this->getConfig()->getShopId();

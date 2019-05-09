@@ -122,7 +122,7 @@ class eightselect_products_api extends oxUBase
             $log = oxNew('eightselect_log');
             $dateTime = $log->getLastSuccessExportDate($fullExport);
             if (!$dateTime) {
-                $dateTime = date('Y-m-d H:i:s');
+                $dateTime = oxDb::getDb()->getOne('SELECT NOW()');
             }
             $dateTime = oxDb::getDb()->quote($dateTime);
             $where = "WHERE OXTIMESTAMP > $dateTime";
@@ -136,7 +136,6 @@ class eightselect_products_api extends oxUBase
             $data[] = $this->buildFullArticleData($article);
         }
 
-        $fullExport = !$this->getConfig()->getRequestParameter('delta');
         $log = oxNew('eightselect_log');
         $log->setLastSuccessExportDate($fullExport);
 
@@ -164,6 +163,10 @@ class eightselect_products_api extends oxUBase
                 $requiredArticleFields[] = 'OXVENDORID';
             } elseif ($table === 'oxmanufacturers') {
                 $requiredArticleFields[] = 'OXMANUFACTURERID';
+            } elseif ($table === 'product' && $field === 'PICTURES') {
+                for ($i = 1; $i <= 12; $i++) {
+                    $requiredArticleFields[] = 'OXPIC' . $i;
+                }
             }
         }
 

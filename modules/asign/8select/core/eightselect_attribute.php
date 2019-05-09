@@ -26,6 +26,9 @@ class eightselect_attribute extends oxSuperCfg
         $articleView = getViewName('oxarticles', $defaultLang);
         $articleColumns = oxDb::getDb()->getCol("SHOW COLUMNS FROM $articleView");
         foreach ($articleColumns as $column) {
+            if (strpos($column, 'OXPIC') === 0) {
+                continue;
+            }
             $fields[] = ['name' => 'oxarticles.' . $column, 'label' => $column];
         }
 
@@ -45,6 +48,8 @@ class eightselect_attribute extends oxSuperCfg
         $fields[] = ['name' => 'oxvendor.OXTITLE', 'label' => 'Vendor title',];
         $fields[] = ['name' => 'oxmanufacturers.OXTITLE', 'label' => 'Manufacturer title',];
         $fields[] = ['name' => 'oxseo.URL', 'label' => 'Article URL',];
+        $fields[] = ['name' => 'product.PICTURES', 'label' => 'Article pictures',];
+        $fields[] = ['name' => 'product.BUYABLE', 'label' => 'Variant can be ordered',];
 
         $varNamesQuery = "SELECT DISTINCT OXVARNAME FROM $articleView WHERE OXVARNAME != ''";
         $varNamesResult = oxDb::getDb()->getCol($varNamesQuery);
