@@ -62,10 +62,10 @@ class eightselect_export extends oxSuperCfg
         }
 
         $this->data = array_filter($this->data, function ($field, $key) use ($requiredFields) {
-            $isEmpty = $field['value'] !== '' && $field['value'] !== null;
-            $isNotRequired = in_array($key, $requiredFields, true);
+            $isEmpty = $field['value'] === '' || $field['value'] === null;
+            $isRequired = in_array($key, $requiredFields, true);
 
-            return $isEmpty && $isNotRequired;
+            return !$isEmpty || $isRequired;
         }, ARRAY_FILTER_USE_BOTH);
 
         return $this->data;
