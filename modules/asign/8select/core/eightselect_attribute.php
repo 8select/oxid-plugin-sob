@@ -29,7 +29,7 @@ class eightselect_attribute extends oxSuperCfg
             if (strpos($column, 'OXPIC') === 0) {
                 continue;
             }
-            $fields[] = ['name' => 'oxarticles.' . $column, 'label' => $column];
+            $fields[] = ['name' => 'oxarticles.' . $column, 'label' => oxRegistry::getLang()->translateString($column)];
         }
 
         $attributesView = getViewName('oxattribute', $defaultLang);
