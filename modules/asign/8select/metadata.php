@@ -59,12 +59,16 @@ $aModule = [
             'block'    => 'checkout_thankyou_main',
             'file'     => '/application/views/blocks/page/checkout/eightselect_performance-tracking.tpl',
         ],
-        array(
+        [
             'template' => 'module_config.tpl',
             'block'    => 'admin_module_config_var_type_select',
-            'file'     => '/application/views/blocks/eightselect_module_config.tpl',
-            'position' => 1,
-        ),
+            'file'     => '/application/views/blocks/eightselect_admin_module_config_var_type_select.tpl',
+        ],
+        [
+            'template' => 'module_config.tpl',
+            'block'    => 'admin_module_config_form',
+            'file'     => '/application/views/blocks/eightselect_admin_module_config_form.tpl',
+        ],
     ],
     'settings'    => [
         [
