@@ -101,7 +101,7 @@ class eightselect_events
         $defaultLang = oxRegistry::getConfig()->getConfigParam('sDefaultLang');
 
         foreach ($urls as $endpoint => $renderFunction) {
-            $stdUrl = "index.php?cl=eightselect_products_api&fnc=$renderFunction";
+            $stdUrl = "index.php?cl=eightselect_products_api&amp;fnc=$renderFunction";
             $seoUrl = $baseDir . $endpoint;
             $oxID = oxRegistry::get('oxSeoEncoder')->getDynamicObjectId($shopID, $stdUrl);
 
