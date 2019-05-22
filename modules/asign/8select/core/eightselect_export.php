@@ -84,8 +84,13 @@ class eightselect_export extends oxSuperCfg
         foreach ($tableFields as $fieldData) {
             list(, $field) = explode('.', $fieldData['name']);
             if (in_array(strtolower($field), $this->priceFields, true)) {
-                $decimal = pow(10, $this->getConfig()->getActShopCurrencyObject()->decimal);
-                $articleData[$field] *= $decimal;
+                if ($articleData[$field]) {
+                    $decimal = pow(10, $this->getConfig()->getActShopCurrencyObject()->decimal);
+                    $articleData[$field] *= $decimal;
+                } else {
+                    // Value = 0 or empty: Set to null
+                    $articleData[$field] = null;
+                }
             }
 
             $this->data[$fieldData['name']] = [
