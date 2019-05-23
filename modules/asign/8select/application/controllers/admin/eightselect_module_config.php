@@ -39,7 +39,7 @@ class eightselect_module_config extends eightselect_module_config_parent
                 ],
                 'plugin' => ['version' => $module->getInfo('version')],
                 'shop'   => [
-                    'software' => 'OXID eShop ' . $this->getShopEdition(),
+                    'software' => 'OXID-' . $this->getShopEdition(),
                     'url'      => $this->getConfig()->getShopUrl(),
                     'version'  => $this->getShopVersion(),
                 ],
