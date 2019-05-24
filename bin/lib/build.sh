@@ -21,9 +21,9 @@ rm -f bin/release.sh
 rm -rf dist
 rm -rf .git*
 
-sed -i '' "s@__VERSION__@${VERSION}@g" modules/asign/8select/metadata.php
+sed -i '' "s@__VERSION__@${VERSION}@g" metadata.php
 
-TPL_PATH="modules/asign/8select/application/views/blocks/base_style.tpl"
+TPL_PATH="application/views/blocks/base_style.tpl"
 
 if [ ${PROFILE} == 'production' ]
 then
