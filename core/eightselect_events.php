@@ -105,7 +105,9 @@ class eightselect_events
             $seoUrl = $baseDir . $endpoint;
             $oxID = oxRegistry::get('oxSeoEncoder')->getDynamicObjectId($shopID, $stdUrl);
 
-            oxRegistry::get('oxSeoEncoder')->addSeoEntry($oxID, $shopID, $defaultLang, $stdUrl, $seoUrl, 'static', 0);
+            if (!oxRegistry::get('oxSeoEncoder')->getStaticUrl($stdUrl, $defaultLang, $shopID)) {
+                oxRegistry::get('oxSeoEncoder')->addSeoEntry($oxID, $shopID, $defaultLang, $stdUrl, $seoUrl, 'static', 0);
+            }
         }
     }
 

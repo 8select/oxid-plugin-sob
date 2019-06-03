@@ -116,7 +116,7 @@ class eightselect_products_api extends oxUBase
         $limit = $this->getLimit();
         $offset = $this->getOffset();
 
-        $fullExport = !$this->getConfig()->getRequestParameter('delta');
+        $fullExport = !$this->isDeltaExport();
 
         $where = '';
         if (!$fullExport) {
@@ -231,6 +231,27 @@ class eightselect_products_api extends oxUBase
         }
 
         return $offset;
+    }
+
+    /**
+     * Checks if the current call is for a full export or a delta export
+     *
+     * @return bool
+     */
+    protected function isDeltaExport()
+    {
+        $isDelta = false;
+
+        $parameter = $this->getConfig()->getRequestParameter('delta');
+        if ($parameter) {
+            $isDelta = true;
+
+            if ($parameter === 'false') {
+                $isDelta = false;
+            }
+        }
+
+        return $isDelta;
     }
 
     /**
