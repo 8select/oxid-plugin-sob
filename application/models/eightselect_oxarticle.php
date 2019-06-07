@@ -6,10 +6,10 @@
 class eightselect_oxarticle extends eightselect_oxarticle_parent
 {
     /** @var array */
-    private $_aEightSelectColorLabels = null;
+    protected $_aEightSelectColorLabels = ['Farbe', 'colour'];
 
     /** @var string */
-    private $_sVirtualMasterSku = null;
+    protected $_sVirtualMasterSku = null;
 
     /**
      * Return virtual master SKU (with color value suffix if color-variant is selected)
@@ -34,10 +34,8 @@ class eightselect_oxarticle extends eightselect_oxarticle_parent
                 $oVariant = $aVarSelections['oActiveVariant'];
                 $this->_sVirtualMasterSku = $oVariant->getFieldData($skuField);
             } elseif (isset($aVarSelections['selections']) && count($aVarSelections['selections'])) {
-                $aEightSelectColorLabels = $this->getEightSelectColorLabels();
-
                 foreach ($aVarSelections['selections'] as $oVarSelectList) {
-                    if (in_array($oVarSelectList->getLabel(), $aEightSelectColorLabels) && $oVarSelectList->getActiveSelection()) {
+                    if (in_array($oVarSelectList->getLabel(), $this->_aEightSelectColorLabels) && $oVarSelectList->getActiveSelection()) {
                         $oSelection = $oVarSelectList->getActiveSelection();
                         $sFieldValue = strtolower($oSelection->getName());
                         $this->_sVirtualMasterSku .= '-' . str_replace(' ', '', $sFieldValue);
@@ -48,20 +46,5 @@ class eightselect_oxarticle extends eightselect_oxarticle_parent
         }
 
         return $this->_sVirtualMasterSku;
-    }
-
-    /**
-     * @return array
-     */
-    protected function getEightSelectColorLabels()
-    {
-        if ($this->_aEightSelectColorLabels === null) {
-            $colorField = oxRegistry::getConfig()->getConfigParam('SHOP_MODULE_sArticleColorField');
-            list(, $colorLabel) = explode(';', $colorField);
-
-            $this->_aEightSelectColorLabels = [$colorLabel];
-        }
-
-        return $this->_aEightSelectColorLabels;
     }
 }

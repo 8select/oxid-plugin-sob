@@ -108,12 +108,6 @@ $aModule = [
             'value' => 'OXARTNUM',
         ],
         [
-            'group' => 'eightselect_widget',
-            'name'  => 'sArticleColorField',
-            'type'  => 'select',
-            'value' => 'oxvarselect;Farbe',
-        ],
-        [
             'group' => 'eightselect_feed',
             'name'  => 'sEightSelectExportNrOfFeeds',
             'type'  => 'str',
