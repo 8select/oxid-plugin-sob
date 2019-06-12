@@ -6,9 +6,9 @@
 - EE 5.1.x
 - EE 5.2.x
 - EE 5.3.x
-- CE/PE 4.10.x
+- CE/PE 4.10.x/5.x
 
-#### Ggf. kompatibel jedoch nicht getestet
+Ggf. kompatibel, jedoch nicht getestet:
 
 - CE/PE 4.7.x
 - CE/PE 4.8.x
@@ -26,22 +26,36 @@ Weitere Voraussetzungen ergeben sich aus denen der Oxid Version:
 
 ## Installation
 
-1. Modul aus OXID eXchange laden.
-1. Modul entpacken und in das Shopverzeichnis kopieren/hochladen.
+1. Modul aus [OXID eXchange](https://exchange.oxid-esales.com/index.php?cl=search&searchparam=8select) laden.
+2. Modul entpacken.
+3. Auf Ihrem Webserver im Shopverzeichnis (Root-Pfad des Oxid Shops) den Unterordner `modules/asign/8select` anlegen.
+4. Das entpackte Modul in diesen Ordner kopieren/hochladen.
 
 ## Modul aktivieren und konfigurieren
 
-- Im OXID eShop Admin-Bereich in der Modul-Verwaltung das 8select-Modul auswählen und "Aktivieren"
+- Im OXID eShop Admin-Bereich in der Modul-Verwaltung das 8select-Modul auswählen und "Aktivieren".
 
-![activate](./docs/oxid-activate.png)
+![activate](./oxid5-activate.png)
 
-- Unter dem Reiter "Einstell." müssen nun noch die API-ID und Feed-ID eingegeben werden
+- Unter dem Reiter "Einstell." im Abschnitt "Allgemeine Konfiguration" die API-ID und Feed-ID eingeben.
+- Ausspielung der 8select-Widgets aktivieren:
+  - entweder im Vorschau-Modus (für einen Testbetrieb - dann werden die Widgets nur ausgespielt wenn an die URL ein Parameter `8s_preview=1` angehängt wird, z.B. `https://www.my-shop.com/page?8s_preview=1`): dazu das Häkchen bei "Vorschau aktiv" setzen.
+  - oder immer, d.h. für den Produktivbetrieb: dazu das Häkchen "Im Frontend aktiv" setzen.
+- Nach diesen Einstellungen "Speichern".
+
+![config](./oxid5-basic-config.png)
+
+- Ihren Oxid Shop im 8select-System registrieren: dazu den Button "Mit CSE verbinden" klicken.
+
+![connect.with-cse](./oxid5-connect-with-cse.png)
+
+- Im Anschluss in der [8select Management Console](https://console.8select.io) einloggen und die Konfiguration Ihrer Produktdaten vornehmen - dies funktioniert exakt [wie für unser Shopware Plugin](https://knowledge.8select.com/knowledge/konfiguration-shopware-plugin).
 
 
 ## Deinstallation
 
-1. Das Modul im OXID eSHOP Admin-Bereich in der Modul-Verwaltung deaktivieren
-2. Das Verzechnis "modules/asign/8select" löschen
+1. Das Modul im OXID eSHOP Admin-Bereich in der Modul-Verwaltung deaktivieren.
+2. Das Verzechnis "modules/asign/8select" löschen.
 3. Folgende Datenbank-Tabellen löschen:
 
    - eightselect_log
