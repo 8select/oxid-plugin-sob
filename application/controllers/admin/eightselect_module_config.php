@@ -5,7 +5,7 @@
  */
 class eightselect_module_config extends eightselect_module_config_parent
 {
-    protected $_8selectUrl = 'https://sc-prod.staging.8select.io/';
+    protected $_8selectUrl = 'https://__SUBDOMAIN__.8select.io/';
 
     /**
      * connectToCSE
