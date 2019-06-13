@@ -8,8 +8,5 @@
     "a-sign",
     "8select"
   ],
-  "homepage": "https://gitlab.com/a-sign/oxid-modules/8select",
-  "require": {
-    "aws/aws-sdk-php": "^3.62"
-  }
+  "homepage": "https://github.com/8select/oxid-plugin-sob"
 }
