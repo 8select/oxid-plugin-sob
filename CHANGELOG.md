@@ -6,7 +6,7 @@
 
 **Implemented Features:**
 
-- Release 2.0.0 - product data pulling [\#8](https://github.com/8select/oxid-plugin-sob/pull/8) ([norisk-it](https://github.com/norisk-it))
+- Release 2.0.0 - Switch product export from push to pull - BREAKING CHANGE [\#8](https://github.com/8select/oxid-plugin-sob/pull/8) ([norisk-it](https://github.com/norisk-it))
 
 ## [1.0.6](https://github.com/8select/oxid-plugin-sob/tree/1.0.6) (2019-3-13)
 
