@@ -47,4 +47,12 @@ class eightselect_oxviewconfig extends eightselect_oxviewconfig_parent
         $sWidgetType = str_replace('-', '', $sWidgetType);
         return (bool) $this->getConfig()->getConfigParam('blEightSelectWidget'.$sWidgetType);
     }
+    
+    /**
+     * Get session token
+     * @return string
+     */
+    public function getSessionChallengeToken() {
+        return oxRegistry::getSession()->getSessionChallengeToken();
+    }
 }
