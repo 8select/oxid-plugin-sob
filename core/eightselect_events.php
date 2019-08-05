@@ -124,9 +124,13 @@ class eightselect_events
                 }
             }
         }
+        
+        $oConfig = oxRegistry::getConfig();
+        if ($oConfig->getEdition() == 'EE') {
+            //reset output cache
+            $oCache = oxNew('oxcache');
+            $oCache->reset(false);
+        }
 
-        //reset output cache
-        $oCache = oxNew('oxcache');
-        $oCache->reset(false);
     }
 }
