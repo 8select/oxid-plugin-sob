@@ -25,7 +25,7 @@ class eightselect_export extends oxSuperCfg
     {
         $groupedFields = [];
         foreach ($fields as $fieldData) {
-            list($table,) = explode('.', $fieldData['name']);
+            list($table) = explode('.', $fieldData['name']);
             if (!isset($groupedFields[$table])) {
                 $groupedFields[$table] = [];
             }
@@ -119,7 +119,7 @@ class eightselect_export extends oxSuperCfg
         $categoryIds = oxDb::getDb()->getCol($categoryIdQuery, [$articleId]);
         $categoryPaths = $this->_getCategoryPaths($categoryIds);
         foreach ($categoryPaths as $i => $categoryPath) {
-            $this->data['oxcategory.' . $i] = ['label' => 'Category ' . $i, 'value' => $categoryPath,];
+            $this->data['oxcategory.' . $i] = ['label' => 'Category ' . $i, 'value' => $categoryPath];
         }
     }
 
@@ -212,13 +212,13 @@ class eightselect_export extends oxSuperCfg
      */
     protected function _buildVarNameFields($articleData, $tableFields)
     {
-        $varName = explode(' | ', $articleData['OXVARNAME']);
-        $varSelect = explode(' | ', $articleData['OXVARSELECT']);
+        $varName = explode('|', str_replace([' | ', ' |', '| '], '|', $articleData['OXVARNAME']));
+        $varSelect = explode('|', str_replace([' | ', ' |', '| '], '|', $articleData['OXVARSELECT']));
         $fullVarSelect = array_combine($varName, $varSelect);
         foreach ($tableFields as $fieldData) {
             $this->data[$fieldData['name']] = [
-                'label'           => $fieldData['label'],
-                'value'           => isset($fullVarSelect[$fieldData['label']]) ? $fullVarSelect[$fieldData['label']] : '',
+                'label' => $fieldData['label'],
+                'value' => isset($fullVarSelect[$fieldData['label']]) ? $fullVarSelect[$fieldData['label']] : '',
                 'isVariantDetail' => true,
             ];
         }
