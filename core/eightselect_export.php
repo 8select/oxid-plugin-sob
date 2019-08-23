@@ -212,8 +212,12 @@ class eightselect_export extends oxSuperCfg
      */
     protected function _buildVarNameFields($articleData, $tableFields)
     {
-        $varName = explode('|', str_replace([' | ', ' |', '| '], '|', $articleData['OXVARNAME']));
-        $varSelect = explode('|', str_replace([' | ', ' |', '| '], '|', $articleData['OXVARSELECT']));
+        $varName = explode('|', $articleData['OXVARNAME']);
+        $varName = array_map('trim', $varName);
+
+        $varSelect = explode('|', $articleData['OXVARSELECT']);
+        $varSelect = array_map('trim', $varSelect);
+
         $fullVarSelect = array_combine($varName, $varSelect);
         foreach ($tableFields as $fieldData) {
             $this->data[$fieldData['name']] = [
@@ -260,7 +264,25 @@ class eightselect_export extends oxSuperCfg
             ];
 
             if ($field === 'PICTURES') {
-                $this->data[$fieldData['name']]['value'] = $this->_getArticlePictures($article);
+                for ($i = 1; $i <= 12; $i++) {
+                    $pictureField = 'OXPIC' . $i;
+                    if ($articleData[$pictureField]) {
+                        $pictureUrl = $article->getPictureUrl($i);
+                        if (is_null($pictureUrl) && ($parent = $article->getParentArticle())) {
+                            $pictureUrl= $parent->getPictureUrl($i);
+                        }
+
+                        if ($pictureUrl) {
+                            $this->data[$fieldData['name']]['value'][] = $pictureUrl;
+                        }
+//                        if ($parent = $article->getParentArticle()) {
+//                            $this->data[$fieldData['name']]['value'][] = $parent->getPictureUrl($i);
+//                        } else {
+//                            $this->data[$fieldData['name']]['value'][] = $article->getPictureUrl($i);
+//                        }
+                    }
+                }
+
             } elseif ($field === 'BUYABLE') {
                 $this->data[$fieldData['name']]['value'] = $article->isBuyable() ? 1 : 0;
             } elseif ($field === 'SKU') {
