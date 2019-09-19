@@ -124,7 +124,7 @@ class eightselect_products_api extends oxUBase
         if (!$fullExport) {
             $dateTime = $this->getLastExportDate();
             $dateTime = oxDb::getDb()->quote($dateTime);
-            $where = "WHERE (OXPARENTID != '' OR OXVARSELECT != '') AND OXTIMESTAMP > $dateTime";
+            $where = "WHERE (OXPARENTID != '' OR (OXVARNAME = '' AND OXVARSELECT = '')) AND OXTIMESTAMP > $dateTime";
         }
 
         $requiredArticleFields = $this->getRequiredArticleFields();
