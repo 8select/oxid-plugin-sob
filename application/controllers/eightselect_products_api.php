@@ -19,6 +19,8 @@ class eightselect_products_api extends oxUBase
         'product.SKU',
         'product.BUYABLE',
     ];
+    /** @var int */
+    protected $totalArticlesSum;
 
     /**
      * Check credentials submitted in header
@@ -120,13 +122,9 @@ class eightselect_products_api extends oxUBase
 
         $where = '';
         if (!$fullExport) {
-            $log = oxNew('eightselect_log');
-            $dateTime = $log->getLastSuccessExportDate($fullExport);
-            if (!$dateTime) {
-                $dateTime = oxDb::getDb()->getOne('SELECT NOW()');
-            }
+            $dateTime = $this->getLastExportDate();
             $dateTime = oxDb::getDb()->quote($dateTime);
-            $where = "WHERE OXTIMESTAMP > $dateTime";
+            $where = "WHERE (OXPARENTID != '' OR (OXVARNAME = '' AND OXVARSELECT = '')) AND OXTIMESTAMP > $dateTime";
         }
 
         $requiredArticleFields = $this->getRequiredArticleFields();
@@ -141,6 +139,22 @@ class eightselect_products_api extends oxUBase
         $log->setLastSuccessExportDate($fullExport);
 
         return $data;
+    }
+
+    /**
+     * Loads datetime of last export
+     *
+     * @return string
+     */
+    protected function getLastExportDate()
+    {
+        $log = oxNew('eightselect_log');
+        $dateTime = $log->getLastSuccessExportDate(!$this->isDeltaExport());
+        if (!$dateTime) {
+            $dateTime = oxDb::getDb()->getOne('SELECT NOW()');
+        }
+
+        return $dateTime;
     }
 
     /**
@@ -261,9 +275,21 @@ class eightselect_products_api extends oxUBase
      */
     protected function getTotalArticlesSum()
     {
-        $view = getViewName('oxarticles');
+        if (is_null($this->totalArticlesSum)) {
+            $view = getViewName('oxarticles');
+            $fullExport = !$this->isDeltaExport();
 
-        return (int) oxDb::getDb()->getOne("SELECT COUNT(1) FROM $view");
+            $where = '';
+            if (!$fullExport) {
+                $dateTime = $this->getLastExportDate();
+                $dateTime = oxDb::getDb()->quote($dateTime);
+                $where = "WHERE OXTIMESTAMP > $dateTime";
+            }
+
+            $this->totalArticlesSum = (int) oxDb::getDb()->getOne("SELECT count(1) FROM $view $where");
+        }
+
+        return $this->totalArticlesSum;
     }
 
     /**

@@ -212,8 +212,8 @@ class eightselect_export extends oxSuperCfg
      */
     protected function _buildVarNameFields($articleData, $tableFields)
     {
-        $varName = explode('|', str_replace([' | ', ' |', '| '], '|', $articleData['OXVARNAME']));
-        $varSelect = explode('|', str_replace([' | ', ' |', '| '], '|', $articleData['OXVARSELECT']));
+        $varName = explode('|', str_replace([' | ', ' |', '| '], '|', $articleData['OXVARNAME']));
+        $varSelect = explode('|', str_replace([' | ', ' |', '| '], '|', $articleData['OXVARSELECT']));
         $fullVarSelect = array_combine($varName, $varSelect);
         foreach ($tableFields as $fieldData) {
             $this->data[$fieldData['name']] = [

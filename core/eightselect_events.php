@@ -125,8 +125,10 @@ class eightselect_events
             }
         }
 
-        //reset output cache
-        $oCache = oxNew('oxcache');
-        $oCache->reset(false);
+        if (class_exists('oxcache')) {
+            //reset output cache
+            $oCache = oxNew('oxcache');
+            $oCache->reset(false);
+        }
     }
 }
