@@ -2,9 +2,7 @@
 
 ## Installation
 
-https://www.8select.com/8select-cse-installationsanleitung-oxid
-
-([oder siehe hier](./docs/installation.md))
+([./docs/installation.md](./docs/installation.md))
 
 ### Installationsanleitung generieren
 
